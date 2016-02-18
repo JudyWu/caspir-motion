@@ -1,0 +1,43 @@
+{
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "8926BC5FA672AD88F1989CD574C9637E4B06AC6F" : 0,
+    "2AB82FAEF182B606BE5DBA6728A3A6DFA63EED7D" : 0,
+    "CEE2E2DA3B415DB70C257504A5BA6B611A730B63" : 0,
+    "9CF6181E3789E3853840089C16D4B9FDDB9B31E2" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "FC42186F-FEDA-4BAB-A893-C0EACE729604",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "8926BC5FA672AD88F1989CD574C9637E4B06AC6F" : "..\/mPower",
+    "2AB82FAEF182B606BE5DBA6728A3A6DFA63EED7D" : "motion\/motion\/AppCore\/",
+    "CEE2E2DA3B415DB70C257504A5BA6B611A730B63" : "motion\/motion\/BridgeSDK\/",
+    "9CF6181E3789E3853840089C16D4B9FDDB9B31E2" : "..\/ResearchKit"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "motion",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "motion.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ResearchKit\/AppCore.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2AB82FAEF182B606BE5DBA6728A3A6DFA63EED7D"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/JudyWu\/mPower.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8926BC5FA672AD88F1989CD574C9637E4B06AC6F"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ResearchKit\/ResearchKit.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9CF6181E3789E3853840089C16D4B9FDDB9B31E2"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Sage-Bionetworks\/Bridge-iOS-SDK.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CEE2E2DA3B415DB70C257504A5BA6B611A730B63"
+    }
+  ]
+}
