@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Inclusion Criteria View Controller-->
+        <!--Table View Controller-->
         <scene sceneID="DH3-dF-VlZ">
             <objects>
-                <tableViewController storyboardIdentifier="APHInclusionCriteriaViewController" id="wh4-yB-lTp" customClass="APHInclusionCriteriaViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="APHInclusionCriteriaViewController" id="wh4-yB-lTp" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="225" sectionHeaderHeight="22" sectionFooterHeight="22" id="or2-hA-x2u">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="X78-zF-hQ4">
-                            <rect key="frame" x="0.0" y="695" width="320" height="44"/>
+                            <rect key="frame" x="0.0" y="695" width="320" height="389"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
@@ -36,7 +35,7 @@
                                                         <constraint firstAttribute="height" constant="1" id="na0-WK-9HW"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are you 18 or older?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" translatesAutoresizingMaskIntoConstraints="NO" id="Lit-9E-Lq9">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do you like drinking?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" translatesAutoresizingMaskIntoConstraints="NO" id="Lit-9E-Lq9">
                                                     <rect key="frame" x="15" y="8" width="290" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="jSw-13-VyC"/>
@@ -116,7 +115,7 @@
                                                         <constraint firstAttribute="height" constant="1" id="VMr-Mj-LCd"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do you live in the United States of America?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" translatesAutoresizingMaskIntoConstraints="NO" id="48z-iB-W2P">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do you drink more than twice a week?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" translatesAutoresizingMaskIntoConstraints="NO" id="48z-iB-W2P">
                                                     <rect key="frame" x="15" y="8" width="290" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="2OI-Hw-HgQ"/>
@@ -226,7 +225,7 @@
                                                         <constraint firstAttribute="height" constant="10" id="V7x-lK-4wM"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are you comfortable reading and writing on your iPhone in English?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" translatesAutoresizingMaskIntoConstraints="NO" id="oRB-tO-vMQ">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are you comfortable answering drinking related questions once a day?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" translatesAutoresizingMaskIntoConstraints="NO" id="oRB-tO-vMQ">
                                                     <rect key="frame" x="15" y="8" width="290" height="75"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="75" id="G2x-2c-4Qk"/>
@@ -285,7 +284,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z6R-et-6de" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-220" y="1008"/>
+            <point key="canvasLocation" x="-231" y="911"/>
         </scene>
     </scenes>
 </document>
