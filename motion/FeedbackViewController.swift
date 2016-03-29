@@ -9,5 +9,13 @@
 import UIKit
 
 class FeedbackViewController: UITableViewController {
+    
+    @IBOutlet weak var baselineFeedbackText: UITextView!
+    @IBOutlet weak var thirtyDaysFeedbackText: UITextView!
+    
+    
+    
+    
+    
 
 }

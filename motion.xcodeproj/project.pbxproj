@@ -37,9 +37,8 @@
 		C21728271C78D5D1008D2BC3 /* ResearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C21728241C78D548008D2BC3 /* ResearchKit.framework */; };
 		C21728281C78D5D1008D2BC3 /* ResearchKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C21728241C78D548008D2BC3 /* ResearchKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C217283B1C794597008D2BC3 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C217283A1C794597008D2BC3 /* HealthKit.framework */; };
-		C21B09601CA076C60047FA8E /* CASMorningTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21B095F1CA076C60047FA8E /* CASMorningTaskViewController.swift */; };
-		C21B09641CA077050047FA8E /* CASMorningTaskStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21B09631CA077050047FA8E /* CASMorningTaskStep.swift */; };
 		C21B5D751CA05805005020C0 /* CASMorningSurveyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21B5D741CA05805005020C0 /* CASMorningSurveyViewController.swift */; };
+		C2387EF71CA996B300CC7BD1 /* CASConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2387EF61CA996B300CC7BD1 /* CASConstants.swift */; };
 		C25041AB1C8CA94B00DC78FB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C25041AA1C8CA94B00DC78FB /* CoreData.framework */; };
 		C26C5A0D1C8B5FDB009FECB3 /* IneligibleStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26C5A0C1C8B5FDB009FECB3 /* IneligibleStep.swift */; };
 		C26C5A0F1C8B604B009FECB3 /* IneligibleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26C5A0E1C8B604B009FECB3 /* IneligibleViewController.swift */; };
@@ -132,9 +131,8 @@
 		C217281D1C78D548008D2BC3 /* ResearchKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ResearchKit.xcodeproj; path = ../../Desktop/ResearchKit/ResearchKit.xcodeproj; sourceTree = "<group>"; };
 		C21728391C794597008D2BC3 /* motion.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = motion.entitlements; sourceTree = "<group>"; };
 		C217283A1C794597008D2BC3 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		C21B095F1CA076C60047FA8E /* CASMorningTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CASMorningTaskViewController.swift; sourceTree = "<group>"; };
-		C21B09631CA077050047FA8E /* CASMorningTaskStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CASMorningTaskStep.swift; sourceTree = "<group>"; };
 		C21B5D741CA05805005020C0 /* CASMorningSurveyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CASMorningSurveyViewController.swift; sourceTree = "<group>"; };
+		C2387EF61CA996B300CC7BD1 /* CASConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CASConstants.swift; sourceTree = "<group>"; };
 		C25041AA1C8CA94B00DC78FB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C26C5A0C1C8B5FDB009FECB3 /* IneligibleStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IneligibleStep.swift; sourceTree = "<group>"; };
 		C26C5A0E1C8B604B009FECB3 /* IneligibleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IneligibleViewController.swift; sourceTree = "<group>"; };
@@ -192,8 +190,6 @@
 			isa = PBXGroup;
 			children = (
 				C20764581C7643AF00956A3D /* ActivityViewController.swift */,
-				C21B09631CA077050047FA8E /* CASMorningTaskStep.swift */,
-				C21B095F1CA076C60047FA8E /* CASMorningTaskViewController.swift */,
 				C210B4861C9C800400EB2522 /* CASActivityViewController.swift */,
 				C21B5D741CA05805005020C0 /* CASMorningSurveyViewController.swift */,
 				C207645A1C7643BB00956A3D /* StudyTasks.swift */,
@@ -289,6 +285,7 @@
 				C20764661C76444300956A3D /* Steps */,
 				C20764671C76445D00956A3D /* Protocols */,
 				C20764721C76454700956A3D /* HKHealthStore+Queries.swift */,
+				C2387EF61CA996B300CC7BD1 /* CASConstants.swift */,
 				C21363971C9331EF0080FEE9 /* CASTaskResultModel.xcdatamodeld */,
 				C20865751C860F69000F90C8 /* Main.storyboard */,
 				C26E47951C25B8E500D6EA47 /* Assets.xcassets */,
@@ -516,9 +513,7 @@
 				C20764541C76431100956A3D /* DiscreteGraphDataSource.swift in Sources */,
 				C20764611C7643E700956A3D /* ProfileStaticTableViewCell.swift in Sources */,
 				C20764731C76454700956A3D /* HKHealthStore+Queries.swift in Sources */,
-				C21B09641CA077050047FA8E /* CASMorningTaskStep.swift in Sources */,
 				C20764431C76404500956A3D /* ResearchContainerViewController.swift in Sources */,
-				C21B09601CA076C60047FA8E /* CASMorningTaskViewController.swift in Sources */,
 				C20F9CEE1C7B75C00045AA48 /* AppDelegate.swift in Sources */,
 				C21B5D751CA05805005020C0 /* CASMorningSurveyViewController.swift in Sources */,
 				C21363991C9331EF0080FEE9 /* CASTaskResultModel.xcdatamodeld in Sources */,
@@ -536,6 +531,7 @@
 				C20F9CF41C7B88CB0045AA48 /* FeedbackViewController.swift in Sources */,
 				C26C5A0F1C8B604B009FECB3 /* IneligibleViewController.swift in Sources */,
 				C207646B1C76449500956A3D /* HealthDataStepViewController.swift in Sources */,
+				C2387EF71CA996B300CC7BD1 /* CASConstants.swift in Sources */,
 				C2021A6F1CA19DB500292F86 /* BaselineSurveyViewController.swift in Sources */,
 				C20764591C7643AF00956A3D /* ActivityViewController.swift in Sources */,
 				C20764521C7642FC00956A3D /* PieChartDataSource.swift in Sources */,

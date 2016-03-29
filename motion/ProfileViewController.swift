@@ -62,7 +62,8 @@ class ProfileViewController: UITableViewController, HealthClientType {
         // Request authrization to query the health objects that need to be shown.
         let typesToRequest = Set<HKObjectType>(healthObjectTypes)
         healthStore.requestAuthorizationToShareTypes(nil, readTypes: typesToRequest) { authorized, error in
-            guard authorized else { return }
+            guard authorized else {return}
+            
             
             // Reload the table view cells on the main thread.
             NSOperationQueue.mainQueue().addOperationWithBlock() {
@@ -110,7 +111,7 @@ class ProfileViewController: UITableViewController, HealthClientType {
     func configureCellWithDateOfBirth(cell: ProfileStaticTableViewCell) {
         // Set the default cell content.
         cell.titleLabel.text = NSLocalizedString("Date of Birth", comment: "")
-//        cell.valueLabel.text = NSLocalizedString("-", comment: "")
+        cell.valueLabel.text = NSLocalizedString("-", comment: "")
 
         // Update the value label with the date of birth from the health store.
         guard let healthStore = healthStore else { return }
@@ -118,7 +119,6 @@ class ProfileViewController: UITableViewController, HealthClientType {
         do {
             let dateOfBirth = try healthStore.dateOfBirth()
             let now = NSDate()
-
             let ageComponents = NSCalendar.currentCalendar().components(.Year, fromDate: dateOfBirth, toDate: now, options: .WrapComponents)
             let age = ageComponents.year
 
@@ -131,18 +131,17 @@ class ProfileViewController: UITableViewController, HealthClientType {
     func configureCell(cell: ProfileStaticTableViewCell, withTitleText titleText: String, valueForQuantityTypeIdentifier identifier: String) {
         // Set the default cell content.
         cell.titleLabel.text = titleText
-//        cell.valueLabel.text = NSLocalizedString("-", comment: "")
+        cell.valueLabel.text = NSLocalizedString("-", comment: "")
         
         /*
             Check a health store has been set and a `HKQuantityType` can be
             created with the identifier provided.
         */
         guard let healthStore = healthStore, quantityType = HKQuantityType.quantityTypeForIdentifier(identifier) else { return }
-        
         // Get the most recent entry from the health store.
         healthStore.mostRecentQauntitySampleOfType(quantityType) { quantity, _ in
             guard let quantity = quantity else { return }
-            
+
             // Update the cell on the main thread.
             NSOperationQueue.mainQueue().addOperationWithBlock() {
                 guard let indexPath = self.indexPathForObjectTypeIdentifier(identifier) else { return }

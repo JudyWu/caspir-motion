@@ -45,7 +45,7 @@ class HealthDataStep: ORKInstructionStep {
     //Fitness: (active energy, stand hours, steps, walking and running distance) and Sleep: (Sleep analysis).
     let healthDataItemsToWrite: Set<HKSampleType> = [
         HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierActiveEnergyBurned)!,
-        HKObjectType.categoryTypeForIdentifier(HKCategoryTypeIdentifierAppleStandHour)!,
+//        HKObjectType.categoryTypeForIdentifier(HKCategoryTypeIdentifierAppleStandHour)!,
         HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)!,
         HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning)!,
         HKObjectType.categoryTypeForIdentifier(HKCategoryTypeIdentifierSleepAnalysis)!
@@ -78,5 +78,30 @@ class HealthDataStep: ORKInstructionStep {
             completion(success:success, error:error)
         }
         
-    }
+   }
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
