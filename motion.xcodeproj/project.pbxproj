@@ -33,7 +33,6 @@
 		C20F9CEE1C7B75C00045AA48 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26E478E1C25B8E500D6EA47 /* AppDelegate.swift */; };
 		C20F9CF41C7B88CB0045AA48 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20F9CF31C7B88CB0045AA48 /* FeedbackViewController.swift */; };
 		C210B4871C9C800500EB2522 /* CASActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C210B4861C9C800400EB2522 /* CASActivityViewController.swift */; };
-		C21363991C9331EF0080FEE9 /* CASTaskResultModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C21363971C9331EF0080FEE9 /* CASTaskResultModel.xcdatamodeld */; };
 		C217283B1C794597008D2BC3 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C217283A1C794597008D2BC3 /* HealthKit.framework */; };
 		C21B5D751CA05805005020C0 /* CASMorningSurveyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21B5D741CA05805005020C0 /* CASMorningSurveyViewController.swift */; };
 		C2387EF71CA996B300CC7BD1 /* CASConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2387EF61CA996B300CC7BD1 /* CASConstants.swift */; };
@@ -43,7 +42,16 @@
 		C26E47961C25B8E500D6EA47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C26E47951C25B8E500D6EA47 /* Assets.xcassets */; };
 		C26E47A41C25B8E500D6EA47 /* motionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26E47A31C25B8E500D6EA47 /* motionTests.swift */; };
 		C26E48191C25DB3A00D6EA47 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C26E48181C25DB3A00D6EA47 /* LaunchScreen.xib */; };
+		C27384911CBEB5FF004A743C /* Participants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27384901CBEB5FF004A743C /* Participants.swift */; };
+		C2BD5FDA1CBE9198002EDAD0 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2BD5FD91CBE9198002EDAD0 /* Realm.framework */; };
+		C2BD5FDE1CBE91A0002EDAD0 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2BD5FDD1CBE91A0002EDAD0 /* RealmSwift.framework */; };
+		C2BD5FDF1CBE91C7002EDAD0 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2BD5FDD1CBE91A0002EDAD0 /* RealmSwift.framework */; };
+		C2BD5FE01CBE91C7002EDAD0 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2BD5FDD1CBE91A0002EDAD0 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C2BD5FE11CBE91C7002EDAD0 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2BD5FD91CBE9198002EDAD0 /* Realm.framework */; };
+		C2BD5FE21CBE91C7002EDAD0 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2BD5FD91CBE9198002EDAD0 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2D9834C1CB82491003C8B22 /* ResearchKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C24D64AB1CB802D600EDC11B /* ResearchKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C2FDBFE41CBC10CB0000DD73 /* MorningTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FDBFE31CBC10CB0000DD73 /* MorningTaskViewController.swift */; };
+		C2FDBFE61CBC13880000DD73 /* EventTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FDBFE51CBC13880000DD73 /* EventTaskViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +99,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				C2BD5FE21CBE91C7002EDAD0 /* Realm.framework in Embed Frameworks */,
+				C2BD5FE01CBE91C7002EDAD0 /* RealmSwift.framework in Embed Frameworks */,
 				C2D9834C1CB82491003C8B22 /* ResearchKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -126,7 +136,6 @@
 		C20F9CE11C7B61A10045AA48 /* motion-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "motion-Bridging-Header.h"; sourceTree = "<group>"; };
 		C20F9CF31C7B88CB0045AA48 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		C210B4861C9C800400EB2522 /* CASActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CASActivityViewController.swift; sourceTree = "<group>"; };
-		C21363981C9331EF0080FEE9 /* CASTaskResultModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CASTaskResultModel.xcdatamodel; sourceTree = "<group>"; };
 		C21728391C794597008D2BC3 /* motion.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = motion.entitlements; sourceTree = "<group>"; };
 		C217283A1C794597008D2BC3 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		C21B5D741CA05805005020C0 /* CASMorningSurveyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CASMorningSurveyViewController.swift; sourceTree = "<group>"; };
@@ -144,6 +153,11 @@
 		C26E47A51C25B8E500D6EA47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C26E47AA1C25B8E500D6EA47 /* motionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = motionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C26E48181C25DB3A00D6EA47 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		C27384901CBEB5FF004A743C /* Participants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Participants.swift; sourceTree = "<group>"; };
+		C2BD5FD91CBE9198002EDAD0 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
+		C2BD5FDD1CBE91A0002EDAD0 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
+		C2FDBFE31CBC10CB0000DD73 /* MorningTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MorningTaskViewController.swift; path = ../MorningTaskViewController.swift; sourceTree = "<group>"; };
+		C2FDBFE51CBC13880000DD73 /* EventTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTaskViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,7 +165,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2BD5FE11CBE91C7002EDAD0 /* Realm.framework in Frameworks */,
+				C2BD5FDA1CBE9198002EDAD0 /* Realm.framework in Frameworks */,
+				C2BD5FDF1CBE91C7002EDAD0 /* RealmSwift.framework in Frameworks */,
 				C25041AB1C8CA94B00DC78FB /* CoreData.framework in Frameworks */,
+				C2BD5FDE1CBE91A0002EDAD0 /* RealmSwift.framework in Frameworks */,
 				C217283B1C794597008D2BC3 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -189,8 +207,10 @@
 			children = (
 				C20764581C7643AF00956A3D /* ActivityViewController.swift */,
 				C210B4861C9C800400EB2522 /* CASActivityViewController.swift */,
+				C27384901CBEB5FF004A743C /* Participants.swift */,
+				C2FDBFE31CBC10CB0000DD73 /* MorningTaskViewController.swift */,
+				C2FDBFE51CBC13880000DD73 /* EventTaskViewController.swift */,
 				C21B5D741CA05805005020C0 /* CASMorningSurveyViewController.swift */,
-				C207645A1C7643BB00956A3D /* StudyTasks.swift */,
 			);
 			name = Activities;
 			sourceTree = "<group>";
@@ -283,8 +303,8 @@
 				C20764661C76444300956A3D /* Steps */,
 				C20764671C76445D00956A3D /* Protocols */,
 				C20764721C76454700956A3D /* HKHealthStore+Queries.swift */,
+				C207645A1C7643BB00956A3D /* StudyTasks.swift */,
 				C2387EF61CA996B300CC7BD1 /* CASConstants.swift */,
-				C21363971C9331EF0080FEE9 /* CASTaskResultModel.xcdatamodeld */,
 				C20865751C860F69000F90C8 /* Main.storyboard */,
 				C26E47951C25B8E500D6EA47 /* Assets.xcassets */,
 				C26E479A1C25B8E500D6EA47 /* Info.plist */,
@@ -330,6 +350,8 @@
 		C2FF1E821C6BAC3800D61DCC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C2BD5FDD1CBE91A0002EDAD0 /* RealmSwift.framework */,
+				C2BD5FD91CBE9198002EDAD0 /* Realm.framework */,
 				C24D649B1CB802D400EDC11B /* ResearchKit.xcodeproj */,
 				C25041AA1C8CA94B00DC78FB /* CoreData.framework */,
 				C217283A1C794597008D2BC3 /* HealthKit.framework */,
@@ -348,6 +370,7 @@
 				C26E47881C25B8E500D6EA47 /* Frameworks */,
 				C26E47891C25B8E500D6EA47 /* Resources */,
 				C207647A1C7649D100956A3D /* Embed Frameworks */,
+				C2BD5FE31CBE92FA002EDAD0 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -499,6 +522,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		C2BD5FE31CBE92FA002EDAD0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bash \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework/strip-frameworks.sh\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C26E47871C25B8E500D6EA47 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -514,8 +553,8 @@
 				C20764431C76404500956A3D /* ResearchContainerViewController.swift in Sources */,
 				C20F9CEE1C7B75C00045AA48 /* AppDelegate.swift in Sources */,
 				C21B5D751CA05805005020C0 /* CASMorningSurveyViewController.swift in Sources */,
-				C21363991C9331EF0080FEE9 /* CASTaskResultModel.xcdatamodeld in Sources */,
 				C207646F1C76451F00956A3D /* HealthClientType.swift in Sources */,
+				C2FDBFE61CBC13880000DD73 /* EventTaskViewController.swift in Sources */,
 				C26C5A0D1C8B5FDB009FECB3 /* IneligibleStep.swift in Sources */,
 				C207646D1C76450800956A3D /* ConsentDocument.swift in Sources */,
 				C20764561C76431900956A3D /* LineGraphDataSource.swift in Sources */,
@@ -531,9 +570,11 @@
 				C207646B1C76449500956A3D /* HealthDataStepViewController.swift in Sources */,
 				C2387EF71CA996B300CC7BD1 /* CASConstants.swift in Sources */,
 				C2021A6F1CA19DB500292F86 /* BaselineSurveyViewController.swift in Sources */,
+				C2FDBFE41CBC10CB0000DD73 /* MorningTaskViewController.swift in Sources */,
 				C20764591C7643AF00956A3D /* ActivityViewController.swift in Sources */,
 				C20764521C7642FC00956A3D /* PieChartDataSource.swift in Sources */,
 				C20764471C76412600956A3D /* ResearchContrainerSegue.swift in Sources */,
+				C27384911CBEB5FF004A743C /* Participants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -672,6 +713,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
 				INFOPLIST_FILE = motion/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				"OTHER_CFLAGS[arch=*]" = "";
@@ -694,6 +736,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
 				INFOPLIST_FILE = motion/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = caspir.researchKitApp;
@@ -791,19 +834,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		C21363971C9331EF0080FEE9 /* CASTaskResultModel.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				C21363981C9331EF0080FEE9 /* CASTaskResultModel.xcdatamodel */,
-			);
-			currentVersion = C21363981C9331EF0080FEE9 /* CASTaskResultModel.xcdatamodel */;
-			path = CASTaskResultModel.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = C26E47831C25B8E500D6EA47 /* Project object */;
 }

@@ -24,16 +24,18 @@ class SystemSound {
 }
 
 
-class BaselineSurveyViewController: UIViewController {
-    let baselineSurveyuuid = NSUUID().UUIDString
+class BaselineSurveyViewController: UIViewController, ORKTaskViewControllerDelegate {
+    let baselineAlcoholSurveyuuid = NSUUID().UUIDString
+    let baselineSVSurveyuuid = NSUUID().UUIDString
+    
     let baselineReactionTaskuuid = NSUUID().UUIDString
     let baselineTappingTaskuuid = NSUUID().UUIDString
     let baselineGoTaskuuid = NSUUID().UUIDString
    
     
+    @IBOutlet weak var baselineAlcoholSurveyButton: UIButton!
     
-    
-    @IBOutlet weak var baselineSurveyButton: UIButton!
+    @IBOutlet weak var baselineSVSurveyButton: UIButton!
     
     @IBOutlet weak var baselineReactionTaskButton: UIButton!
     
@@ -41,92 +43,35 @@ class BaselineSurveyViewController: UIViewController {
     
     @IBOutlet weak var baselineGoTaskButton: UIButton!
     
-    @IBAction func baselineSurveyButtonTapped(sender: UIButton) {
-        var steps = [ORKStep]()
-        
-        let instructionStep = ORKInstructionStep(identifier: "IntroStep")
-        instructionStep.title = "Drinking Situation"
-        instructionStep.text = "Please answer these 10 questions to the best of your ability and no questions can be skipped."
-        
-        steps += [instructionStep]
-        
-        let tdsOneNameAnswerFormat = ORKTextAnswerFormat(maximumLength: 25)
-        tdsOneNameAnswerFormat.multipleLines = false
-        let tdsOneNameQuestionStepTitle = "Under what situation you most likely to drink?"
-        let tdsOneNameQuestionStep = ORKQuestionStep(identifier: "tdsOneNameQuestionStep", title: tdsOneNameQuestionStepTitle, answer: tdsOneNameAnswerFormat)
-        
-        steps += [tdsOneNameQuestionStep]
-        
-        let tdsTwoNameAnswerFormat = ORKTextAnswerFormat(maximumLength: 25)
-        tdsTwoNameAnswerFormat.multipleLines = false
-        let tdsTwoNameQuestionStepTitle = "Under what situation you second likely to drink?"
-        let tdsTwoNameQuestionStep = ORKQuestionStep(identifier: "tdsTwoNameQuestionStep", title: tdsTwoNameQuestionStepTitle, answer: tdsTwoNameAnswerFormat)
-        
-        steps += [tdsTwoNameQuestionStep]
-        
-        let tdsThreeNameAnswerFormat = ORKTextAnswerFormat(maximumLength: 25)
-        tdsThreeNameAnswerFormat.multipleLines = false
-        let tdsThreeNameQuestionStepTitle = "Under what situation you third likely to drink?"
-        let tdsThreeNameQuestionStep = ORKQuestionStep(identifier: "tdsThreeNameQuestionStep", title: tdsThreeNameQuestionStepTitle, answer: tdsThreeNameAnswerFormat)
-        
-        steps += [tdsThreeNameQuestionStep]
-        
-        let tdsThreeFrequencyStepTitle = "How oftern will you be in that situation?"
-        let tdsThreeFrequencyTextChoices = [
-            ORKTextChoice(text: "Daily or almost daily", value: 0),
-            ORKTextChoice(text: "4-5 times per week", value: 1),
-            ORKTextChoice(text: "2-3 times per week", value: 2),
-            ORKTextChoice(text: "Once per week", value: 3),
-            ORKTextChoice(text: "Less than once per week", value: 4)
-        ]
-        let tdsThreeFrequencyAnswerFormat: ORKTextChoiceAnswerFormat = ORKTextAnswerFormat.choiceAnswerFormatWithStyle(.SingleChoice, textChoices: tdsThreeFrequencyTextChoices)
-        let tdsThreeFrequencyStep = ORKQuestionStep(identifier: "tdsThreeFrequencyQuestionStep", title:tdsThreeFrequencyStepTitle, answer: tdsThreeFrequencyAnswerFormat)
-        steps += [tdsThreeFrequencyStep]
-        
-        let tdsThreeTimeStepTitle = "When will that situation be?"
-        let tdsThreeTimeTextChoices = [
-            ORKTextChoice(text: "Morning", value: 0),
-            ORKTextChoice(text: "Afternoon", value: 1),
-            ORKTextChoice(text: "Evening", value: 2),
-            ORKTextChoice(text: "At bedtime", value: 3)
-        ]
-        let tdsThreeTimeAnswerFormat: ORKTextChoiceAnswerFormat = ORKTextAnswerFormat.choiceAnswerFormatWithStyle(.SingleChoice, textChoices: tdsThreeTimeTextChoices)
-        let tdsThreeTimeStep = ORKQuestionStep(identifier: "tdsThreeTimeQuestionStep", title:tdsThreeTimeStepTitle, answer: tdsThreeTimeAnswerFormat)
-        steps += [tdsThreeTimeStep]
-        
-        let tdsThreeDrinkingFrequencyStepTitle = "How oftern did you drink when you are in that situation?"
-        let tdsThreeDrinkingFrequencyTextChoices = [
-            ORKTextChoice(text: "Always", value: 0),
-            ORKTextChoice(text: "Almost always", value: 1),
-            ORKTextChoice(text: "Frequently", value: 2),
-            ORKTextChoice(text: "Sometimes", value: 3)
-        ]
-        
-        let tdsThreeDrinkingFrequencyAnswerFormat: ORKTextChoiceAnswerFormat = ORKTextAnswerFormat.choiceAnswerFormatWithStyle(.SingleChoice, textChoices: tdsThreeDrinkingFrequencyTextChoices)
-        let tdsThreeDrinkingFrequencyStep = ORKQuestionStep(identifier: "tdsThreeDrinkingFrequencyQuestionStep", title:tdsThreeDrinkingFrequencyStepTitle, answer: tdsThreeDrinkingFrequencyAnswerFormat)
-        steps += [tdsThreeDrinkingFrequencyStep]
-        
-        let baselineSummaryStep = ORKCompletionStep(identifier: "BaselineSummaryStep")
-        baselineSummaryStep.title = "Thank you"
-        baselineSummaryStep.text = "We appreciate your time."
-        
-        steps += [baselineSummaryStep]
-        
-        let orderedTask = ORKOrderedTask(identifier: "BaselineTDSSurvey", steps: steps)
-        let taskViewController = ORKTaskViewController(task: orderedTask, taskRunUUID: NSUUID(UUIDString: baselineSurveyuuid))
+    @IBAction func baselineAlcoholSurveyButtonTapped(sender: UIButton) {
+        let taskViewController = ORKTaskViewController(task: BaselineAlcoholSurvey, taskRunUUID: NSUUID(UUIDString: baselineAlcoholSurveyuuid))
         taskViewController.delegate = self
         presentViewController(taskViewController, animated: true, completion: nil)
         
     }
     
+    @IBAction func baselineSVSurveyButtonTapped(sender: UIButton) {
+    let taskViewController = ORKTaskViewController(task: BaselineSVSurvey, taskRunUUID: NSUUID(UUIDString: baselineSVSurveyuuid))
+    taskViewController.delegate = self
+    presentViewController(taskViewController, animated: true, completion: nil)
+    
+    }
+
 
     func setUpAppearance() {
         let customizedColor = UIColor(red: 59.0/255.0, green: 147.0/255.0, blue: 144.0/255.0, alpha: 1.0)
-        self.baselineSurveyButton.backgroundColor = UIColor.clearColor()
-        self.baselineSurveyButton.layer.cornerRadius = 5
-        self.baselineSurveyButton.layer.borderWidth = 1
-        self.baselineSurveyButton.layer.borderColor =
+        self.baselineAlcoholSurveyButton.backgroundColor = UIColor.clearColor()
+        self.baselineAlcoholSurveyButton.layer.cornerRadius = 5
+        self.baselineAlcoholSurveyButton.layer.borderWidth = 1
+        self.baselineAlcoholSurveyButton.layer.borderColor =
             customizedColor.CGColor
+        
+        self.baselineSVSurveyButton.backgroundColor = UIColor.clearColor()
+        self.baselineSVSurveyButton.layer.cornerRadius = 5
+        self.baselineSVSurveyButton.layer.borderWidth = 1
+        self.baselineSVSurveyButton.layer.borderColor =
+            customizedColor.CGColor
+
         
         self.baselineReactionTaskButton.backgroundColor = UIColor.clearColor()
         self.baselineReactionTaskButton.layer.cornerRadius = 5
@@ -186,13 +131,6 @@ class BaselineSurveyViewController: UIViewController {
             
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setUpAppearance()
-
-        // Do any additional setup after loading the view.
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -207,18 +145,15 @@ class BaselineSurveyViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
-}
-
-extension BaselineSurveyViewController: ORKTaskViewControllerDelegate {
     func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
         switch reason {
         case .Completed:
-            if taskViewController.taskRunUUID == NSUUID(UUIDString: baselineSurveyuuid) {
+            if taskViewController.taskRunUUID == NSUUID(UUIDString: baselineAlcoholSurveyuuid) {
                 dismissViewControllerAnimated(true, completion: nil)
-                self.baselineSurveyButton.enabled = false
-                self.baselineReactionTaskButton.enabled = true
-//                self.baselineTappingTaskButton.enabled = true
+                self.baselineAlcoholSurveyButton.enabled = false
+                self.baselineSVSurveyButton.enabled = true
+                //                self.baselineReactionTaskButton.enabled = true
+                //                self.baselineTappingTaskButton.enabled = true
             } else if taskViewController.taskRunUUID == NSUUID(UUIDString: baselineReactionTaskuuid) {
                 dismissViewControllerAnimated(true, completion: nil)
                 self.baselineReactionTaskButton.enabled = false
@@ -234,9 +169,13 @@ extension BaselineSurveyViewController: ORKTaskViewControllerDelegate {
             dismissViewControllerAnimated(true, completion: nil)
         }
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setUpAppearance()
+        // Do any additional setup after loading the view.
+    }
 }
-
-
 
 
 

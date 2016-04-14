@@ -18,4 +18,8 @@ extension ORKInstructionStepViewController {
     func updateNavRightBarButtonItem() {
         self.navigationItem.rightBarButtonItem = nil
     }
+    
+    public override func hasNextStep() -> Bool {
+        return false
+    }
 }
