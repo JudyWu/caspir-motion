@@ -32,7 +32,7 @@ import ResearchKit
 
 var OnboardingTask : ORKTask {
     var steps = [ORKStep]()
-    
+
     ///// Substance type question
     let substanceTypeOptionOne = NSLocalizedString("Alcohol", comment: "")
     let substanceTypeOptionTwo = NSLocalizedString("Smoke/Vape", comment: "")
@@ -139,15 +139,17 @@ var OnboardingTask : ORKTask {
     ]
     steps += [eligibilityStepThree]
     
-    let ineligibleStep = IneligibleStep(identifier: String(OnboardingIdentifiers.IneligibleStep))
+//    let ineligibleStep = IneligibleStep(identifier: String(OnboardingIdentifiers.IneligibleStep))
+    let ineligibleStep = ORKInstructionStep(identifier: String(OnboardingIdentifiers.IneligibleStep))
     steps += [ineligibleStep]
+    
     
     let eligibleStep = ORKInstructionStep(identifier: String(OnboardingIdentifiers.EligibleStep))
     eligibleStep.title = "You are eligible"
     eligibleStep.text = "Please complete the following consent form"
     
     steps += [eligibleStep]
-    
+    ////fsdjflsdjflksdslsklfsdfjdslkf
     var resultSelector = ORKResultSelector(resultIdentifier: String(OnboardingIdentifiers.SubstanceTypeStep))
     //
     let predicateSubstanceAlcohol = ORKResultPredicate.predicateForChoiceQuestionResultWithResultSelector(resultSelector, expectedAnswerValue: "Alcohol")
@@ -240,50 +242,30 @@ var OnboardingTask : ORKTask {
     
     let predicateEligibilityBothRule = ORKPredicateStepNavigationRule(resultPredicates: [predicateEligibleThree], destinationStepIdentifiers: [String(OnboardingIdentifiers.EligibleStep)], defaultStepIdentifier: String(OnboardingIdentifiers.IneligibleStep), validateArrays: true)
     
+    //// Consent Step
+    let consentStep = ConsentStep(identifier: String(OnboardingIdentifiers.VisualConsentStep))
     
-    // Add end direct rules to skip unneeded steps
-    //    let directRule = ORKDirectStepNavigationRule(destinationStepIdentifier: ORKNullStepIdentifier)
-    
-    // Add consent process
-    let consentDocument = ConsentDocument()
-    let consentStep = ORKVisualConsentStep(identifier: String(OnboardingIdentifiers.VisualConsentStep), document: consentDocument)
     steps += [consentStep]
+    //// Code Step
+    let codeTitle = NSLocalizedString("Please enter your unique code", comment: "")
+    let codeAnswerFormat = ORKTextAnswerFormat(maximumLength: 10)
+    codeAnswerFormat.multipleLines = false
+    let codeStep = ORKQuestionStep(identifier: String(OnboardingIdentifiers.RegistrationStep), title: codeTitle, text: "The code you copied from the webpage the step before.", answer: codeAnswerFormat)
+    codeStep.optional = false
     
-    let signature = consentDocument.signatures!.first!
-    let reviewConsentStep = ORKConsentReviewStep(identifier: String(OnboardingIdentifiers.ConsentReviewStep), signature: signature, inDocument: consentDocument)
-    reviewConsentStep.text = "Review the consent form."
-    reviewConsentStep.reasonForConsent = "Consent to join the CASPIR Alcohol/Marijuana Abuse Research Study."
-    steps += [reviewConsentStep]
+    steps += [codeStep]
+    //// Wrong Code Step
+    let wrongCodeStep = IneligibleStep(identifier: String(OnboardingIdentifiers.WrongCodeStep))
+    wrongCodeStep.title = "Sorry, you have entered the wrong code."
+    wrongCodeStep.text = "Either go back to previous step for reenty or exit here."
+    
+    steps += [wrongCodeStep]
+    
+    resultSelector = ORKResultSelector(resultIdentifier: String(OnboardingIdentifiers.RegistrationStep))
     //
-    //    // Add registration step
-    let registrationTitle = NSLocalizedString("Registration", comment: "")
-    let passcodeValidationRegex = "^(?=.*\\d).{4,8}$"
-    let passcodeInvalidMessage = NSLocalizedString("A valid password must be 4 and 8 digits long and include at least one numeric character.", comment: "")
-    //        let registrationOptions: ORKRegistrationStepOption = [.IncludeGivenName, .IncludeFamilyName, .IncludeGender, .IncludeDOB]
-    let registrationStep = ORKRegistrationStep(identifier: String(OnboardingIdentifiers.RegistrationStep), title: registrationTitle, text: "hahah", passcodeValidationRegex: passcodeValidationRegex, passcodeInvalidMessage: passcodeInvalidMessage, options: ORKRegistrationStepOption.Default)
+    let predicateCode = ORKResultPredicate.predicateForTextQuestionResultWithResultSelector(resultSelector, expectedString: "jaoshinu17")
     
-    steps += [registrationStep]
-    //
-    let waitTitle = NSLocalizedString("Creating account", comment: "")
-    let waitText = NSLocalizedString("Please wait while we upload your data", comment: "")
-    let waitStep = ORKWaitStep(identifier: String(OnboardingIdentifiers.RegistrationWaitStep))
-    waitStep.title = waitTitle
-    waitStep.text = waitText
-    
-    steps += [waitStep]
-    //    //A verification step view controller
-    class VerificationViewController : ORKVerificationStepViewController {
-        override func resendEmailButtonTapped() {
-            let alertTitle = NSLocalizedString("Verification Email has been resent", comment: "")
-            let alertMessage = NSLocalizedString("", comment: "")
-            let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-    }
-    
-    let verificationStep = ORKVerificationStep(identifier: String(OnboardingIdentifiers.VerificationStep), text: "hkdhs", verificationViewControllerClass: VerificationViewController.self)
-    steps += [verificationStep]
+    let predicateCodeRule = ORKPredicateStepNavigationRule(resultPredicates: [predicateCode], destinationStepIdentifiers: [String(OnboardingIdentifiers.HealthStep)], defaultStepIdentifier: String(OnboardingIdentifiers.WrongCodeStep), validateArrays: true)
     
     // Add authorizationt to HealthKit
     let healthDataStep = HealthDataStep(identifier: String(OnboardingIdentifiers.HealthStep))
@@ -307,9 +289,11 @@ var OnboardingTask : ORKTask {
     onboardingTask.setNavigationRule(predicateEligibilityAlcoholRule, forTriggerStepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepOne))
     onboardingTask.setNavigationRule(predicateEligibilitySVRule, forTriggerStepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepTwo))
     onboardingTask.setNavigationRule(predicateEligibilityBothRule, forTriggerStepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepThree))
+    onboardingTask.setNavigationRule(predicateCodeRule, forTriggerStepIdentifier: String(OnboardingIdentifiers.RegistrationStep))
     
+    let directRule = ORKDirectStepNavigationRule(destinationStepIdentifier: ORKNullStepIdentifier)
     
-    //    onboardingTask.setNavigationRule(directRule, forTriggerStepIdentifier: String(OnboardingIdentifiers.IneligibleStep))
+    onboardingTask.setNavigationRule(directRule, forTriggerStepIdentifier: String(OnboardingIdentifiers.IneligibleStep))
     
     return onboardingTask
 }
@@ -904,7 +888,7 @@ var DailyAlcoholSurvey : ORKTask {
     
     steps += [DSAlcoholDrinkFilterStep]
     
-    let DSAlcoholNoDrinkStep = IneligibleStep(identifier: String(DailySurveyIdentifiers.DSAlcoholNoDrinkStep))
+    let DSAlcoholNoDrinkStep = ORKCompletionStep(identifier: String(DailySurveyIdentifiers.DSAlcoholNoDrinkStep))
     DSAlcoholNoDrinkStep.title = "You have done a great job! Continue the hard work~"
     
     steps += [DSAlcoholNoDrinkStep]
@@ -1097,6 +1081,9 @@ var DailyAlcoholSurvey : ORKTask {
     let DSAlcoholTask = ORKNavigableOrderedTask(identifier: String(DailySurveyIdentifiers.DSAlcoholSurvey), steps: steps)
     
     DSAlcoholTask.setNavigationRule(DSAlcoholPredicateRule, forTriggerStepIdentifier: String(DailySurveyIdentifiers.DSAlcoholDrinkFilterStep))
+    let directRule = ORKDirectStepNavigationRule(destinationStepIdentifier: ORKNullStepIdentifier)
+    
+    DSAlcoholTask.setNavigationRule(directRule, forTriggerStepIdentifier: String(DailySurveyIdentifiers.DSAlcoholNoDrinkStep))
     
     return DSAlcoholTask
     
@@ -1119,7 +1106,7 @@ var DailySVSurvey: ORKTask {
     
     steps += [DSSVFilterStep]
     
-    let DSSVNoStep = IneligibleStep(identifier: String(DailySurveyIdentifiers.DSSVNoStep))
+    let DSSVNoStep = ORKCompletionStep(identifier: String(DailySurveyIdentifiers.DSSVNoStep))
     DSSVNoStep.title = "You have done a great job! Continue the hard work~"
     
     steps += [DSSVNoStep]
@@ -1246,6 +1233,9 @@ var DailySVSurvey: ORKTask {
     let DSSVTask = ORKNavigableOrderedTask(identifier: String(DailySurveyIdentifiers.DSSVSurvey), steps: steps)
     
     DSSVTask.setNavigationRule(DSSVPredicateRule, forTriggerStepIdentifier: String(DailySurveyIdentifiers.DSSVFilterStep))
+    let directRule = ORKDirectStepNavigationRule(destinationStepIdentifier: ORKNullStepIdentifier)
+    
+    DSSVTask.setNavigationRule(directRule, forTriggerStepIdentifier: String(DailySurveyIdentifiers.DSSVNoStep))
     
     return DSSVTask
 }

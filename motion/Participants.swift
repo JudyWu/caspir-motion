@@ -10,11 +10,10 @@ import Foundation
 import RealmSwift
 
 class Participants: Object {
+    dynamic var lastName = ""
+    dynamic var firstName = ""
     
-// Specify properties to ignore (Realm won't persist these)
     
-//  override static func ignoredProperties() -> [String] {
-//    return []
-//  }
+
     
 }

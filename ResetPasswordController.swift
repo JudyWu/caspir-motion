@@ -40,7 +40,6 @@ class ResetPasswordController: UITableViewController, UITextFieldDelegate {
         }
     }
     
-    
     func setUpAppearance() {
         let customizedColor = UIColor(red: 59.0/255.0, green: 147.0/255.0, blue: 144.0/255.0, alpha: 1.0)
         self.emailTextField.textColor = UIColor.blackColor()

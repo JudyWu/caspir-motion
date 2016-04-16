@@ -8,18 +8,21 @@
 
 import ResearchKit
 
-class IneligibleViewController: ORKInstructionStepViewController {
-    override func goForward() {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
+class IneligibleViewController: ORKInstructionStepViewController{
+//    override func viewDidLoad()
+//    {
+//        super.viewDidLoad()
+//    }
+//    override func goForward() {
+//        
+//        self.dismissViewControllerAnimated(true, completion: nil)
+//    }
+//    func updateNavRightBarButtonItem() {
+//        self.navigationItem.rightBarButtonItem = nil
+//    }
+//    override func hasNextStep() -> Bool {
+//        return false
+//    }
+//
 }
 
-extension ORKInstructionStepViewController {
-    func updateNavRightBarButtonItem() {
-        self.navigationItem.rightBarButtonItem = nil
-    }
-    
-    public override func hasNextStep() -> Bool {
-        return false
-    }
-}

@@ -36,19 +36,19 @@ class EventTaskViewController: UIViewController, ORKTaskViewControllerDelegate {
         let intendedUseDescription = "Finger tapping is a universal way to communicate."
         
         if randomNumber == 0 {
-            let goNoGoTask = ORKOrderedTask.toneAudiometryTaskWithIdentifier("EventGoNoGoTask", intendedUseDescription: intendedUseDescription, speechInstruction: nil, shortSpeechInstruction: nil, toneDuration: 20, options: [])
+            let goNoGoTask = ORKOrderedTask.toneAudiometryTaskWithIdentifier(String(TaskIdentifiers.EventGoNoGoTask), intendedUseDescription: intendedUseDescription, speechInstruction: nil, shortSpeechInstruction: nil, toneDuration: 20, options: [])
             let goNoGoTaskViewController = ORKTaskViewController(task: goNoGoTask, taskRunUUID: NSUUID(UUIDString: eventGoNoGoTaskuuid))
             goNoGoTaskViewController.delegate = self
             presentViewController(goNoGoTaskViewController, animated: true, completion: nil)
         } else if randomNumber == 1 {
-            let tappingTask = ORKOrderedTask.twoFingerTappingIntervalTaskWithIdentifier("EventTappingIntervalTask", intendedUseDescription: intendedUseDescription, duration: 10, options: ORKPredefinedTaskOption.None)
+            let tappingTask = ORKOrderedTask.twoFingerTappingIntervalTaskWithIdentifier(String(TaskIdentifiers.EventTappingTask), intendedUseDescription: intendedUseDescription, duration: 10, options: ORKPredefinedTaskOption.None)
             
             let tappingTaskViewController = ORKTaskViewController(task: tappingTask, taskRunUUID: NSUUID(UUIDString: eventTappingTaskuuid))
             tappingTaskViewController.delegate = self
             
             presentViewController(tappingTaskViewController, animated: true, completion: nil)
         } else if randomNumber == 2 {
-            let reactionTask = ORKOrderedTask.shortWalkTaskWithIdentifier("EventReactionTask", intendedUseDescription: intendedUseDescription, numberOfStepsPerLeg: 20, restDuration: 20, options: [])
+            let reactionTask = ORKOrderedTask.shortWalkTaskWithIdentifier(String(TaskIdentifiers.EventReactionTask), intendedUseDescription: intendedUseDescription, numberOfStepsPerLeg: 20, restDuration: 20, options: [])
             let reactionTaskViewController = ORKTaskViewController(task: reactionTask, taskRunUUID: NSUUID(UUIDString: eventReactionTaskuuid))
             reactionTaskViewController.delegate = self
             presentViewController(reactionTaskViewController, animated: true, completion: nil)

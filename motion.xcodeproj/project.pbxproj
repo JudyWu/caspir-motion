@@ -42,7 +42,6 @@
 		C26E47961C25B8E500D6EA47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C26E47951C25B8E500D6EA47 /* Assets.xcassets */; };
 		C26E47A41C25B8E500D6EA47 /* motionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26E47A31C25B8E500D6EA47 /* motionTests.swift */; };
 		C26E48191C25DB3A00D6EA47 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C26E48181C25DB3A00D6EA47 /* LaunchScreen.xib */; };
-		C27384911CBEB5FF004A743C /* Participants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27384901CBEB5FF004A743C /* Participants.swift */; };
 		C2BD5FDA1CBE9198002EDAD0 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2BD5FD91CBE9198002EDAD0 /* Realm.framework */; };
 		C2BD5FDE1CBE91A0002EDAD0 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2BD5FDD1CBE91A0002EDAD0 /* RealmSwift.framework */; };
 		C2BD5FDF1CBE91C7002EDAD0 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2BD5FDD1CBE91A0002EDAD0 /* RealmSwift.framework */; };
@@ -50,6 +49,15 @@
 		C2BD5FE11CBE91C7002EDAD0 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2BD5FD91CBE9198002EDAD0 /* Realm.framework */; };
 		C2BD5FE21CBE91C7002EDAD0 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2BD5FD91CBE9198002EDAD0 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C2D9834C1CB82491003C8B22 /* ResearchKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C24D64AB1CB802D600EDC11B /* ResearchKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C2FB38CC1CBFD8800061913F /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FB38CB1CBFD8800061913F /* Participant.swift */; };
+		C2FB38CE1CBFD9F30061913F /* Survey.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FB38CD1CBFD9F30061913F /* Survey.swift */; };
+		C2FB38D11CBFE0230061913F /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FB38D01CBFE0230061913F /* Task.swift */; };
+		C2FB38D31CBFE02F0061913F /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FB38D21CBFE02F0061913F /* Feedback.swift */; };
+		C2FB38D51CBFE4370061913F /* ConsentForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FB38D41CBFE4370061913F /* ConsentForm.swift */; };
+		C2FB38D91CC010000061913F /* ConsentStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FB38D81CC010000061913F /* ConsentStepViewController.swift */; };
+		C2FB38DB1CC0110B0061913F /* ConsentStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FB38DA1CC0110B0061913F /* ConsentStep.swift */; };
+		C2FB38DD1CC0792D0061913F /* BaselineTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FB38DC1CC0792D0061913F /* BaselineTableViewController.swift */; };
+		C2FB38DF1CC07C9F0061913F /* BaselineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FB38DE1CC07C9F0061913F /* BaselineTableViewCell.swift */; };
 		C2FDBFE41CBC10CB0000DD73 /* MorningTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FDBFE31CBC10CB0000DD73 /* MorningTaskViewController.swift */; };
 		C2FDBFE61CBC13880000DD73 /* EventTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FDBFE51CBC13880000DD73 /* EventTaskViewController.swift */; };
 /* End PBXBuildFile section */
@@ -153,9 +161,17 @@
 		C26E47A51C25B8E500D6EA47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C26E47AA1C25B8E500D6EA47 /* motionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = motionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C26E48181C25DB3A00D6EA47 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
-		C27384901CBEB5FF004A743C /* Participants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Participants.swift; sourceTree = "<group>"; };
 		C2BD5FD91CBE9198002EDAD0 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		C2BD5FDD1CBE91A0002EDAD0 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
+		C2FB38CB1CBFD8800061913F /* Participant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Participant.swift; sourceTree = "<group>"; };
+		C2FB38CD1CBFD9F30061913F /* Survey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Survey.swift; sourceTree = "<group>"; };
+		C2FB38D01CBFE0230061913F /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		C2FB38D21CBFE02F0061913F /* Feedback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
+		C2FB38D41CBFE4370061913F /* ConsentForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsentForm.swift; sourceTree = "<group>"; };
+		C2FB38D81CC010000061913F /* ConsentStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsentStepViewController.swift; sourceTree = "<group>"; };
+		C2FB38DA1CC0110B0061913F /* ConsentStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsentStep.swift; sourceTree = "<group>"; };
+		C2FB38DC1CC0792D0061913F /* BaselineTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaselineTableViewController.swift; sourceTree = "<group>"; };
+		C2FB38DE1CC07C9F0061913F /* BaselineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaselineTableViewCell.swift; sourceTree = "<group>"; };
 		C2FDBFE31CBC10CB0000DD73 /* MorningTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MorningTaskViewController.swift; path = ../MorningTaskViewController.swift; sourceTree = "<group>"; };
 		C2FDBFE51CBC13880000DD73 /* EventTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTaskViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -207,7 +223,6 @@
 			children = (
 				C20764581C7643AF00956A3D /* ActivityViewController.swift */,
 				C210B4861C9C800400EB2522 /* CASActivityViewController.swift */,
-				C27384901CBEB5FF004A743C /* Participants.swift */,
 				C2FDBFE31CBC10CB0000DD73 /* MorningTaskViewController.swift */,
 				C2FDBFE51CBC13880000DD73 /* EventTaskViewController.swift */,
 				C21B5D741CA05805005020C0 /* CASMorningSurveyViewController.swift */,
@@ -305,6 +320,7 @@
 				C20764721C76454700956A3D /* HKHealthStore+Queries.swift */,
 				C207645A1C7643BB00956A3D /* StudyTasks.swift */,
 				C2387EF61CA996B300CC7BD1 /* CASConstants.swift */,
+				C2FB38CF1CBFDA9C0061913F /* Models */,
 				C20865751C860F69000F90C8 /* Main.storyboard */,
 				C26E47951C25B8E500D6EA47 /* Assets.xcassets */,
 				C26E479A1C25B8E500D6EA47 /* Info.plist */,
@@ -337,14 +353,31 @@
 			isa = PBXGroup;
 			children = (
 				C26C5A0E1C8B604B009FECB3 /* IneligibleViewController.swift */,
+				C2FB38D81CC010000061913F /* ConsentStepViewController.swift */,
 				C20D450A1C87653D002290AA /* ResetPasswordController.swift */,
 				C207644A1C76422200956A3D /* OnboardingViewController.swift */,
+				C2FB38DE1CC07C9F0061913F /* BaselineTableViewCell.swift */,
 				C2021A6E1CA19DB500292F86 /* BaselineSurveyViewController.swift */,
+				C2FB38DC1CC0792D0061913F /* BaselineTableViewController.swift */,
 				C26C5A0C1C8B5FDB009FECB3 /* IneligibleStep.swift */,
+				C2FB38DA1CC0110B0061913F /* ConsentStep.swift */,
 				C207644C1C76424D00956A3D /* IntroductionViewController.swift */,
 				C20F9CE11C7B61A10045AA48 /* motion-Bridging-Header.h */,
 			);
 			name = Onboarding;
+			sourceTree = "<group>";
+		};
+		C2FB38CF1CBFDA9C0061913F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C2FB38CB1CBFD8800061913F /* Participant.swift */,
+				C2FB38D41CBFE4370061913F /* ConsentForm.swift */,
+				C2FB38D01CBFE0230061913F /* Task.swift */,
+				C2FB38D21CBFE02F0061913F /* Feedback.swift */,
+				C2FB38CD1CBFD9F30061913F /* Survey.swift */,
+			);
+			name = Models;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		C2FF1E821C6BAC3800D61DCC /* Frameworks */ = {
@@ -545,15 +578,20 @@
 			files = (
 				C207644B1C76422200956A3D /* OnboardingViewController.swift in Sources */,
 				C207645B1C7643BB00956A3D /* StudyTasks.swift in Sources */,
+				C2FB38DD1CC0792D0061913F /* BaselineTableViewController.swift in Sources */,
 				C20D450B1C87653D002290AA /* ResetPasswordController.swift in Sources */,
 				C20764601C7643E700956A3D /* ProfileHeaderView.swift in Sources */,
 				C20764541C76431100956A3D /* DiscreteGraphDataSource.swift in Sources */,
 				C20764611C7643E700956A3D /* ProfileStaticTableViewCell.swift in Sources */,
+				C2FB38CE1CBFD9F30061913F /* Survey.swift in Sources */,
 				C20764731C76454700956A3D /* HKHealthStore+Queries.swift in Sources */,
 				C20764431C76404500956A3D /* ResearchContainerViewController.swift in Sources */,
 				C20F9CEE1C7B75C00045AA48 /* AppDelegate.swift in Sources */,
 				C21B5D751CA05805005020C0 /* CASMorningSurveyViewController.swift in Sources */,
 				C207646F1C76451F00956A3D /* HealthClientType.swift in Sources */,
+				C2FB38D31CBFE02F0061913F /* Feedback.swift in Sources */,
+				C2FB38CC1CBFD8800061913F /* Participant.swift in Sources */,
+				C2FB38DB1CC0110B0061913F /* ConsentStep.swift in Sources */,
 				C2FDBFE61CBC13880000DD73 /* EventTaskViewController.swift in Sources */,
 				C26C5A0D1C8B5FDB009FECB3 /* IneligibleStep.swift in Sources */,
 				C207646D1C76450800956A3D /* ConsentDocument.swift in Sources */,
@@ -564,6 +602,7 @@
 				C20764621C7643E700956A3D /* ProfileViewController.swift in Sources */,
 				C20764651C76441A00956A3D /* WithdrawViewController.swift in Sources */,
 				C20764501C7642A000956A3D /* DashboardTableViewController.swift in Sources */,
+				C2FB38D91CC010000061913F /* ConsentStepViewController.swift in Sources */,
 				C207646A1C76449500956A3D /* HealthDataStep.swift in Sources */,
 				C20F9CF41C7B88CB0045AA48 /* FeedbackViewController.swift in Sources */,
 				C26C5A0F1C8B604B009FECB3 /* IneligibleViewController.swift in Sources */,
@@ -573,8 +612,10 @@
 				C2FDBFE41CBC10CB0000DD73 /* MorningTaskViewController.swift in Sources */,
 				C20764591C7643AF00956A3D /* ActivityViewController.swift in Sources */,
 				C20764521C7642FC00956A3D /* PieChartDataSource.swift in Sources */,
+				C2FB38DF1CC07C9F0061913F /* BaselineTableViewCell.swift in Sources */,
+				C2FB38D11CBFE0230061913F /* Task.swift in Sources */,
+				C2FB38D51CBFE4370061913F /* ConsentForm.swift in Sources */,
 				C20764471C76412600956A3D /* ResearchContrainerSegue.swift in Sources */,
-				C27384911CBEB5FF004A743C /* Participants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

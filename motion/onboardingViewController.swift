@@ -114,6 +114,9 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
         } else if step is IneligibleStep {
             let ineligibleStepViewController = IneligibleViewController(step: step)
             return ineligibleStepViewController
+        } else if step is ConsentStep {
+            let consentStepViewController = ConsentStepViewController(step: step)
+            return consentStepViewController
         }
         return nil
     }
@@ -125,11 +128,17 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                     performSegueWithIdentifier("unwindToStudy", sender: nil)
 
                 } else if taskViewController.taskRunUUID == NSUUID(UUIDString: onBoardinguuid) {
-                    performSegueWithIdentifier("unwindToBaseline", sender: nil)
+                    if taskViewController.result.stepResultForStepIdentifier("IneligibleStep") != nil {
+                        dismissViewControllerAnimated(true, completion: nil)
+                        print("\(taskViewController.result)")
+                    } else {
+                        performSegueWithIdentifier("unwindToBaseline", sender: nil)
+                    }
+                    
+                    
+//                    taskResultFinishedCompletionHandler?(taskViewController.result)
                 }
-                
-                taskResultFinishedCompletionHandler?(taskViewController.result)
-                print("\(taskViewController.result)")
+            
 
             
             case .Discarded, .Failed, .Saved:

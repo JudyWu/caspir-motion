@@ -33,7 +33,26 @@ enum DailySurveyIdentifiers {
     case DSSVReasonStep
     case DSSVIntentionStep
     case DSSVPlanStep
+}
 
+enum TaskIdentifiers {
+    //// Daily
+    case DailyTappingTask
+    case DailyReactionTask
+    case DailyGoNoGoTask
+    case DailyBalloonTask
+    
+    //// Baseline
+    case BaselineTappingTask
+    case BaselineReactionTask
+    case BaselineGoNoGoTask
+    case BaselineBalloonTask
+    
+    //// Event 
+    case EventTappingTask
+    case EventReactionTask
+    case EventGoNoGoTask
+    case EventBalloonTask 
 }
 
 enum BaselineSurveyIdentifiers {
@@ -130,8 +149,9 @@ enum OnboardingIdentifiers  {
     
     case VisualConsentStep
     case RegistrationStep
-    case RegistrationWaitStep
-    case VerificationStep
+//    case RegistrationWaitStep
+//    case VerificationStep
+    case WrongCodeStep
     case HealthStep
     case ConsentReviewStep
     case PasscodeStep

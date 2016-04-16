@@ -113,7 +113,7 @@ class BaselineSurveyViewController: UIViewController, ORKTaskViewControllerDeleg
     @IBAction func tappingTaskButtonTapped(sender: UIButton) {
         
         let intendedUseDescription = "Finger tapping is a universal way to communicate."
-            
+        
         let tappingTask = ORKOrderedTask.twoFingerTappingIntervalTaskWithIdentifier("BaselineTappingIntervalTask", intendedUseDescription: intendedUseDescription, duration: 10, options: ORKPredefinedTaskOption.None)
         
         let tappingTaskViewController = ORKTaskViewController(task: tappingTask, taskRunUUID: NSUUID(UUIDString: baselineTappingTaskuuid))
