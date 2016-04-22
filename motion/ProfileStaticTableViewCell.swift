@@ -34,8 +34,11 @@ class ProfileStaticTableViewCell: UITableViewCell {
     // MARK: Properties
     
     static let reuseIdentifier = "ProfileStaticTableViewCell"
-    
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var valueLabel: UILabel!
+  
+    @IBOutlet weak var infoTitle: UILabel!
+    @IBOutlet weak var infoImage: UIImageView!
+    @IBOutlet weak var infoDescription: UILabel!
+//    @IBOutlet weak var titleLabel: UILabel!
+//    @IBOutlet weak var valueLabel: UILabel!
 
 }

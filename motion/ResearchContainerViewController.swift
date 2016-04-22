@@ -31,10 +31,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import UIKit
 import ResearchKit
 
+var currentParticipant: Participant?
+var onboarding: ConsentForm?
+var participantID: String?
+var drugType: String?
+var passcode: String?
+var startDate: NSDate?
+
 class ResearchContainerViewController: UIViewController, HealthClientType {
     // MARK: HealthClientType
     
     var healthStore: HKHealthStore?
+    
     
     // MARK: Propertues
     

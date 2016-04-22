@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import Foundation
 import CoreData
 import ResearchKit
+import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -40,8 +42,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         lockApp()
+//        _ = NSTimer(timeInterval: 10, target: FeedbackViewController.self, selector: Selector(testFunction()), userInfo: nil, repeats: true)
+//        NSRunLoop.currentRunLoop().addTimer(feedbackTimer, forMode: NSRunLoopCommonModes)
         return true
     }
+    
+//    func testFunction() {
+//        print("djkfjsldjflksdjfkslf")
+//    }
     
     func applicationWillResignActive(application: UIApplication) {
         if ORKPasscodeViewController.isPasscodeStoredInKeychain() {

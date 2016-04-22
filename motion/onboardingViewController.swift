@@ -30,54 +30,27 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import UIKit
 import ResearchKit
+import RealmSwift
 
-class OnboardingViewController: UIViewController{
-   
-    let logInuuid = NSUUID().UUIDString
-    let onBoardinguuid = NSUUID().UUIDString
-    
+let realm = try! Realm()
+
+class OnboardingViewController: UIViewController {
     /// For Storage check
     var taskResultFinishedCompletionHandler: (ORKResult -> Void)?
     
     @IBOutlet weak var joinButton: UIButton!
     
     @IBAction func logInButtonTapped(sender: UIButton) {
-        class LoginViewController : ORKLoginStepViewController {
-            //The resetPassword Controller pops out
-            override func forgotPasswordButtonTapped() {
-                let resetPassword = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("resetYourPassword")
-                var navigationController = UINavigationController(rootViewController: resetPassword)
-                self.presentViewController(navigationController, animated: true, completion: nil)
-            }
-        }
-        // Create a tack for login process
-        let loginTitle = NSLocalizedString("Login", comment: "")
-        let loginText = "Please enter your email address and password when you registered with this app."
-        let loginStep = ORKLoginStep(identifier: "LoginStep", title: loginTitle, text: loginText, loginViewControllerClass: LoginViewController.self)
-        
-        let waitTitle = NSLocalizedString("Logging in", comment: "")
-        let waitText = NSLocalizedString("Please wait while we validate your credentials", comment: "")
-        let waitStep = ORKWaitStep(identifier: "LoginWaitStep")
-        waitStep.title = waitTitle
-        waitStep.text = waitText
-        
-        let logInTask = ORKOrderedTask(identifier: "LogIn", steps: [loginStep, waitStep])
-        
-        let taskViewController = ORKTaskViewController(task: logInTask, taskRunUUID: NSUUID(UUIDString: logInuuid))
-        
+        let taskViewController = ORKTaskViewController(task: loginTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.LogInTask.taskRunUUID))
         taskViewController.delegate = self
-        
-        taskViewController.outputDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-        
         presentViewController(taskViewController, animated: true, completion: nil)
-
     }
     
     
     // For join button
     
     @IBAction func joinButtonTapped(sender: UIButton) {
-        let taskViewController = ORKTaskViewController(task: OnboardingTask, taskRunUUID: NSUUID(UUIDString: onBoardinguuid))
+        let taskViewController = ORKTaskViewController(task: onboardingTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.OnboardingTask.taskRunUUID))
         taskViewController.delegate = self
         presentViewController(taskViewController, animated: true, completion: nil)
         
@@ -104,16 +77,29 @@ class OnboardingViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpAppearance()
+        
     }
+    
+    func randomStringWithLength() -> NSString {
+        let letters : NSString = "0123456789"
+        
+        let randomString : NSMutableString = NSMutableString(capacity: 7)
+        
+        for (var i=0; i < 7; i++){
+            let length = UInt32 (letters.length)
+            let rand = arc4random_uniform(length)
+            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
+        }
+        
+        return randomString
+    }
+
 }
 extension OnboardingViewController : ORKTaskViewControllerDelegate {
     func taskViewController(taskViewController: ORKTaskViewController, viewControllerForStep step: ORKStep) -> ORKStepViewController? {
         if step is HealthDataStep {
             let healthStepViewController = HealthDataStepViewController(step: step)
             return healthStepViewController
-        } else if step is IneligibleStep {
-            let ineligibleStepViewController = IneligibleViewController(step: step)
-            return ineligibleStepViewController
         } else if step is ConsentStep {
             let consentStepViewController = ConsentStepViewController(step: step)
             return consentStepViewController
@@ -124,47 +110,67 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
     func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
         switch reason {
             case .Completed:
-                if taskViewController.taskRunUUID == NSUUID(UUIDString: logInuuid)   {
+                if taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.LogInTask.taskRunUUID)   {
+                    passcode = taskViewController.result.stepResultForStepIdentifier("SubstanceTypeStep")?.resultForIdentifier("SubstanceTypeStep")?.valueForKey("answer")?.firstObject as? String
+                    
                     performSegueWithIdentifier("unwindToStudy", sender: nil)
 
-                } else if taskViewController.taskRunUUID == NSUUID(UUIDString: onBoardinguuid) {
-                    if taskViewController.result.stepResultForStepIdentifier("IneligibleStep") != nil {
+                } else if taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.OnboardingTask.taskRunUUID) {
+                    if taskViewController.result.stepResultForStepIdentifier(String(OnboardingIdentifiers.WrongCodeStep)) != nil || taskViewController.result.stepResultForStepIdentifier(String(OnboardingIdentifiers.IneligibleStep)) != nil {
                         dismissViewControllerAnimated(true, completion: nil)
-                        print("\(taskViewController.result)")
                     } else {
                         performSegueWithIdentifier("unwindToBaseline", sender: nil)
+                        taskResultFinishedCompletionHandler?(taskViewController.result)
+                        
+                        //// Get the passcode and drugType properties from onboarding task
+                        passcode = taskViewController.result.stepResultForStepIdentifier("SubstanceTypeStep")?.resultForIdentifier("SubstanceTypeStep")?.valueForKey("answer")?.firstObject as? String
+                        drugType = taskViewController.result.stepResultForStepIdentifier("SubstanceTypeStep")?.resultForIdentifier("SubstanceTypeStep")?.valueForKey("answer")?.firstObject as? String
+                        
+                        onboarding = ConsentForm()
+                        
+                        //// Create the participant
+                        
+                        participantID = randomStringWithLength() as? String
+                        startDate = NSDate() as? NSDate
+                        
+                        /// Create participant when participant completes
+                        currentParticipant = Participant()
+                        currentParticipant!.ID = participantID!
+                        currentParticipant!.drugType = drugType!
+                        currentParticipant!.creationDate = startDate!
+                        
+                        onboarding?.owner = currentParticipant
+                        
+                        try! realm.write {
+                            realm.add(onboarding!)
+                            realm.add(currentParticipant!)
+                        }
+                        
                     }
-                    
-                    
-//                    taskResultFinishedCompletionHandler?(taskViewController.result)
                 }
-            
-
-            
             case .Discarded, .Failed, .Saved:
                 dismissViewControllerAnimated(true, completion: nil)
         }
     }
-
+    
+    
     func taskViewController(taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
-        if stepViewController is IneligibleViewController {
-            func goForward() {
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
-        } else if stepViewController.step?.identifier == "RegistrationWaitStep" || stepViewController.step?.identifier == "LoginWaitStep" {
+       if stepViewController.step?.identifier == String(OtherTasksIdentifiers.WaitStep) {
             delay(3.0, closure: { () -> () in
                 if let stepViewController = stepViewController as? ORKWaitStepViewController {
-                    stepViewController.goForward()
+                    let loginPasscode : String = taskViewController.result.stepResultForStepIdentifier("LogInStep")?.resultForIdentifier("LogInItem")?.valueForKey("answer") as! String
+                    if (realm.objects(Participant).filter("ID = '\(loginPasscode)'").first != nil) {
+                        stepViewController.goForward()
+                    } else {
+                        stepViewController.goBackward()
+                        
+                    }
                 }
             })
-        } else if stepViewController is ORKVerificationStepViewController {
-            delay(1.0, closure: { () -> () in
-//                if let stepViewController = stepViewController as? ORKVerificationStepViewController {
-                stepViewController.goForward()
-//                }
-                
-            })
         }
-        
     }
 }
+
+
+//                        let feedbackTimer = NSTimer(timeInterval: 10, target: FeedbackViewController(), selector: #selector(FeedbackViewController.updateThirtyDayFeedback), userInfo: nil, repeats: true)
+//                        NSRunLoop.currentRunLoop().addTimer(feedbackTimer, forMode: NSRunLoopCommonModes)

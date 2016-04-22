@@ -17,11 +17,13 @@ class Participant: Object {
     dynamic var email = ""
     dynamic var password = ""
     dynamic var creationDate = NSDate(timeIntervalSince1970: 1)
+    dynamic var drugType = ""
+    dynamic var consentForm : ConsentForm?
+    
     
     //// Relationship
     let surveys = List<Survey>()
     let tasks = List<Task>()
     let feedbacks = List<Feedback>()
-    dynamic var consentForm : ConsentForm?
-    
+//    let consentForm = List<ConsentForm>()
 }

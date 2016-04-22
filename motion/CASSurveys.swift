@@ -30,7 +30,7 @@
 //
 import ResearchKit
 
-var OnboardingTask : ORKTask {
+var onboardingTask : ORKTask {
     var steps = [ORKStep]()
 
     ///// Substance type question
@@ -74,11 +74,11 @@ var OnboardingTask : ORKTask {
     let drinkAnswerFormat = ORKNumericAnswerFormat(style: ORKNumericAnswerStyle.Integer, unit: "Drinks", minimum: 0, maximum: 15)
     
     let formQuestion1 = "DURING THE PAST MONTH, on how many days did you have any beverage containing alcohol (including beer, wine, liquor, etc.)?"
-    let formQuestion2 = "On days when you did drink alcohol DURING THE PAST MONTH, how many drinks did you usually have? Click here for what is considered one drink."
-    let formQuestion3 = "DURING THE PAST MONTH, on how many days did you have five (5) or more alcoholic drinks?"
+    let formQuestion2 = "On days when you did drink alcohol DURING THE PAST MONTH, how many drinks did you usually have?"
+    let formQuestion3 = "DURING THE PAST MONTH, on how many days did you have four (4) or more alcoholic drinks?"
     let formQuestion4 = "DURING THE PAST MONTH, on how many days did you have any substance containing any marijuana or cannabis substance (e.g. THC vape, edible)?"
     let formQuestion5 = "Do you have withdrawal symptoms like shaking, sweating, and/or hallucinations when you stop drinking or using for AT LEAST 24 HOURS?"
-    let formQuestion6 = "Will you be able to do survey everyday?"
+//    let formQuestion6 = "Will you be able to do survey everyday?"
     let formQuestion7 = "Are you comfortable doing tasks on the phone?"
     let formQuestion8 = "Are you comfortable getting reminders 1-2 times a day for the next 30 days. It will say, 'Please complete the IS survey. Thanks.'"
     
@@ -97,8 +97,8 @@ var OnboardingTask : ORKTask {
     let eligibilityQuestion5 = ORKFormItem(identifier: String(OnboardingIdentifiers.EligibilityFormQuestion5), text: formQuestion5 , answerFormat: textAnswerFormat)
     eligibilityQuestion5.optional = false
     
-    let eligibilityQuestion6 = ORKFormItem(identifier: String(OnboardingIdentifiers.EligibilityFormQuestion6), text: formQuestion6, answerFormat: textAnswerFormat)
-    eligibilityQuestion6.optional = false
+//    let eligibilityQuestion6 = ORKFormItem(identifier: String(OnboardingIdentifiers.EligibilityFormQuestion6), text: formQuestion6, answerFormat: textAnswerFormat)
+//    eligibilityQuestion6.optional = false
     
     let eligibilityQuestion7 = ORKFormItem(identifier: String(OnboardingIdentifiers.EligibilityFormQuestion7), text: formQuestion7, answerFormat: textAnswerFormat)
     eligibilityQuestion7.optional = false
@@ -112,7 +112,7 @@ var OnboardingTask : ORKTask {
         eligibilityQuestion2,
         eligibilityQuestion3,
         eligibilityQuestion5,
-        eligibilityQuestion6,
+//        eligibilityQuestion6,
         eligibilityQuestion7,
         eligibilityQuestion8
     ]
@@ -121,7 +121,7 @@ var OnboardingTask : ORKTask {
     //
     eligibilityStepTwo.formItems = [
         eligibilityQuestion4,
-        eligibilityQuestion6,
+//        eligibilityQuestion6,
         eligibilityQuestion7,
         eligibilityQuestion8
     ]
@@ -133,7 +133,7 @@ var OnboardingTask : ORKTask {
         eligibilityQuestion3,
         eligibilityQuestion4,
         eligibilityQuestion5,
-        eligibilityQuestion6,
+//        eligibilityQuestion6,
         eligibilityQuestion7,
         eligibilityQuestion8
     ]
@@ -141,12 +141,13 @@ var OnboardingTask : ORKTask {
     
 //    let ineligibleStep = IneligibleStep(identifier: String(OnboardingIdentifiers.IneligibleStep))
     let ineligibleStep = ORKInstructionStep(identifier: String(OnboardingIdentifiers.IneligibleStep))
+    ineligibleStep.title = "Sorry, you are ineligible"
+    ineligibleStep.detailText = "If you would like to get more information, please visit caspir.org or email us at caspir@northwell.edu to find more help."
     steps += [ineligibleStep]
-    
-    
+
     let eligibleStep = ORKInstructionStep(identifier: String(OnboardingIdentifiers.EligibleStep))
     eligibleStep.title = "You are eligible"
-    eligibleStep.text = "Please complete the following consent form"
+    eligibleStep.text = "Please complete the following consent form on the web."
     
     steps += [eligibleStep]
     ////fsdjflsdjflksdslsklfsdfjdslkf
@@ -176,7 +177,7 @@ var OnboardingTask : ORKTask {
     
     resultSelector = ORKResultSelector(stepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepOne), resultIdentifier: String(OnboardingIdentifiers.EligibilityFormQuestion5))
     
-    let predicateOneItem05 = ORKResultPredicate.predicateForChoiceQuestionResultWithResultSelector(resultSelector, expectedAnswerValue: "Yes")
+    let predicateOneItem05 = ORKResultPredicate.predicateForChoiceQuestionResultWithResultSelector(resultSelector, expectedAnswerValue: "No")
     
     resultSelector = ORKResultSelector(stepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepOne), resultIdentifier: String(OnboardingIdentifiers.EligibilityFormQuestion6))
     let predicateOneItem06 = ORKResultPredicate.predicateForChoiceQuestionResultWithResultSelector(resultSelector, expectedAnswerValue: "Yes")
@@ -255,7 +256,7 @@ var OnboardingTask : ORKTask {
     
     steps += [codeStep]
     //// Wrong Code Step
-    let wrongCodeStep = IneligibleStep(identifier: String(OnboardingIdentifiers.WrongCodeStep))
+    let wrongCodeStep = ORKInstructionStep(identifier: String(OnboardingIdentifiers.WrongCodeStep))
     wrongCodeStep.title = "Sorry, you have entered the wrong code."
     wrongCodeStep.text = "Either go back to previous step for reenty or exit here."
     
@@ -294,11 +295,12 @@ var OnboardingTask : ORKTask {
     let directRule = ORKDirectStepNavigationRule(destinationStepIdentifier: ORKNullStepIdentifier)
     
     onboardingTask.setNavigationRule(directRule, forTriggerStepIdentifier: String(OnboardingIdentifiers.IneligibleStep))
+    onboardingTask.setNavigationRule(directRule, forTriggerStepIdentifier: String(OnboardingIdentifiers.WrongCodeStep))
     
     return onboardingTask
 }
 
-var BaselineAlcoholSurvey : ORKTask {
+var baselineAlcoholSurvey : ORKTask {
     var steps = [ORKStep]()
     
     ///// BS Alcohol question 1
@@ -307,13 +309,15 @@ var BaselineAlcoholSurvey : ORKTask {
     let BSAlcoholSituationOptionThree = NSLocalizedString("Party", comment: "")
     let BSAlcoholSituationOptionFour = NSLocalizedString("Work", comment: "")
     let BSAlcoholSituationOptionFive = NSLocalizedString("Friends' Home", comment: "")
+    let BSAlcoholSituationOptionSix = NSLocalizedString("Other", comment: "")
     
     let BSAlcoholSituationTextOptions = [
-        ORKTextChoice(text: BSAlcoholSituationOptionOne, value: ""),
-        ORKTextChoice(text: BSAlcoholSituationOptionTwo, value: ""),
-        ORKTextChoice(text: BSAlcoholSituationOptionThree, value: ""),
-        ORKTextChoice(text: BSAlcoholSituationOptionFour, value: ""),
-        ORKTextChoice(text: BSAlcoholSituationOptionFive, value: "")
+        ORKTextChoice(text: BSAlcoholSituationOptionOne, value: 1),
+        ORKTextChoice(text: BSAlcoholSituationOptionTwo, value: 3),
+        ORKTextChoice(text: BSAlcoholSituationOptionThree, value: 7),
+        ORKTextChoice(text: BSAlcoholSituationOptionFour, value: 4),
+        ORKTextChoice(text: BSAlcoholSituationOptionFive, value: 2),
+        ORKTextChoice(text: BSAlcoholSituationOptionSix, value: 99)
     ]
     
     let BSAlcoholSituationTitle = NSLocalizedString("Please check the situations where you tend drink most often", comment: "")
@@ -331,11 +335,11 @@ var BaselineAlcoholSurvey : ORKTask {
     let BSAlcoholConditionOptionFive = NSLocalizedString("Co-workers", comment: "")
     
     let BSAlcoholConditionTextOptions = [
-        ORKTextChoice(text: BSAlcoholConditionOptionOne, value: ""),
-        ORKTextChoice(text: BSAlcoholConditionOptionTwo, value: ""),
-        ORKTextChoice(text: BSAlcoholConditionOptionThree, value: ""),
-        ORKTextChoice(text: BSAlcoholConditionOptionFour, value: ""),
-        ORKTextChoice(text: BSAlcoholConditionOptionFive, value: "")
+        ORKTextChoice(text: BSAlcoholConditionOptionOne, value: 1),
+        ORKTextChoice(text: BSAlcoholConditionOptionTwo, value: 2),
+        ORKTextChoice(text: BSAlcoholConditionOptionThree, value: 3),
+        ORKTextChoice(text: BSAlcoholConditionOptionFour, value: 7),
+        ORKTextChoice(text: BSAlcoholConditionOptionFive, value: 4)
         
     ]
     
@@ -365,14 +369,14 @@ var BaselineAlcoholSurvey : ORKTask {
     
     
     let BSAlcoholDayTextOptions = [
-        ORKTextChoice(text: BSAlcoholDayOptionOne, value: ""),
-        ORKTextChoice(text: BSAlcoholDayOptionTwo, value: ""),
-        ORKTextChoice(text: BSAlcoholDayOptionThree, value: ""),
-        ORKTextChoice(text: BSAlcoholDayOptionFour, value: ""),
-        ORKTextChoice(text: BSAlcoholDayOptionFive, value: ""),
-        ORKTextChoice(text: BSAlcoholDayOptionSix, value: ""),
-        ORKTextChoice(text: BSAlcoholDayOptionSeven, value: ""),
-        ORKTextChoice(text: BSAlcoholDayOptionEight, value: "")
+        ORKTextChoice(text: BSAlcoholDayOptionOne, value: 6),
+        ORKTextChoice(text: BSAlcoholDayOptionTwo, value: 7),
+        ORKTextChoice(text: BSAlcoholDayOptionThree, value: 1),
+        ORKTextChoice(text: BSAlcoholDayOptionFour, value: 2),
+        ORKTextChoice(text: BSAlcoholDayOptionFive, value: 3),
+        ORKTextChoice(text: BSAlcoholDayOptionSix, value: 4),
+        ORKTextChoice(text: BSAlcoholDayOptionSeven, value: 5),
+        ORKTextChoice(text: BSAlcoholDayOptionEight, value: 8)
     ]
     
     let BSAlcoholDayTitle = NSLocalizedString("What days do you usually drink the most (if everyday, check all)?", comment: "")
@@ -394,13 +398,13 @@ var BaselineAlcoholSurvey : ORKTask {
     
     
     let BSAlcoholTriggerSituationTextOptions = [
-        ORKTextChoice(text: BSAlcoholTriggerSituationOptionOne, value: ""),
-        ORKTextChoice(text: BSAlcoholTriggerSituationOptionTwo, value: ""),
-        ORKTextChoice(text: BSAlcoholTriggerSituationOptionThree, value: ""),
-        ORKTextChoice(text: BSAlcoholTriggerSituationOptionFour, value: ""),
-        ORKTextChoice(text: BSAlcoholTriggerSituationOptionFive, value: ""),
-        ORKTextChoice(text: BSAlcoholTriggerSituationOptionSix, value: ""),
-        ORKTextChoice(text: BSAlcoholTriggerSituationOptionSeven, value: "")
+        ORKTextChoice(text: BSAlcoholTriggerSituationOptionOne, value: 1),
+        ORKTextChoice(text: BSAlcoholTriggerSituationOptionTwo, value: 2),
+        ORKTextChoice(text: BSAlcoholTriggerSituationOptionThree, value: 3),
+        ORKTextChoice(text: BSAlcoholTriggerSituationOptionFour, value: 4),
+        ORKTextChoice(text: BSAlcoholTriggerSituationOptionFive, value: 5),
+        ORKTextChoice(text: BSAlcoholTriggerSituationOptionSix, value: 6),
+        ORKTextChoice(text: BSAlcoholTriggerSituationOptionSeven, value: 7)
     ]
     
     let BSAlcoholTriggerSituationTitle = NSLocalizedString("Please check up to two situations that usually trigger your to drink most heavily.", comment: "")
@@ -423,19 +427,21 @@ var BaselineAlcoholSurvey : ORKTask {
     let BSAlcoholTriggerFeelingOptionEight = NSLocalizedString("I like the taste", comment: "")
     let BSAlcoholTriggerFeelingOptionNine = NSLocalizedString("It is a habit and I just do it without thinking", comment: "")
     let BSAlcoholTriggerFeelingOptionTen = NSLocalizedString("I like the whole experience/story associated with drinking", comment: "")
+    let BSAlcoholTriggerFeelingOptionEleven = NSLocalizedString("Someone asks me to  a have a drink", comment: "")
     
     
     let BSAlcoholTriggerFeelingTextOptions = [
-        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionOne, value: ""),
-        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionTwo, value: ""),
-        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionThree, value: ""),
-        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionFour, value: ""),
-        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionFive, value: ""),
-        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionSix, value: ""),
-        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionSeven, value: ""),
-        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionEight, value: ""),
-        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionNine, value: ""),
-        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionTen, value: "")
+        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionOne, value: 1),
+        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionTwo, value: 2),
+        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionThree, value: 3),
+        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionFour, value: 4),
+        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionFive, value: 5),
+        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionSix, value: 6),
+        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionSeven, value: 7),
+        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionEight, value: 8),
+        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionNine, value: 9),
+        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionTen, value: 10),
+        ORKTextChoice(text: BSAlcoholTriggerFeelingOptionEleven, value: 11)
     ]
     
     let BSAlcoholTriggerFeelingTitle = NSLocalizedString("Please check up to three feelings that usually trigger you to drink most heavily.", comment: "")
@@ -452,9 +458,9 @@ var BaselineAlcoholSurvey : ORKTask {
     let BSAlcoholTypeOptionThree = NSLocalizedString("Liquor", comment: "")
     
     let BSAlcoholTypeTextOptions = [
-        ORKTextChoice(text: BSAlcoholTypeOptionOne, value: ""),
-        ORKTextChoice(text: BSAlcoholTypeOptionTwo, value: ""),
-        ORKTextChoice(text: BSAlcoholTypeOptionThree, value: "")
+        ORKTextChoice(text: BSAlcoholTypeOptionOne, value: 1),
+        ORKTextChoice(text: BSAlcoholTypeOptionTwo, value: 2),
+        ORKTextChoice(text: BSAlcoholTypeOptionThree, value: 3)
     ]
     let BSAlcoholTypeTitle = NSLocalizedString("Over the past 3 months what is your primary type of alcohol intake?", comment: "")
     
@@ -471,10 +477,10 @@ var BaselineAlcoholSurvey : ORKTask {
     let BSAlcoholSymptomOptionFour = NSLocalizedString("I would feel very anxious and irritated and have difficulty managing", comment: "")
     
     let BSAlcoholSymptomTextOptions = [
-        ORKTextChoice(text: BSAlcoholSymptomOptionOne, value: ""),
-        ORKTextChoice(text: BSAlcoholSymptomOptionTwo, value: ""),
-        ORKTextChoice(text: BSAlcoholSymptomOptionThree, value: ""),
-        ORKTextChoice(text: BSAlcoholSymptomOptionFour, value: "")
+        ORKTextChoice(text: BSAlcoholSymptomOptionOne, value: 1),
+        ORKTextChoice(text: BSAlcoholSymptomOptionTwo, value: 2),
+        ORKTextChoice(text: BSAlcoholSymptomOptionThree, value: 3),
+        ORKTextChoice(text: BSAlcoholSymptomOptionFour, value: 4)
     ]
     let BSAlcoholSymptomTitle = NSLocalizedString("If you were prevented from drinking when you usually drink for a few days, how anxious or irritated would you feel?", comment: "")
     
@@ -500,17 +506,19 @@ var BaselineAlcoholSurvey : ORKTask {
     steps += [BSAlcoholImportanceStep]
     
     //// BS Alcohol completion step when question 10 is less than 2
-    let BSAlcoholCompletionStepOne = ORKCompletionStep(identifier: String(BaselineSurveyIdentifiers.BSAlcoholCompletionStepOne))
-    BSAlcoholCompletionStepOne.detailText = NSLocalizedString("Thank you for completing the Baseline Alcohol survey", comment: "")
-    
-    steps += [BSAlcoholCompletionStepOne]
+//    let BSAlcoholCompletionStepOne = ORKCompletionStep(identifier: String(BaselineSurveyIdentifiers.BSAlcoholCompletionStepOne))
+//    BSAlcoholCompletionStepOne.detailText = NSLocalizedString("Thank you for completing the Baseline Alcohol survey", comment: "")
+//    
+//    steps += [BSAlcoholCompletionStepOne]
     
     ///// Condition for question 10
     let BSAlcoholImportanceResultSelector = ORKResultSelector(resultIdentifier: String(BaselineSurveyIdentifiers.BSAlcoholImportanceStep))
     
     let BSAlcoholImportancePredicate = ORKResultPredicate.predicateForScaleQuestionResultWithResultSelector(BSAlcoholImportanceResultSelector, minimumExpectedAnswerValue: 2.0)
     
-    let predicateRule = ORKPredicateStepNavigationRule(resultPredicatesAndDestinationStepIdentifiers: [ (BSAlcoholImportancePredicate, String(BaselineSurveyIdentifiers.BSAlcoholConfidenceStep))])
+    let predicateRule = ORKPredicateStepNavigationRule(resultPredicates: [BSAlcoholImportancePredicate], destinationStepIdentifiers: [String(BaselineSurveyIdentifiers.BSAlcoholConfidenceStep)], defaultStepIdentifier: String(BaselineSurveyIdentifiers.BSAlcoholCompletionStep), validateArrays: true)
+    
+//    let predicateRule = ORKPredicateStepNavigationRule(resultPredicatesAndDestinationStepIdentifiers: [ (BSAlcoholImportancePredicate, String(BaselineSurveyIdentifiers.BSAlcoholConfidenceStep))])
     
     let directRule = ORKDirectStepNavigationRule(destinationStepIdentifier: ORKNullStepIdentifier)
     
@@ -547,21 +555,21 @@ var BaselineAlcoholSurvey : ORKTask {
     steps += [BSAlcoholPlanStep]
     //// BS alcohol completion step when question 10 is bigger than 2
     
-    let BSAlcoholCompletionStepTwo = ORKCompletionStep(identifier: String(BaselineSurveyIdentifiers.BSAlcoholCompletionStepTwo))
-    BSAlcoholCompletionStepTwo.detailText = NSLocalizedString("Thank you for completing the Baseline Alcohol survey", comment: "")
+    let BSAlcoholCompletionStep = ORKCompletionStep(identifier: String(BaselineSurveyIdentifiers.BSAlcoholCompletionStep))
+    BSAlcoholCompletionStep.detailText = NSLocalizedString("Thank you for completing the Baseline Alcohol survey", comment: "")
     
-    steps += [BSAlcoholCompletionStepTwo]
+    steps += [BSAlcoholCompletionStep]
     
     
     let BSAlcoholSurvey = ORKNavigableOrderedTask(identifier: String(BaselineSurveyIdentifiers.BSAlcoholSurvey), steps: steps)
     
     BSAlcoholSurvey.setNavigationRule(predicateRule, forTriggerStepIdentifier: String(BaselineSurveyIdentifiers.BSAlcoholImportanceStep))
     
-    BSAlcoholSurvey.setNavigationRule(directRule, forTriggerStepIdentifier: String(BaselineSurveyIdentifiers.BSAlcoholCompletionStepOne))
+    BSAlcoholSurvey.setNavigationRule(directRule, forTriggerStepIdentifier: String(BaselineSurveyIdentifiers.BSAlcoholCompletionStep))
     
     return BSAlcoholSurvey
 }
-var BaselineSVSurvey : ORKTask {
+var baselineSVSurvey : ORKTask {
     var steps = [ORKStep]()
     
     /// Baselince SV question 1
@@ -584,23 +592,23 @@ var BaselineSVSurvey : ORKTask {
     let optionSeventeen = NSLocalizedString("15+", comment: "")
     
     let BSSVFrequencyOptions = [
-        ORKTextChoice(text: optionOne, value: ""),
-        ORKTextChoice(text: optionTwo, value: ""),
-        ORKTextChoice(text: optionThree, value: ""),
-        ORKTextChoice(text: optionFour, value: ""),
-        ORKTextChoice(text: optionFive, value: ""),
-        ORKTextChoice(text: optionSix, value: ""),
-        ORKTextChoice(text: optionSeven, value: ""),
-        ORKTextChoice(text: optionEight, value: ""),
-        ORKTextChoice(text: optionNine, value: ""),
-        ORKTextChoice(text: optionTen, value: ""),
-        ORKTextChoice(text: optionEleven, value: ""),
-        ORKTextChoice(text: optionTwelve, value: ""),
-        ORKTextChoice(text: optionThirteen, value: ""),
-        ORKTextChoice(text: optionFourteen, value: ""),
-        ORKTextChoice(text: optionFifteen, value: ""),
-        ORKTextChoice(text: optionSixteen, value: ""),
-        ORKTextChoice(text: optionSeventeen, value: "")
+        ORKTextChoice(text: optionOne, value: 0),
+        ORKTextChoice(text: optionTwo, value: 1),
+        ORKTextChoice(text: optionThree, value: 2),
+        ORKTextChoice(text: optionFour, value: 3),
+        ORKTextChoice(text: optionFive, value: 4),
+        ORKTextChoice(text: optionSix, value: 5),
+        ORKTextChoice(text: optionSeven, value: 6),
+        ORKTextChoice(text: optionEight, value: 7),
+        ORKTextChoice(text: optionNine, value: 8),
+        ORKTextChoice(text: optionTen, value: 9),
+        ORKTextChoice(text: optionEleven, value: 10),
+        ORKTextChoice(text: optionTwelve, value: 11),
+        ORKTextChoice(text: optionThirteen, value: 12),
+        ORKTextChoice(text: optionFourteen, value: 13),
+        ORKTextChoice(text: optionFifteen, value: 14),
+        ORKTextChoice(text: optionSixteen, value: 15),
+        ORKTextChoice(text: optionSeventeen, value: 16)
     ]
     
     let BSSVFrequencyAnswerFormat = ORKAnswerFormat.valuePickerAnswerFormatWithTextChoices(BSSVFrequencyOptions)
@@ -617,13 +625,16 @@ var BaselineSVSurvey : ORKTask {
     let BSSVSituationOptionThree = NSLocalizedString("Party", comment: "")
     let BSSVSituationOptionFour = NSLocalizedString("Work", comment: "")
     let BSSVSituationOptionFive = NSLocalizedString("Friends' Home", comment: "")
+    let BSSVSituationOptionSix = NSLocalizedString("Other", comment: "")
+
     
     let BSSVSituationTextOptions = [
-        ORKTextChoice(text: BSSVSituationOptionOne, value: ""),
-        ORKTextChoice(text: BSSVSituationOptionTwo, value: ""),
-        ORKTextChoice(text: BSSVSituationOptionThree, value: ""),
-        ORKTextChoice(text: BSSVSituationOptionFour, value: ""),
-        ORKTextChoice(text: BSSVSituationOptionFive, value: "")
+        ORKTextChoice(text: BSSVSituationOptionOne, value: 1),
+        ORKTextChoice(text: BSSVSituationOptionTwo, value: 3),
+        ORKTextChoice(text: BSSVSituationOptionThree, value: 7),
+        ORKTextChoice(text: BSSVSituationOptionFour, value: 4),
+        ORKTextChoice(text: BSSVSituationOptionFive, value: 2),
+        ORKTextChoice(text: BSSVSituationOptionSix, value: 99)
     ]
     
     let BSSVSituationTitle = NSLocalizedString("Please check the situations where you tend to smoke/vape most often", comment: "")
@@ -641,11 +652,11 @@ var BaselineSVSurvey : ORKTask {
     let BSSVConditionOptionFive = NSLocalizedString("Co-workers", comment: "")
     
     let BSSVConditionTextOptions = [
-        ORKTextChoice(text: BSSVConditionOptionOne, value: ""),
-        ORKTextChoice(text: BSSVConditionOptionTwo, value: ""),
-        ORKTextChoice(text: BSSVConditionOptionThree, value: ""),
-        ORKTextChoice(text: BSSVConditionOptionFour, value: ""),
-        ORKTextChoice(text: BSSVConditionOptionFive, value: "")
+        ORKTextChoice(text: BSSVConditionOptionOne, value: 1),
+        ORKTextChoice(text: BSSVConditionOptionTwo, value: 2),
+        ORKTextChoice(text: BSSVConditionOptionThree, value: 3),
+        ORKTextChoice(text: BSSVConditionOptionFour, value: 7),
+        ORKTextChoice(text: BSSVConditionOptionFive, value: 4)
         
     ]
     
@@ -675,14 +686,14 @@ var BaselineSVSurvey : ORKTask {
     
     
     let BSSVDayTextOptions = [
-        ORKTextChoice(text: BSSVDayOptionOne, value: ""),
-        ORKTextChoice(text: BSSVDayOptionTwo, value: ""),
-        ORKTextChoice(text: BSSVDayOptionThree, value: ""),
-        ORKTextChoice(text: BSSVDayOptionFour, value: ""),
-        ORKTextChoice(text: BSSVDayOptionFive, value: ""),
-        ORKTextChoice(text: BSSVDayOptionSix, value: ""),
-        ORKTextChoice(text: BSSVDayOptionSeven, value: ""),
-        ORKTextChoice(text: BSSVDayOptionEight, value: "")
+        ORKTextChoice(text: BSSVDayOptionOne, value: 6),
+        ORKTextChoice(text: BSSVDayOptionTwo, value: 7),
+        ORKTextChoice(text: BSSVDayOptionThree, value: 1),
+        ORKTextChoice(text: BSSVDayOptionFour, value: 2),
+        ORKTextChoice(text: BSSVDayOptionFive, value:3),
+        ORKTextChoice(text: BSSVDayOptionSix, value: 4),
+        ORKTextChoice(text: BSSVDayOptionSeven, value: 5),
+        ORKTextChoice(text: BSSVDayOptionEight, value: 8)
     ]
     
     let BSSVDayTitle = NSLocalizedString("What days do you usually smoke/vape the most (if everyday, check all)?", comment: "")
@@ -698,19 +709,19 @@ var BaselineSVSurvey : ORKTask {
     let BSSVTriggerSituationOptionTwo = NSLocalizedString("You are with a group of friends who smoke/vape", comment: "")
     let BSSVTriggerSituationOptionThree = NSLocalizedString("At an event or celebration", comment: "")
     let BSSVTriggerSituationOptionFour = NSLocalizedString("Alone in the house", comment: "")
-    let BSSVTriggerSituationOptionFive = NSLocalizedString("Have a transition (e.g., train home)", comment: "")
+//    let BSSVTriggerSituationOptionFive = NSLocalizedString("Have a transition (e.g., train home)", comment: "")
     let BSSVTriggerSituationOptionSix = NSLocalizedString("Doing something where you usually smoke/vape (e.g., cooking, watching game)", comment: "")
-    let BSSVTriggerSituationOptionSeven = NSLocalizedString("Just have cigarette in the house", comment: "")
+    let BSSVTriggerSituationOptionSeven = NSLocalizedString("Just have it in the house", comment: "")
     
     
     let BSSVTriggerSituationTextOptions = [
-        ORKTextChoice(text: BSSVTriggerSituationOptionOne, value: ""),
-        ORKTextChoice(text: BSSVTriggerSituationOptionTwo, value: ""),
-        ORKTextChoice(text: BSSVTriggerSituationOptionThree, value: ""),
-        ORKTextChoice(text: BSSVTriggerSituationOptionFour, value: ""),
-        ORKTextChoice(text: BSSVTriggerSituationOptionFive, value: ""),
-        ORKTextChoice(text: BSSVTriggerSituationOptionSix, value: ""),
-        ORKTextChoice(text: BSSVTriggerSituationOptionSeven, value: "")
+        ORKTextChoice(text: BSSVTriggerSituationOptionOne, value: 1),
+        ORKTextChoice(text: BSSVTriggerSituationOptionTwo, value: 2),
+        ORKTextChoice(text: BSSVTriggerSituationOptionThree, value: 3),
+        ORKTextChoice(text: BSSVTriggerSituationOptionFour, value: 4),
+//        ORKTextChoice(text: BSSVTriggerSituationOptionFive, value: ""),
+        ORKTextChoice(text: BSSVTriggerSituationOptionSix, value: 6),
+        ORKTextChoice(text: BSSVTriggerSituationOptionSeven, value: 6)
     ]
     
     let BSSVTriggerSituationTitle = NSLocalizedString("Please check up to two situations that usually trigger your to smoke/vape.", comment: "")
@@ -723,7 +734,7 @@ var BaselineSVSurvey : ORKTask {
     
     //// Baseline SV question 7
     let BSSVTriggerFeelingOptionOne = NSLocalizedString("To celebrate, party and have a good time", comment: "")
-    let BSSVTriggerFeelingOptionTwo = NSLocalizedString("To more be social, and talkative and friendly with others", comment: "")
+    let BSSVTriggerFeelingOptionTwo = NSLocalizedString(" To more be friendly with others", comment: "")
     let BSSVTriggerFeelingOptionThree = NSLocalizedString("To feel less anxious or stressed", comment: "")
     let BSSVTriggerFeelingOptionFour = NSLocalizedString("To unwind or relax after a long day", comment: "")
     let BSSVTriggerFeelingOptionFive = NSLocalizedString("To feel less bored", comment: "")
@@ -732,19 +743,25 @@ var BaselineSVSurvey : ORKTask {
     let BSSVTriggerFeelingOptionEight = NSLocalizedString("I like the taste", comment: "")
     let BSSVTriggerFeelingOptionNine = NSLocalizedString("It is a habit and I just do it without thinking", comment: "")
     let BSSVTriggerFeelingOptionTen = NSLocalizedString("I like the whole experience/story associated with smoking/vaping", comment: "")
-    
+    let BSSVTriggerFeelingOptionEleven = NSLocalizedString("Someone offered it to me", comment: "")
+    let BSSVTriggerFeelingOptionTwelve = NSLocalizedString("To get through the day", comment: "")
+    let BSSVTriggerFeelingOptionThirteen = NSLocalizedString("I wanted to just feel high", comment: "")
     
     let BSSVTriggerFeelingTextOptions = [
-        ORKTextChoice(text: BSSVTriggerFeelingOptionOne, value: ""),
-        ORKTextChoice(text: BSSVTriggerFeelingOptionTwo, value: ""),
-        ORKTextChoice(text: BSSVTriggerFeelingOptionThree, value: ""),
-        ORKTextChoice(text: BSSVTriggerFeelingOptionFour, value: ""),
-        ORKTextChoice(text: BSSVTriggerFeelingOptionFive, value: ""),
-        ORKTextChoice(text: BSSVTriggerFeelingOptionSix, value: ""),
-        ORKTextChoice(text: BSSVTriggerFeelingOptionSeven, value: ""),
-        ORKTextChoice(text: BSSVTriggerFeelingOptionEight, value: ""),
-        ORKTextChoice(text: BSSVTriggerFeelingOptionNine, value: ""),
-        ORKTextChoice(text: BSSVTriggerFeelingOptionTen, value: "")
+        ORKTextChoice(text: BSSVTriggerFeelingOptionOne, value: 1),
+        ORKTextChoice(text: BSSVTriggerFeelingOptionTwo, value: 2),
+        ORKTextChoice(text: BSSVTriggerFeelingOptionThree, value: 3),
+        ORKTextChoice(text: BSSVTriggerFeelingOptionFour, value: 4),
+        ORKTextChoice(text: BSSVTriggerFeelingOptionFive, value: 5),
+        ORKTextChoice(text: BSSVTriggerFeelingOptionSix, value: 6),
+        ORKTextChoice(text: BSSVTriggerFeelingOptionSeven, value: 7),
+        ORKTextChoice(text: BSSVTriggerFeelingOptionEight, value: 8),
+        ORKTextChoice(text: BSSVTriggerFeelingOptionNine, value: 9),
+        ORKTextChoice(text: BSSVTriggerFeelingOptionTen, value: 10),
+        ORKTextChoice(text: BSSVTriggerFeelingOptionEleven, value: 11),
+        ORKTextChoice(text: BSSVTriggerFeelingOptionTwelve, value: 12),
+        ORKTextChoice(text: BSSVTriggerFeelingOptionThirteen, value: 13)
+        
     ]
     
     let BSSVTriggerFeelingTitle = NSLocalizedString("Please check up to three feelings that usually trigger you to smoke/vape.", comment: "")
@@ -761,9 +778,9 @@ var BaselineSVSurvey : ORKTask {
     let BSSVTypeOptionThree = NSLocalizedString("Chew/eat", comment: "")
     
     let BSSVTypeTextOptions = [
-        ORKTextChoice(text: BSSVTypeOptionOne, value: ""),
-        ORKTextChoice(text: BSSVTypeOptionTwo, value: ""),
-        ORKTextChoice(text: BSSVTypeOptionThree, value: "")
+        ORKTextChoice(text: BSSVTypeOptionOne, value: 1),
+        ORKTextChoice(text: BSSVTypeOptionTwo, value: 2),
+        ORKTextChoice(text: BSSVTypeOptionThree, value: 3)
     ]
     let BSSVTypeTitle = NSLocalizedString("Over the past 3 months what is your primary type of smoke/vape?", comment: "")
     
@@ -780,10 +797,10 @@ var BaselineSVSurvey : ORKTask {
     let BSSVSymptomOptionFour = NSLocalizedString("I would feel very anxious and irritated and have difficulty managing", comment: "")
     
     let BSSVSymptomTextOptions = [
-        ORKTextChoice(text: BSSVSymptomOptionOne, value: ""),
-        ORKTextChoice(text: BSSVSymptomOptionTwo, value: ""),
-        ORKTextChoice(text: BSSVSymptomOptionThree, value: ""),
-        ORKTextChoice(text: BSSVSymptomOptionFour, value: "")
+        ORKTextChoice(text: BSSVSymptomOptionOne, value: 1),
+        ORKTextChoice(text: BSSVSymptomOptionTwo, value: 2),
+        ORKTextChoice(text: BSSVSymptomOptionThree, value: 3),
+        ORKTextChoice(text: BSSVSymptomOptionFour, value: 4)
     ]
     let BSSVSymptomTitle = NSLocalizedString("If you were prevented from smoking/vaping when you usually drink for a few days, how anxious or irritated would you feel?", comment: "")
     
@@ -842,8 +859,8 @@ var BaselineSVSurvey : ORKTask {
     let BSSVPlanOptionTwo = NSLocalizedString("No", comment: "")
     
     let BSSVPlanTextOptions = [
-        ORKTextChoice(text: BSSVPlanOptionOne, value: ""),
-        ORKTextChoice(text: BSSVPlanOptionTwo, value: "")
+        ORKTextChoice(text: BSSVPlanOptionOne, value: "Yes"),
+        ORKTextChoice(text: BSSVPlanOptionTwo, value: "No")
     ]
     
     let BSSVPlanTitle = NSLocalizedString("Do you have a specific plan to reduce your smoking/vaping (e.g., avoid certain situations, change routines)?", comment: "")
@@ -870,7 +887,7 @@ var BaselineSVSurvey : ORKTask {
     return BSSVSurvey
 }
 
-var DailyAlcoholSurvey : ORKTask {
+var dailyAlcoholSurvey : ORKTask {
     var steps = [ORKStep]()
     /// Daily alcohol whether or not question
     let DSAlcoholDrinkFilterOptionOne = NSLocalizedString("Yes", comment: "")
@@ -916,22 +933,22 @@ var DailyAlcoholSurvey : ORKTask {
     // The text to display can be separate from the value coded for each choice:
     let DSAlcoholDrinkOptions = [
         //        ORKTextChoice(text: DSAlcoholDrinkOptionOne, value: ""),
-        ORKTextChoice(text: optionTwo, value: ""),
-        ORKTextChoice(text: optionThree, value: ""),
-        ORKTextChoice(text: optionFour, value: ""),
-        ORKTextChoice(text: optionFive, value: ""),
-        ORKTextChoice(text: optionSix, value: ""),
-        ORKTextChoice(text: optionSeven, value: ""),
-        ORKTextChoice(text: optionEight, value: ""),
-        ORKTextChoice(text: optionNine, value: ""),
-        ORKTextChoice(text: optionTen, value: ""),
-        ORKTextChoice(text: optionEleven, value: ""),
-        ORKTextChoice(text: optionTwelve, value: ""),
-        ORKTextChoice(text: optionThirteen, value: ""),
-        ORKTextChoice(text: optionFourteen, value: ""),
-        ORKTextChoice(text: optionFifteen, value: ""),
-        ORKTextChoice(text: optionSixteen, value: ""),
-        ORKTextChoice(text: optionSeventeen, value: "")
+        ORKTextChoice(text: optionTwo, value: 1),
+        ORKTextChoice(text: optionThree, value: 2),
+        ORKTextChoice(text: optionFour, value: 3),
+        ORKTextChoice(text: optionFive, value: 4),
+        ORKTextChoice(text: optionSix, value: 5),
+        ORKTextChoice(text: optionSeven, value: 6),
+        ORKTextChoice(text: optionEight, value: 7),
+        ORKTextChoice(text: optionNine, value: 8),
+        ORKTextChoice(text: optionTen, value: 9),
+        ORKTextChoice(text: optionEleven, value: 10),
+        ORKTextChoice(text: optionTwelve, value: 11),
+        ORKTextChoice(text: optionThirteen, value: 12),
+        ORKTextChoice(text: optionFourteen, value: 13),
+        ORKTextChoice(text: optionFifteen, value: 14),
+        ORKTextChoice(text: optionSixteen, value: 15),
+        ORKTextChoice(text: optionSeventeen, value: 16)
     ]
     
     let DSAlcoholDrinkAnswerFormat = ORKAnswerFormat.valuePickerAnswerFormatWithTextChoices(DSAlcoholDrinkOptions)
@@ -951,11 +968,11 @@ var DailyAlcoholSurvey : ORKTask {
     let DSAlcoholSituationOptionFive = NSLocalizedString("Friends' Home", comment: "")
     
     let DSAlcoholSituationTextOptions = [
-        ORKTextChoice(text: DSAlcoholSituationOptionOne, value: ""),
-        ORKTextChoice(text: DSAlcoholSituationOptionTwo, value: ""),
-        ORKTextChoice(text: DSAlcoholSituationOptionThree, value: ""),
-        ORKTextChoice(text: DSAlcoholSituationOptionFour, value: ""),
-        ORKTextChoice(text: DSAlcoholSituationOptionFive, value: "")
+        ORKTextChoice(text: DSAlcoholSituationOptionOne, value: 1),
+        ORKTextChoice(text: DSAlcoholSituationOptionTwo, value: 3),
+        ORKTextChoice(text: DSAlcoholSituationOptionThree, value: 7),
+        ORKTextChoice(text: DSAlcoholSituationOptionFour, value: 4),
+        ORKTextChoice(text: DSAlcoholSituationOptionFive, value: 2)
     ]
     
     let DSAlcoholSituationTitle = NSLocalizedString("Please check the situations you drank in last night.", comment: "")
@@ -974,11 +991,11 @@ var DailyAlcoholSurvey : ORKTask {
     let DSAlcoholConditionOptionFive = NSLocalizedString("Co-workers", comment: "")
     
     let DSAlcoholConditionTextOptions = [
-        ORKTextChoice(text: DSAlcoholConditionOptionOne, value: ""),
-        ORKTextChoice(text: DSAlcoholConditionOptionTwo, value: ""),
-        ORKTextChoice(text: DSAlcoholConditionOptionThree, value: ""),
-        ORKTextChoice(text: DSAlcoholConditionOptionFour, value: ""),
-        ORKTextChoice(text: DSAlcoholConditionOptionFive, value: "")
+        ORKTextChoice(text: DSAlcoholConditionOptionOne, value: 1),
+        ORKTextChoice(text: DSAlcoholConditionOptionTwo, value: 2),
+        ORKTextChoice(text: DSAlcoholConditionOptionThree, value: 3),
+        ORKTextChoice(text: DSAlcoholConditionOptionFour, value: 7),
+        ORKTextChoice(text: DSAlcoholConditionOptionFive, value: 4)
         
     ]
     
@@ -997,22 +1014,22 @@ var DailyAlcoholSurvey : ORKTask {
     let DSAlcoholReasonOptionFive = NSLocalizedString("To feel less bored", comment: "")
     let DSAlcoholReasonOptionSix = NSLocalizedString("To feel happier and alive", comment: "")
     let DSAlcoholReasonOptionSeven = NSLocalizedString("To escape or forget about problems", comment: "")
-    let DSAlcoholReasonOptionEight = NSLocalizedString("I like the taste", comment: "")
-    let DSAlcoholReasonOptionNine = NSLocalizedString("It is a habit and I just do it without thinking", comment: "")
-    let DSAlcoholReasonOptionTen = NSLocalizedString("I like the whole experience/story associated with drinking", comment: "")
+    let DSAlcoholReasonOptionEight = NSLocalizedString("I wanted to taste a good alcoholic drink", comment: "")
+    let DSAlcoholReasonOptionNine = NSLocalizedString("I just did it without thinking", comment: "")
+    let DSAlcoholReasonOptionTen = NSLocalizedString("Someone asked me to  a drink", comment: "")
     
     
     let DSAlcoholReasonTextOptions = [
-        ORKTextChoice(text: DSAlcoholReasonOptionOne, value: ""),
-        ORKTextChoice(text: DSAlcoholReasonOptionTwo, value: ""),
-        ORKTextChoice(text: DSAlcoholReasonOptionThree, value: ""),
-        ORKTextChoice(text: DSAlcoholReasonOptionFour, value: ""),
-        ORKTextChoice(text: DSAlcoholReasonOptionFive, value: ""),
-        ORKTextChoice(text: DSAlcoholReasonOptionSix, value: ""),
-        ORKTextChoice(text: DSAlcoholReasonOptionSeven, value: ""),
-        ORKTextChoice(text: DSAlcoholReasonOptionEight, value: ""),
-        ORKTextChoice(text: DSAlcoholReasonOptionNine, value: ""),
-        ORKTextChoice(text: DSAlcoholReasonOptionTen, value: "")
+        ORKTextChoice(text: DSAlcoholReasonOptionOne, value: 1),
+        ORKTextChoice(text: DSAlcoholReasonOptionTwo, value: 2),
+        ORKTextChoice(text: DSAlcoholReasonOptionThree, value: 3),
+        ORKTextChoice(text: DSAlcoholReasonOptionFour, value: 4),
+        ORKTextChoice(text: DSAlcoholReasonOptionFive, value: 5),
+        ORKTextChoice(text: DSAlcoholReasonOptionSix, value: 6),
+        ORKTextChoice(text: DSAlcoholReasonOptionSeven, value: 7),
+        ORKTextChoice(text: DSAlcoholReasonOptionEight, value: 8),
+        ORKTextChoice(text: DSAlcoholReasonOptionNine, value: 9),
+        ORKTextChoice(text: DSAlcoholReasonOptionTen, value: 11)
     ]
     
     let DSAlcoholReasonTitle = NSLocalizedString("What were the main reasons you drank last night (check all that apply)?", comment: "")
@@ -1028,8 +1045,8 @@ var DailyAlcoholSurvey : ORKTask {
     let DSAlcoholIntentionOptionTwo = NSLocalizedString("Yes", comment: "")
     
     let DSAlcoholIntentionTextOptions = [
-        ORKTextChoice(text: DSAlcoholIntentionOptionOne, value: ""),
-        ORKTextChoice(text: DSAlcoholIntentionOptionTwo, value: "")
+        ORKTextChoice(text: DSAlcoholIntentionOptionOne, value: "No"),
+        ORKTextChoice(text: DSAlcoholIntentionOptionTwo, value: "Yes")
     ]
     
     let DSAlcoholIntentionTitle = NSLocalizedString("Did you intentionally try to limit your drinking last night?", comment: "")
@@ -1040,8 +1057,13 @@ var DailyAlcoholSurvey : ORKTask {
     
     steps += [DSAlcoholIntentionStep]
     //// Daily Alcohol question 6
+    let DSAlcoholSleepAnswerFormat = ORKAnswerFormat.scaleAnswerFormatWithMaximumValue(8, minimumValue: 0, defaultValue: NSIntegerMax, step: 1, vertical: true, maximumValueDescription: "Very good", minimumValueDescription: "Very bad")
+    let DSAlcoholSleepTitle = NSLocalizedString("How would you rate your overall sleep quality last night?", comment: "")
+    let DSAlcoholSleepStep = ORKQuestionStep(identifier: String(DailySurveyIdentifiers.DSAlcoholSleepStep), title: DSAlcoholSleepTitle, answer: DSAlcoholSleepAnswerFormat)
     
-    
+    steps += [DSAlcoholSleepStep]
+
+    //// Daily Alcohol question 7
     // The text to display can be separate from the value coded for each choice:
     let DSAlcoholFutureDrinkOptions = [
         ORKTextChoice(text: optionOne, value: ""),
@@ -1088,7 +1110,7 @@ var DailyAlcoholSurvey : ORKTask {
     return DSAlcoholTask
     
 }
-var DailySVSurvey: ORKTask {
+var dailySVSurvey: ORKTask {
     var steps = [ORKStep]()
     /// Dailsy SV filter question
     let DSSVFilterOptionOne = NSLocalizedString("Yes", comment: "")
@@ -1111,19 +1133,30 @@ var DailySVSurvey: ORKTask {
     
     steps += [DSSVNoStep]
     
-    //// Daily SV question 1
+    ///// Daily SV question 1
+    let DSSVIntoxicationAnswerFormat = ORKAnswerFormat.scaleAnswerFormatWithMaximumValue(8, minimumValue: 0, defaultValue: NSIntegerMax, step: 1, vertical: true, maximumValueDescription: "Highest level I can remember", minimumValueDescription: "Not at all high")
+    let DSSVIntoxicationTitle = NSLocalizedString("How high did you feel last night?", comment: "")
+    let DSSVIntoxicationStep = ORKQuestionStep(identifier: String(DailySurveyIdentifiers.DSSVIntoxicationStep), title: DSSVIntoxicationTitle, answer: DSSVIntoxicationAnswerFormat)
+    
+    steps += [DSSVIntoxicationStep]
+    
+    
+    //// Daily SV question 2
     let DSSVSituationOptionOne = NSLocalizedString("Home", comment: "")
     let DSSVSituationOptionTwo = NSLocalizedString("Bar/Restuarant/Club", comment: "")
     let DSSVSituationOptionThree = NSLocalizedString("Party", comment: "")
     let DSSVSituationOptionFour = NSLocalizedString("Work", comment: "")
     let DSSVSituationOptionFive = NSLocalizedString("Friends' Home", comment: "")
+    let DSSVSituationOptionSix = NSLocalizedString("Other", comment: "")
+
     
     let DSSVSituationTextOptions = [
-        ORKTextChoice(text: DSSVSituationOptionOne, value: ""),
-        ORKTextChoice(text: DSSVSituationOptionTwo, value: ""),
-        ORKTextChoice(text: DSSVSituationOptionThree, value: ""),
-        ORKTextChoice(text: DSSVSituationOptionFour, value: ""),
-        ORKTextChoice(text: DSSVSituationOptionFive, value: "")
+        ORKTextChoice(text: DSSVSituationOptionOne, value: 1),
+        ORKTextChoice(text: DSSVSituationOptionTwo, value: 3),
+        ORKTextChoice(text: DSSVSituationOptionThree, value: 7),
+        ORKTextChoice(text: DSSVSituationOptionFour, value: 4),
+        ORKTextChoice(text: DSSVSituationOptionFive, value: 2),
+        ORKTextChoice(text: DSSVSituationOptionSix, value: 99)
     ]
     
     let DSSVSituationTitle = NSLocalizedString("Please check the situations you smoked/vaped in yesterday.", comment: "")
@@ -1133,7 +1166,7 @@ var DailySVSurvey: ORKTask {
     let DSSVSituationStep = ORKQuestionStep(identifier: String(DailySurveyIdentifiers.DSSVSituationStep), title: DSSVSituationTitle, answer: DSSVSituationAnswerFormat)
     steps += [DSSVSituationStep]
     
-    //// Daily SV question 2
+    //// Daily SV question 3
     let DSSVConditionOptionOne = NSLocalizedString("Alone", comment: "")
     let DSSVConditionOptionTwo = NSLocalizedString("Family", comment: "")
     let DSSVConditionOptionThree = NSLocalizedString("Friends", comment: "")
@@ -1141,11 +1174,11 @@ var DailySVSurvey: ORKTask {
     let DSSVConditionOptionFive = NSLocalizedString("Co-workers", comment: "")
     
     let DSSVConditionTextOptions = [
-        ORKTextChoice(text: DSSVConditionOptionOne, value: ""),
-        ORKTextChoice(text: DSSVConditionOptionTwo, value: ""),
-        ORKTextChoice(text: DSSVConditionOptionThree, value: ""),
-        ORKTextChoice(text: DSSVConditionOptionFour, value: ""),
-        ORKTextChoice(text: DSSVConditionOptionFive, value: "")
+        ORKTextChoice(text: DSSVConditionOptionOne, value: 1),
+        ORKTextChoice(text: DSSVConditionOptionTwo, value: 2),
+        ORKTextChoice(text: DSSVConditionOptionThree, value: 3),
+        ORKTextChoice(text: DSSVConditionOptionFour, value: 7),
+        ORKTextChoice(text: DSSVConditionOptionFive, value: 4)
         
     ]
     
@@ -1157,9 +1190,9 @@ var DailySVSurvey: ORKTask {
     
     steps += [DSSVConditionStep]
     
-    //// Daily SV question 3
+    //// Daily SV question 4
     let DSSVReasonOptionOne = NSLocalizedString("To celebrate, party and have a good time", comment: "")
-    let DSSVReasonOptionTwo = NSLocalizedString("To more be social, and talkative and friendly with others", comment: "")
+    let DSSVReasonOptionTwo = NSLocalizedString("TTo more be friendly with others", comment: "")
     let DSSVReasonOptionThree = NSLocalizedString("To feel less anxious or stressed", comment: "")
     let DSSVReasonOptionFour = NSLocalizedString("To unwind or relax after a long day", comment: "")
     let DSSVReasonOptionFive = NSLocalizedString("To feel less bored", comment: "")
@@ -1168,19 +1201,26 @@ var DailySVSurvey: ORKTask {
     let DSSVReasonOptionEight = NSLocalizedString("I like the taste", comment: "")
     let DSSVReasonOptionNine = NSLocalizedString("It is a habit and I just do it without thinking", comment: "")
     let DSSVReasonOptionTen = NSLocalizedString("I like the whole experience/story associated with drinking", comment: "")
+    let DSSVReasonOptionEleven = NSLocalizedString("Someone offered it to me", comment: "")
+    let DSSVReasonOptionTwelve = NSLocalizedString("To get through the day", comment: "")
+    let DSSVReasonOptionThirteen = NSLocalizedString(" I wanted to just feel high", comment: "")
     
     
     let DSSVReasonTextOptions = [
-        ORKTextChoice(text: DSSVReasonOptionOne, value: ""),
-        ORKTextChoice(text: DSSVReasonOptionTwo, value: ""),
-        ORKTextChoice(text: DSSVReasonOptionThree, value: ""),
-        ORKTextChoice(text: DSSVReasonOptionFour, value: ""),
-        ORKTextChoice(text: DSSVReasonOptionFive, value: ""),
-        ORKTextChoice(text: DSSVReasonOptionSix, value: ""),
-        ORKTextChoice(text: DSSVReasonOptionSeven, value: ""),
-        ORKTextChoice(text: DSSVReasonOptionEight, value: ""),
-        ORKTextChoice(text: DSSVReasonOptionNine, value: ""),
-        ORKTextChoice(text: DSSVReasonOptionTen, value: "")
+        ORKTextChoice(text: DSSVReasonOptionOne, value: 1),
+        ORKTextChoice(text: DSSVReasonOptionTwo, value: 2),
+        ORKTextChoice(text: DSSVReasonOptionThree, value: 3),
+        ORKTextChoice(text: DSSVReasonOptionFour, value: 4),
+        ORKTextChoice(text: DSSVReasonOptionFive, value: 5),
+        ORKTextChoice(text: DSSVReasonOptionSix, value: 6),
+        ORKTextChoice(text: DSSVReasonOptionSeven, value: 7),
+        ORKTextChoice(text: DSSVReasonOptionEight, value: 8),
+        ORKTextChoice(text: DSSVReasonOptionNine, value: 9),
+        ORKTextChoice(text: DSSVReasonOptionTen, value: 10),
+        ORKTextChoice(text: DSSVReasonOptionEleven, value: 11),
+        ORKTextChoice(text: DSSVReasonOptionTwelve, value: 12),
+        ORKTextChoice(text: DSSVReasonOptionThirteen, value: 13)
+        
     ]
     
     let DSSVReasonTitle = NSLocalizedString("What were the main reasons you smoked/vaped last night (check all that apply)?", comment: "")
@@ -1190,13 +1230,13 @@ var DailySVSurvey: ORKTask {
     let DSSVReasonStep = ORKQuestionStep(identifier: String(DailySurveyIdentifiers.DSSVReasonStep), title: DSSVReasonTitle, answer: DSSVReasonAnswerFormat)
     steps += [DSSVReasonStep]
     
-    //// Daily SV question 4
+    //// Daily SV question 5
     let DSSVIntentionOptionOne = NSLocalizedString("No", comment: "")
     let DSSVIntentionOptionTwo = NSLocalizedString("Yes", comment: "")
     
     let DSSVIntentionTextOptions = [
-        ORKTextChoice(text: DSSVIntentionOptionOne, value: ""),
-        ORKTextChoice(text: DSSVIntentionOptionTwo, value: "")
+        ORKTextChoice(text: DSSVIntentionOptionOne, value: "No"),
+        ORKTextChoice(text: DSSVIntentionOptionTwo, value: "Yes")
     ]
     
     let DSSVIntentionTitle = NSLocalizedString("Did you intentionally try to limit your smoking/vaping last night?", comment: "")
@@ -1207,13 +1247,13 @@ var DailySVSurvey: ORKTask {
     
     steps += [DSSVIntentionStep]
     
-    //// Daily SV question 5
+    //// Daily SV question 6
     let DSSVPlanOptionOne = NSLocalizedString("No", comment: "")
     let DSSVPlanOptionTwo = NSLocalizedString("Yes", comment: "")
     
     let DSSVPlanTextOptions = [
-        ORKTextChoice(text: DSSVPlanOptionOne, value: ""),
-        ORKTextChoice(text: DSSVPlanOptionTwo, value: "")
+        ORKTextChoice(text: DSSVPlanOptionOne, value: "No"),
+        ORKTextChoice(text: DSSVPlanOptionTwo, value: "Yes")
     ]
     
     let DSSVPlanTitle = NSLocalizedString("Do you plan on smoking/vaping in the next 24 hours?", comment: "")
@@ -1240,7 +1280,7 @@ var DailySVSurvey: ORKTask {
     return DSSVTask
 }
 
-var EventAlcoholTask : ORKTask {
+var eventAlcoholTask : ORKTask {
     //// Event Alcohol question 1
     let optionOne = NSLocalizedString("0", comment: "")
     let optionTwo = NSLocalizedString("1", comment: "")
@@ -1262,23 +1302,23 @@ var EventAlcoholTask : ORKTask {
     
     // The text to display can be separate from the value coded for each choice:
     let AlcoholEventDrinkOptions = [
-        ORKTextChoice(text: optionOne, value: ""),
-        ORKTextChoice(text: optionTwo, value: ""),
-        ORKTextChoice(text: optionThree, value: ""),
-        ORKTextChoice(text: optionFour, value: ""),
-        ORKTextChoice(text: optionFive, value: ""),
-        ORKTextChoice(text: optionSix, value: ""),
-        ORKTextChoice(text: optionSeven, value: ""),
-        ORKTextChoice(text: optionEight, value: ""),
-        ORKTextChoice(text: optionNine, value: ""),
-        ORKTextChoice(text: optionTen, value: ""),
-        ORKTextChoice(text: optionEleven, value: ""),
-        ORKTextChoice(text: optionTwelve, value: ""),
-        ORKTextChoice(text: optionThirteen, value: ""),
-        ORKTextChoice(text: optionFourteen, value: ""),
-        ORKTextChoice(text: optionFifteen, value: ""),
-        ORKTextChoice(text: optionSixteen, value: ""),
-        ORKTextChoice(text: optionSeventeen, value: "")
+        ORKTextChoice(text: optionOne, value: 0),
+        ORKTextChoice(text: optionTwo, value: 1),
+        ORKTextChoice(text: optionThree, value: 2),
+        ORKTextChoice(text: optionFour, value: 3),
+        ORKTextChoice(text: optionFive, value: 4),
+        ORKTextChoice(text: optionSix, value: 5),
+        ORKTextChoice(text: optionSeven, value: 6),
+        ORKTextChoice(text: optionEight, value: 7),
+        ORKTextChoice(text: optionNine, value: 8),
+        ORKTextChoice(text: optionTen, value: 9),
+        ORKTextChoice(text: optionEleven, value: 10),
+        ORKTextChoice(text: optionTwelve, value: 11),
+        ORKTextChoice(text: optionThirteen, value: 12),
+        ORKTextChoice(text: optionFourteen, value: 13),
+        ORKTextChoice(text: optionFifteen, value: 14),
+        ORKTextChoice(text: optionSixteen, value: 15),
+        ORKTextChoice(text: optionSeventeen, value: 16)
         
     ]
     
@@ -1297,7 +1337,7 @@ var EventAlcoholTask : ORKTask {
     
 }
 
-var EventSVTask : ORKTask {
+var eventSVTask : ORKTask {
     
     let SVEventOptionOne = NSLocalizedString("0 - 15 minutes", comment: "")
     let SVEventOptionTwo = NSLocalizedString("16 - 30 minutes", comment: "")
@@ -1308,12 +1348,12 @@ var EventSVTask : ORKTask {
     
     
     let SVEventTextOptions = [
-        ORKTextChoice(text: SVEventOptionOne, value: ""),
-        ORKTextChoice(text: SVEventOptionTwo, value: ""),
-        ORKTextChoice(text: SVEventOptionThree, value: ""),
-        ORKTextChoice(text: SVEventOptionFour, value: ""),
-        ORKTextChoice(text: SVEventOptionFive, value: ""),
-        ORKTextChoice(text: SVEventOptionSix, value: "")
+        ORKTextChoice(text: SVEventOptionOne, value: 1),
+        ORKTextChoice(text: SVEventOptionTwo, value: 2),
+        ORKTextChoice(text: SVEventOptionThree, value: 3),
+        ORKTextChoice(text: SVEventOptionFour, value: 4),
+        ORKTextChoice(text: SVEventOptionFive, value: 5),
+        ORKTextChoice(text: SVEventOptionSix, value: 6)
     ]
     let SVEventTitle = NSLocalizedString("How long has it been since you last smoked/vaped?", comment: "")
     
@@ -1323,3 +1363,67 @@ var EventSVTask : ORKTask {
     
     return ORKOrderedTask(identifier: String(EventIdentifiers.SVEventSurvey), steps: [SVEventStep])
 }
+
+var thoughtTask : ORKTask {
+    let thoughtAnswerFormat = ORKTextAnswerFormat(maximumLength: 125)
+    thoughtAnswerFormat.multipleLines = true
+    let thoughtQuestionStepTitle = "How do you feel today?"
+    let thoughtQuestionStep = ORKQuestionStep(identifier: String(OtherTasksIdentifiers.ThoughtQuestionStep), title: thoughtQuestionStepTitle, answer: thoughtAnswerFormat)
+    thoughtQuestionStep.optional = false
+    return ORKOrderedTask(identifier: String(OtherTasksIdentifiers.YourThought), steps: [thoughtQuestionStep])
+}
+
+var loginTask : ORKTask {
+//    class LoginViewController : ORKLoginStepViewController {
+//        //The resetPassword Controller pops out
+//        override func forgotPasswordButtonTapped() {
+//            let resetPassword = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("resetYourPassword")
+//            var navigationController = UINavigationController(rootViewController: resetPassword)
+//            self.presentViewController(navigationController, animated: true, completion: nil)
+//        }
+//    }
+//    // Create a tack for login process
+//    let loginTitle = NSLocalizedString("Login", comment: "")
+//    let loginText = "Please enter your email address and password when you registered with this app."
+//    let loginStep = ORKLoginStep(identifier: String(OtherTasksIdentifiers.LogInStep), title: loginTitle, text: loginText, loginViewControllerClass: LoginViewController.self)
+    
+    let loginAnswerFormat = ORKAnswerFormat.textAnswerFormat()
+    loginAnswerFormat.multipleLines = false
+    loginAnswerFormat.secureTextEntry = true
+    loginAnswerFormat.autocapitalizationType = UITextAutocapitalizationType.None
+    loginAnswerFormat.autocorrectionType = UITextAutocorrectionType.No
+    loginAnswerFormat.spellCheckingType = UITextSpellCheckingType.No
+    
+    let loginItem : ORKFormItem = ORKFormItem(identifier: String(OtherTasksIdentifiers.LogInItem), text: "Passcode", answerFormat: loginAnswerFormat, optional: false)
+    loginItem.placeholder = "Your passcode for the study"
+    let loginTitle = "Log In"
+    let loginText = "Please enter your passcode"
+    let loginStep = ORKFormStep(identifier: String(OtherTasksIdentifiers.LogInStep), title: loginTitle, text: loginText)
+     loginStep.optional = false
+    loginStep.formItems = [loginItem]
+    
+    let waitTitle = NSLocalizedString("Logging in", comment: "")
+    let waitText = NSLocalizedString("Please wait while we validate your credentials", comment: "")
+    let waitStep = ORKWaitStep(identifier: String(OtherTasksIdentifiers.WaitStep))
+    waitStep.title = waitTitle
+    waitStep.text = waitText
+    
+    return ORKOrderedTask(identifier: String(OtherTasksIdentifiers.LogIn), steps: [loginStep, waitStep])
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

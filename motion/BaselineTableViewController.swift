@@ -8,108 +8,50 @@
 
 import UIKit
 import ResearchKit
-
-let baselineAlcoholSurveyuuid = NSUUID().UUIDString
-let baselineSVSurveyuuid = NSUUID().UUIDString
-
-let baselineReactionTaskuuid = NSUUID().UUIDString
-let baselineTappingTaskuuid = NSUUID().UUIDString
-let baselineGoNoGoTaskuuid = NSUUID().UUIDString
-let baselineBalloonTaskuuid = NSUUID().UUIDString
-
-enum BaselineTasks: Int {
-
-    case TappingTask = 0
-    case ReactionTask
-    case GoNoGoTask
-    case BalloonTask
-    
-    var title: String {
-        switch self {
-        case .TappingTask:
-            return "Tapping"
-        case .ReactionTask:
-            return "Reaction Time"
-        case .GoNoGoTask:
-            return "Implusivity"
-        case .BalloonTask:
-            return "Risk taking"
-        }
-    }
-    
-    var description: String {
-        switch self {
-        case .TappingTask:
-            return "Record your tapping speed"
-        case .ReactionTask:
-            return "Record your reaction time"
-        case .GoNoGoTask:
-            return "Record your implusivity"
-        case .BalloonTask:
-            return "Record your risk taking tendency"
-            
-        }
-    }
-    
-    var representedTask : ORKTask {
-        switch self {
-        case .TappingTask:
-            return tappingTask
-        case .ReactionTask:
-            return reactionTask
-        case .GoNoGoTask:
-            return goNoGoTask
-        case .BalloonTask:
-            return balloonTask
-        }
-        
-    }
-    
-    var taskRunUUID: String {
-        switch self {
-        case .TappingTask:
-            return baselineTappingTaskuuid
-        case .ReactionTask:
-            return baselineReactionTaskuuid
-        case .GoNoGoTask:
-            return baselineGoNoGoTaskuuid
-        case .BalloonTask:
-            return baselineBalloonTaskuuid
-        }
-    }
-    
-    var tappingTask: ORKTask {
-        let intendedUseDescription = "Finger tapping is a universal way to communicate."
-        return ORKOrderedTask.twoFingerTappingIntervalTaskWithIdentifier("BaselineTappingIntervalTask", intendedUseDescription: intendedUseDescription, duration: 10, options:ORKPredefinedTaskOption.None)
-    }
-    
-    var reactionTask: ORKTask {
-        let intendedUseDescription = "See how fast you react to the dot"
-        
-        return ORKOrderedTask.reactionTimeTaskWithIdentifier("BaselineReactionTimeTask", intendedUseDescription: intendedUseDescription, maximumStimulusInterval: 10, minimumStimulusInterval: 4, thresholdAcceleration: 0.5, numberOfAttempts: 3, timeout: 3, successSound: UInt32(kAudioServicesPropertyCompletePlaybackIfAppDies), timeoutSound: 0, failureSound: UInt32(kSystemSoundID_Vibrate), options: [])
-    }
-    
-    var goNoGoTask: ORKTask {
-        let intendedUseDescription = "For accessing your implusivity"
-        return ORKOrderedTask.toneAudiometryTaskWithIdentifier("BaselineGoNoGoTask", intendedUseDescription: intendedUseDescription, speechInstruction: nil, shortSpeechInstruction: nil, toneDuration: 20, options: [])
-    }
-    
-    var balloonTask: ORKTask {
-        return ORKOrderedTask.towerOfHanoiTaskWithIdentifier("BaselineBalloonTask", intendedUseDescription: "fjdksfjdskfjs", numberOfDisks: 5, options: [])
-    }
-}
-
-
+import RealmSwift
 
 class BaselineTableViewController: UITableViewController, ORKTaskViewControllerDelegate {
-
-    var taskRows = [BaselineTasks.TappingTask, BaselineTasks.ReactionTask, BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
-    
+    var taskRows : [BaselineTasks] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
+//        var drugType = realm.objects(Participant).filter("ID = '19910815'").first!.drugType
+//        print("\(drugType)")
+        if drugType == "Smoke/Vape" {
+            taskRows = [BaselineTasks.SVSurvey, BaselineTasks.AudioTask, BaselineTasks.ReactionTask, BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
+        } else if drugType == "Alcohol" {
+            taskRows = [BaselineTasks.AlcoholSurvey, BaselineTasks.AudioTask, BaselineTasks.ReactionTask, BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
+        } else if drugType == "Both" {
+            taskRows = [BaselineTasks.AlcoholSurvey, BaselineTasks.SVSurvey, BaselineTasks.AudioTask, BaselineTasks.ReactionTask, BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
+        }
     
     }
+    
+    func randomFeedbackID() -> NSString {
+        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        
+        let randomString : NSMutableString = NSMutableString(capacity: 36)
+        
+        for (var i=0; i < 36; i++){
+            let length = UInt32 (letters.length)
+            let rand = arc4random_uniform(length)
+            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
+        }
+        
+        return randomString
+    }
+    
+    func generateFeedbacks() {
+        for i in 0...Feedbacks.rows.count {
+            var newFeedback = Feedback()
+            newFeedback.name = Feedbacks.rows[i].name
+            newFeedback.content = Feedbacks.rows[i].content
+            newFeedback.ID = randomFeedbackID()
+            newFeedback.creationDate = NSDate()
+        }
+        
+    }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -159,17 +101,23 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
     }
     
     func reloadTask(taskRunUUID: NSUUID) {
-        if taskRunUUID == NSUUID(UUIDString: baselineReactionTaskuuid) {
+        if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineReactionTask.taskRunUUID) {
             taskRows = taskRows.filter() {$0 != BaselineTasks.ReactionTask}
             self.tableView.reloadData()
-        } else if taskRunUUID == NSUUID(UUIDString: baselineTappingTaskuuid) {
-            taskRows = taskRows.filter() {$0 != BaselineTasks.TappingTask}
+        } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineAudioTask.taskRunUUID) {
+            taskRows = taskRows.filter() {$0 != BaselineTasks.AudioTask}
             self.tableView.reloadData()
-        } else if taskRunUUID == NSUUID(UUIDString: baselineGoNoGoTaskuuid) {
+        } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineGoNoGoTask.taskRunUUID) {
             taskRows = taskRows.filter() {$0 != BaselineTasks.GoNoGoTask}
             self.tableView.reloadData()
-        } else if taskRunUUID == NSUUID(UUIDString: baselineBalloonTaskuuid) {
+        } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineBalloonTask.taskRunUUID) {
             taskRows = taskRows.filter() {$0 != BaselineTasks.BalloonTask}
+            self.tableView.reloadData()
+        } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineAlcoholSurvey.taskRunUUID) {
+            taskRows = taskRows.filter() {$0 != BaselineTasks.AlcoholSurvey}
+            self.tableView.reloadData()
+        } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineSVSurvey.taskRunUUID){
+            taskRows = taskRows.filter() {$0 != BaselineTasks.SVSurvey}
             self.tableView.reloadData()
         }
     }
@@ -179,12 +127,38 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
         cell.taskTitle.text = titleText
         cell.taskDescription.text = descriptionText
     }
-//    
+   
     func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
         switch reason {
         case .Completed:
+            /// Store the surveys and tasks data into Realm 
+            var newBaselineSurvey = Survey()
+//            newBaselineSurvey.ID
+//            newBaselineSurvey.drugType
+//            newBaselineSurvey.taskRunUUID
+//            newBaselineSurvey.catergoryType
+            newBaselineSurvey.creationDate = NSDate()
+            newBaselineSurvey.name = taskViewController.result.identifier
+    
+            newBaselineSurvey.owner = currentParticipant
+            
+            
+            var newBaselineTask = Task()
+//            newBaselineTask.ID
+//            newBaselineTask.drugType
+//            newBaselineTask.taskRunUUID
+//            newBaselineTask.catergoryType
+//            newBaselineTask.taskType
+
+            newBaselineTask.creationDate = NSDate()
+            newBaselineTask.name = taskViewController.result.identifier
+            
+            newBaselineTask.owner = currentParticipant
             if taskRows.count == 1 {
                 performSegueWithIdentifier("unwindToStudy", sender: nil)
+                /// Add the passcode to the participant 
+                currentParticipant?.password = passcode!
+                generateFeedbacks()
             } else {
                 reloadTask(taskViewController.taskRunUUID)
                 dismissViewControllerAnimated(true, completion: nil)
@@ -193,50 +167,4 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
             dismissViewControllerAnimated(true, completion: nil)
         }
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

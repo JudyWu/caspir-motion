@@ -14,7 +14,7 @@ class ConsentForm: Object {
     dynamic var ID = ""
     dynamic var name = ""
     dynamic var creationDate = NSDate(timeIntervalSince1970: 1)
-    dynamic var steps = []
+//    dynamic var steps = []
     
     //// Relationship
     dynamic var owner: Participant?

@@ -4,26 +4,12 @@
 //
 //  Created by judywu on 3/18/16.
 //  Copyright © 2016 CASPIR. All rights reserved.
-//
 
 import UIKit
 import ResearchKit
+import RealmSwift
 
 class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate {
-    
-    let morningAlcoholTaskuuid = NSUUID().UUIDString
-    let morningAlcoholBothTaskuuid = NSUUID().UUIDString
-    let morningSVTaskuuid = NSUUID().UUIDString
-    let morningSVBothTaskuuid = NSUUID().UUIDString
-    
-    
-    let morningTappingTaskuuid = NSUUID().UUIDString
-    let morningReactionTaskuuid = NSUUID().UUIDString
-    let morningGoNoGoTaskuuid = NSUUID().UUIDString
-    let morningBalloonTaskuuid = NSUUID().UUIDString
-    
-    let test_number = 3
-    let yourThoughtuuid = NSUUID().UUIDString
     
     var taskResultFinishedCompletionHandler: (ORKResult -> Void)?
 
@@ -34,49 +20,43 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
     @IBOutlet weak var yourThoughtButton: UIButton!
     
     @IBAction func morningSurveyButtonTapped(sender: UIButton) {
-        if test_number == 1 {
-            let taskViewController = ORKTaskViewController(task: DailyAlcoholSurvey, taskRunUUID: NSUUID(UUIDString: morningAlcoholTaskuuid))
+        if drugType == "Alcohol" {
+            let taskViewController = ORKTaskViewController(task: dailyAlcoholSurvey, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.DailyAlcoholTask.taskRunUUID))
                 taskViewController.delegate = self
                 presentViewController(taskViewController, animated: true, completion: nil)
-        } else if test_number == 2 {
-            let taskViewController = ORKTaskViewController(task: DailySVSurvey, taskRunUUID: NSUUID(UUIDString: morningSVTaskuuid))
+        } else if drugType == "Smoke/Vape" {
+            let taskViewController = ORKTaskViewController(task: dailySVSurvey, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.DailySVTask.taskRunUUID))
                 taskViewController.delegate = self
                 presentViewController(taskViewController, animated: true, completion: nil)
-        } else if test_number == 3 {
-            let taskViewController = ORKTaskViewController(task: DailyAlcoholSurvey, taskRunUUID: NSUUID(UUIDString: morningAlcoholBothTaskuuid))
+        } else if drugType == "Both" {
+            let taskViewController = ORKTaskViewController(task: dailyAlcoholSurvey, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.DailyAlcoholBothTask.taskRunUUID))
                 taskViewController.delegate = self
                 presentViewController(taskViewController, animated: true, completion: nil)
         }
     }
+    
+    @IBAction func eventSurveyButtonTapped(sendere: UIButton) {
+        if drugType == "Alcohol" {
+            let taskViewController = ORKTaskViewController(task: eventAlcoholTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.EventAlcoholTask.taskRunUUID))
+            taskViewController.delegate = self
+            presentViewController(taskViewController, animated: true, completion: nil)
+        } else if drugType == "Smoke/Vape" {
+            let taskViewController = ORKTaskViewController(task: eventSVTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.EventSVTask.taskRunUUID))
+            taskViewController.delegate = self
+            presentViewController(taskViewController, animated: true, completion: nil)
+        } else if drugType == "Both" {
+            let taskViewController = ORKTaskViewController(task: eventAlcoholTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.EventAlcoholBothTask.taskRunUUID))
+            taskViewController.delegate = self
+            presentViewController(taskViewController, animated: true, completion: nil)
+        }
+
+    }
 
     @IBAction func moreThoughtsButtonTapped(sender: UIButton) {
-        let thoughtAnswerFormat = ORKTextAnswerFormat(maximumLength: 125)
-        thoughtAnswerFormat.multipleLines = true
-        let thoughtQuestionStepTitle = "How do you feel today?"
-        let thoughtQuestionStep = ORKQuestionStep(identifier: "ThoughtQuestionStep", title: thoughtQuestionStepTitle, answer: thoughtAnswerFormat)
-        thoughtQuestionStep.optional = false
-        let thoughtTask = ORKOrderedTask(identifier: "YourThought", steps: [thoughtQuestionStep])
-        
-        let taskViewController = ORKTaskViewController(task: thoughtTask, taskRunUUID: NSUUID(UUIDString: yourThoughtuuid))
-        
+        let taskViewController = ORKTaskViewController(task: thoughtTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.YourThought.taskRunUUID))
         taskViewController.delegate = self
-        taskViewController.outputDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-
         presentViewController(taskViewController, animated: true, completion: nil)
     }
-    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//
-//        // Do any additional setup after loading the view.
-//    }
-//
-//    override func didReceiveMemoryWarning() {
-//        super.didReceiveMemoryWarning()
-//        // Dispose of any resources that can be recreated.
-//    }
-    
-    
     
     func presentMorningTaskViewController() {
         var randomNumber = Int(arc4random_uniform(3))
@@ -84,44 +64,106 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
         let intendedUseDescription = "Finger tapping is a universal way to communicate."
         
         if randomNumber == 0 {
-            let goNoGoTask = ORKOrderedTask.toneAudiometryTaskWithIdentifier(String(TaskIdentifiers.DailyGoNoGoTask), intendedUseDescription: intendedUseDescription, speechInstruction: nil, shortSpeechInstruction: nil, toneDuration: 20, options: [])
-            let goNoGoTaskViewController = ORKTaskViewController(task: goNoGoTask, taskRunUUID: NSUUID(UUIDString: morningGoNoGoTaskuuid))
+            let goNoGoTaskViewController = ORKTaskViewController(task: dailyGoNoGoTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.DailyGoNoGoTask.taskRunUUID))
             goNoGoTaskViewController.delegate = self
             presentViewController(goNoGoTaskViewController, animated: true, completion: nil)
         } else if randomNumber == 1 {
-            let tappingTask = ORKOrderedTask.twoFingerTappingIntervalTaskWithIdentifier(String(TaskIdentifiers.DailyTappingTask), intendedUseDescription: intendedUseDescription, duration: 10, options: ORKPredefinedTaskOption.None)
-            
-            let tappingTaskViewController = ORKTaskViewController(task: tappingTask, taskRunUUID: NSUUID(UUIDString: morningTappingTaskuuid))
+            let tappingTaskViewController = ORKTaskViewController(task: dailyAudioTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.DailyAudioTask.taskRunUUID))
             tappingTaskViewController.delegate = self
             
             presentViewController(tappingTaskViewController, animated: true, completion: nil)
         } else if randomNumber == 2 {
-            let reactionTask = ORKOrderedTask.shortWalkTaskWithIdentifier(String(TaskIdentifiers.DailyReactionTask), intendedUseDescription: intendedUseDescription, numberOfStepsPerLeg: 20, restDuration: 20, options: [])
-            let reactionTaskViewController = ORKTaskViewController(task: reactionTask, taskRunUUID: NSUUID(UUIDString: morningReactionTaskuuid))
+            let reactionTaskViewController = ORKTaskViewController(task: dailyReactionTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.DailyReactionTask.taskRunUUID))
+            reactionTaskViewController.delegate = self
+            presentViewController(reactionTaskViewController, animated: true, completion: nil)
+        }
+    }
+    
+    func presentEventTaskViewController() {
+        var randomNumber = Int(arc4random_uniform(3))
+        
+        let intendedUseDescription = "Finger tapping is a universal way to communicate."
+        
+        if randomNumber == 0 {
+            let goNoGoTaskViewController = ORKTaskViewController(task: eventGoNoGoTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.EventGoNoGoTask.taskRunUUID))
+            goNoGoTaskViewController.delegate = self
+            presentViewController(goNoGoTaskViewController, animated: true, completion: nil)
+        } else if randomNumber == 1 {
+            let tappingTaskViewController = ORKTaskViewController(task: eventAudioTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.EventAudioTask.taskRunUUID))
+            tappingTaskViewController.delegate = self
+            
+            presentViewController(tappingTaskViewController, animated: true, completion: nil)
+        } else if randomNumber == 2 {
+            let reactionTaskViewController = ORKTaskViewController(task: eventReactionTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.EventReactionTask.taskRunUUID))
             reactionTaskViewController.delegate = self
             presentViewController(reactionTaskViewController, animated: true, completion: nil)
         }
     }
     
     func presentMorningSVBothTaskViewController() {
-        let taskViewController = ORKTaskViewController(task: DailySVSurvey, taskRunUUID: NSUUID(UUIDString: morningSVBothTaskuuid))
+        let taskViewController = ORKTaskViewController(task: dailySVSurvey, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.DailySVBothTask.taskRunUUID))
         taskViewController.delegate = self
         presentViewController(taskViewController, animated: true, completion: nil)
     }
     
+    func presentEventSVBothTaskViewController() {
+        let taskViewController = ORKTaskViewController(task: eventSVTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.EventSVBothTask.taskRunUUID))
+        
+        taskViewController.delegate = self
+        presentViewController(taskViewController, animated: true, completion: nil)
+    }
     
     func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
         switch reason {
         case .Completed:
-            if taskViewController.taskRunUUID == NSUUID(UUIDString: morningAlcoholTaskuuid) || taskViewController.taskRunUUID == NSUUID(UUIDString: morningSVTaskuuid) || taskViewController.taskRunUUID == NSUUID(UUIDString: morningSVBothTaskuuid) {
+            /// Store the surveys and tasks data into Realm
+            var newDailySurvey = Survey()
+            //            newBaselineSurvey.ID
+            //            newBaselineSurvey.drugType
+            //            newBaselineSurvey.taskRunUUID
+            //            newBaselineSurvey.catergoryType
+            newDailySurvey.creationDate = NSDate()
+            newDailySurvey.name = taskViewController.result.identifier
+            
+            newBaselineSurvey.owner = currentParticipant
+            
+            
+            var newDailyTask = Task()
+            //            newBaselineTask.ID
+            //            newBaselineTask.drugType
+            //            newBaselineTask.taskRunUUID
+            //            newBaselineTask.catergoryType
+            //            newBaselineTask.taskType
+            
+            newDailyTask.creationDate = NSDate()
+            newDailyTask.name = taskViewController.result.identifier
+            
+            newDailyTask.owner = currentParticipant
+    
+            ////////
+            if taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.DailyAlcoholTask.taskRunUUID) || taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.DailySVTask.taskRunUUID) || taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.DailySVBothTask.taskRunUUID) {
+                
                 dismissViewControllerAnimated(true, completion: nil)
                 presentMorningTaskViewController()
-            } else if taskViewController.taskRunUUID == NSUUID(UUIDString: morningAlcoholBothTaskuuid) {
+                
+            } else if taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.DailyAlcoholBothTask.taskRunUUID) {
                 dismissViewControllerAnimated(true, completion: nil)
+                
                 presentMorningSVBothTaskViewController()
                 presentMorningTaskViewController()
-                taskResultFinishedCompletionHandler?(taskViewController.result)
-                print("\(taskViewController.result)")
+                
+            } else if taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.EventAlcoholTask.taskRunUUID) || taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.EventSVTask.taskRunUUID) || taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.EventSVBothTask.taskRunUUID) {
+                
+                dismissViewControllerAnimated(true, completion: nil)
+                presentEventTaskViewController()
+                
+            } else if taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.EventAlcoholBothTask.taskRunUUID) {
+                
+                dismissViewControllerAnimated(true, completion: nil)
+                
+                presentEventSVBothTaskViewController()
+                presentEventTaskViewController()
+                
             }
             else {
                 dismissViewControllerAnimated(true, completion: nil)
@@ -132,27 +174,6 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
             dismissViewControllerAnimated(true, completion: nil)
         }
     }
-    
-    func taskViewController(taskViewController: ORKTaskViewController, viewControllerForStep step: ORKStep) -> ORKStepViewController? {
-        if step is IneligibleStep {
-            let ineligibleStepViewController = IneligibleViewController(step: step)
-            return ineligibleStepViewController
-        }
-        return nil
-    }
-    
-    
-    func taskViewController(taskViewController: ORKTaskViewController, stepViewControllerWillAppear stepViewController: ORKStepViewController) {
-        if stepViewController is IneligibleViewController {
-            func goForward() {
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
-        }
-    }
-    
-
-    
-    
     
     func setUpAppearance() {
         let customizedColor = UIColor(red: 245.0/255.0, green: 102.0/255.0, blue: 79.0/255.0, alpha: 1.0)
@@ -180,16 +201,4 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
         super.viewDidLoad()
         setUpAppearance()
     }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

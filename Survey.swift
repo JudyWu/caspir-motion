@@ -15,7 +15,7 @@ class Survey: Object {
     dynamic var name = ""
     dynamic var type = ""
     dynamic var creationDate = NSDate(timeIntervalSince1970: 1)
-    dynamic var steps = []
+//    dynamic var steps = []
     
     
     //// Relationship 
