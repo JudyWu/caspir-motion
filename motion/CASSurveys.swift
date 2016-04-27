@@ -179,8 +179,6 @@ var onboardingTask : ORKTask {
     
     let predicateOneItem05 = ORKResultPredicate.predicateForChoiceQuestionResultWithResultSelector(resultSelector, expectedAnswerValue: "No")
     
-    resultSelector = ORKResultSelector(stepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepOne), resultIdentifier: String(OnboardingIdentifiers.EligibilityFormQuestion6))
-    let predicateOneItem06 = ORKResultPredicate.predicateForChoiceQuestionResultWithResultSelector(resultSelector, expectedAnswerValue: "Yes")
     
     resultSelector = ORKResultSelector(stepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepOne), resultIdentifier: String(OnboardingIdentifiers.EligibilityFormQuestion7))
     let predicateOneItem07 = ORKResultPredicate.predicateForChoiceQuestionResultWithResultSelector(resultSelector, expectedAnswerValue: "Yes")
@@ -191,9 +189,6 @@ var onboardingTask : ORKTask {
     //// Eligibility SV
     resultSelector = ORKResultSelector(stepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepTwo), resultIdentifier: String(OnboardingIdentifiers.EligibilityFormQuestion4))
     let predicateTwoItem04 = ORKResultPredicate.predicateForNumericQuestionResultWithResultSelector(resultSelector, minimumExpectedAnswerValue: 8.0)
-    
-    resultSelector = ORKResultSelector(stepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepTwo), resultIdentifier: String(OnboardingIdentifiers.EligibilityFormQuestion6))
-    let predicateTwoItem06 = ORKResultPredicate.predicateForChoiceQuestionResultWithResultSelector(resultSelector, expectedAnswerValue: "Yes")
     
     resultSelector = ORKResultSelector(stepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepTwo), resultIdentifier: String(OnboardingIdentifiers.EligibilityFormQuestion7))
     let predicateTwoItem07 = ORKResultPredicate.predicateForChoiceQuestionResultWithResultSelector(resultSelector, expectedAnswerValue: "Yes")
@@ -218,10 +213,7 @@ var onboardingTask : ORKTask {
     
     resultSelector = ORKResultSelector(stepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepThree), resultIdentifier: String(OnboardingIdentifiers.EligibilityFormQuestion5))
     
-    let predicateThreeItem05 = ORKResultPredicate.predicateForChoiceQuestionResultWithResultSelector(resultSelector, expectedAnswerValue: "Yes")
-    
-    resultSelector = ORKResultSelector(stepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepThree), resultIdentifier: String(OnboardingIdentifiers.EligibilityFormQuestion6))
-    let predicateThreeItem06 = ORKResultPredicate.predicateForChoiceQuestionResultWithResultSelector(resultSelector, expectedAnswerValue: "Yes")
+    let predicateThreeItem05 = ORKResultPredicate.predicateForChoiceQuestionResultWithResultSelector(resultSelector, expectedAnswerValue: "No")
     
     resultSelector = ORKResultSelector(stepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepThree), resultIdentifier: String(OnboardingIdentifiers.EligibilityFormQuestion7))
     let predicateThreeItem07 = ORKResultPredicate.predicateForChoiceQuestionResultWithResultSelector(resultSelector, expectedAnswerValue: "Yes")
@@ -230,11 +222,11 @@ var onboardingTask : ORKTask {
     let predicateThreeItem08 = ORKResultPredicate.predicateForChoiceQuestionResultWithResultSelector(resultSelector, expectedAnswerValue: "Yes")
     
     
-    let predicateEligibleOne = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateOneItem01, predicateOneItem02, predicateOneItem03, predicateOneItem05, predicateOneItem06, predicateOneItem07, predicateOneItem08])
+    let predicateEligibleOne = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateOneItem01, predicateOneItem02, predicateOneItem03, predicateOneItem05, predicateOneItem07, predicateOneItem08])
     
-    let predicateEligibleTwo = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateTwoItem04, predicateTwoItem06, predicateTwoItem07, predicateTwoItem08])
+    let predicateEligibleTwo = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateTwoItem04, predicateTwoItem07, predicateTwoItem08])
     
-    let predicateEligibleThree = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateThreeItem01, predicateThreeItem02, predicateThreeItem03, predicateThreeItem04, predicateThreeItem05, predicateThreeItem06, predicateThreeItem07, predicateThreeItem08])
+    let predicateEligibleThree = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateThreeItem01, predicateThreeItem02, predicateThreeItem03, predicateThreeItem04, predicateThreeItem05, predicateThreeItem07, predicateThreeItem08])
     
     
     let predicateEligibilityAlcoholRule = ORKPredicateStepNavigationRule(resultPredicates: [predicateEligibleOne], destinationStepIdentifiers: [String(OnboardingIdentifiers.EligibleStep)], defaultStepIdentifier: String(OnboardingIdentifiers.IneligibleStep), validateArrays: true)
@@ -247,26 +239,32 @@ var onboardingTask : ORKTask {
     let consentStep = ConsentStep(identifier: String(OnboardingIdentifiers.VisualConsentStep))
     
     steps += [consentStep]
+    
+    
     //// Code Step
     let codeTitle = NSLocalizedString("Please enter your unique code", comment: "")
-    let codeAnswerFormat = ORKTextAnswerFormat(maximumLength: 10)
+    let codeAnswerFormat =  ORKAnswerFormat.textAnswerFormat()
+    
+    /// Set the regex for the passcode
+    codeAnswerFormat.maximumLength = 7
+    codeAnswerFormat.validationRegex = "^[A-Z][0-9][a-z][%*$][0-9][A-Z][a-z]$"
+    codeAnswerFormat.invalidMessage = "Please check your passcode again"
+
+    codeAnswerFormat.secureTextEntry = true
+    codeAnswerFormat.spellCheckingType = UITextSpellCheckingType.No
+    codeAnswerFormat.autocorrectionType = UITextAutocorrectionType.No
+    codeAnswerFormat.autocapitalizationType = UITextAutocapitalizationType.None
     codeAnswerFormat.multipleLines = false
-    let codeStep = ORKQuestionStep(identifier: String(OnboardingIdentifiers.RegistrationStep), title: codeTitle, text: "The code you copied from the webpage the step before.", answer: codeAnswerFormat)
+    
+    let codeItem : ORKFormItem = ORKFormItem(identifier: String(OtherTasksIdentifiers.LogInItem), text: "Passcode", answerFormat: codeAnswerFormat, optional: false)
+    codeItem.placeholder = "Passcode from the consent form"
+    let codeText = "Please enter your passcode"
+    let codeStep = ORKFormStep(identifier: String(OnboardingIdentifiers.RegistrationStep), title: codeTitle, text: codeText)
     codeStep.optional = false
-    
+    codeStep.formItems = [codeItem]
+    codeStep.optional = false
+
     steps += [codeStep]
-    //// Wrong Code Step
-    let wrongCodeStep = ORKInstructionStep(identifier: String(OnboardingIdentifiers.WrongCodeStep))
-    wrongCodeStep.title = "Sorry, you have entered the wrong code."
-    wrongCodeStep.text = "Either go back to previous step for reenty or exit here."
-    
-    steps += [wrongCodeStep]
-    
-    resultSelector = ORKResultSelector(resultIdentifier: String(OnboardingIdentifiers.RegistrationStep))
-    //
-    let predicateCode = ORKResultPredicate.predicateForTextQuestionResultWithResultSelector(resultSelector, expectedString: "jaoshinu17")
-    
-    let predicateCodeRule = ORKPredicateStepNavigationRule(resultPredicates: [predicateCode], destinationStepIdentifiers: [String(OnboardingIdentifiers.HealthStep)], defaultStepIdentifier: String(OnboardingIdentifiers.WrongCodeStep), validateArrays: true)
     
     // Add authorizationt to HealthKit
     let healthDataStep = HealthDataStep(identifier: String(OnboardingIdentifiers.HealthStep))
@@ -290,12 +288,9 @@ var onboardingTask : ORKTask {
     onboardingTask.setNavigationRule(predicateEligibilityAlcoholRule, forTriggerStepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepOne))
     onboardingTask.setNavigationRule(predicateEligibilitySVRule, forTriggerStepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepTwo))
     onboardingTask.setNavigationRule(predicateEligibilityBothRule, forTriggerStepIdentifier: String(OnboardingIdentifiers.EligibilityFormStepThree))
-    onboardingTask.setNavigationRule(predicateCodeRule, forTriggerStepIdentifier: String(OnboardingIdentifiers.RegistrationStep))
-    
     let directRule = ORKDirectStepNavigationRule(destinationStepIdentifier: ORKNullStepIdentifier)
     
     onboardingTask.setNavigationRule(directRule, forTriggerStepIdentifier: String(OnboardingIdentifiers.IneligibleStep))
-    onboardingTask.setNavigationRule(directRule, forTriggerStepIdentifier: String(OnboardingIdentifiers.WrongCodeStep))
     
     return onboardingTask
 }
@@ -322,7 +317,7 @@ var baselineAlcoholSurvey : ORKTask {
     
     let BSAlcoholSituationTitle = NSLocalizedString("Please check the situations where you tend drink most often", comment: "")
     
-    let BSAlcoholSituationAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.SingleChoice, textChoices: BSAlcoholSituationTextOptions)
+    let BSAlcoholSituationAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.MultipleChoice, textChoices: BSAlcoholSituationTextOptions)
     
     let BSAlcoholSituationStep = ORKQuestionStep(identifier: String(BaselineSurveyIdentifiers.BSAlcoholSituationStep), title: BSAlcoholSituationTitle, answer: BSAlcoholSituationAnswerFormat)
     steps += [BSAlcoholSituationStep]
@@ -345,7 +340,7 @@ var baselineAlcoholSurvey : ORKTask {
     
     let BSAlcoholConditionTitle = NSLocalizedString("Who do you most often drink with?", comment: "")
     
-    let BSAlcoholConditionAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.SingleChoice, textChoices: BSAlcoholConditionTextOptions)
+    let BSAlcoholConditionAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.MultipleChoice, textChoices: BSAlcoholConditionTextOptions)
     
     let BSAlcoholConditionStep = ORKQuestionStep(identifier: String(BaselineSurveyIdentifiers.BSAlcoholConditionStep), title: BSAlcoholConditionTitle, answer: BSAlcoholConditionAnswerFormat)
     steps += [BSAlcoholConditionStep]
@@ -639,7 +634,7 @@ var baselineSVSurvey : ORKTask {
     
     let BSSVSituationTitle = NSLocalizedString("Please check the situations where you tend to smoke/vape most often", comment: "")
     
-    let BSSVSituationAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.SingleChoice, textChoices: BSSVSituationTextOptions)
+    let BSSVSituationAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.MultipleChoice, textChoices: BSSVSituationTextOptions)
     
     let BSSVSituationStep = ORKQuestionStep(identifier: String(BaselineSurveyIdentifiers.BSSVSituationStep), title: BSSVSituationTitle, answer: BSSVSituationAnswerFormat)
     steps += [BSSVSituationStep]
@@ -662,7 +657,7 @@ var baselineSVSurvey : ORKTask {
     
     let BSSVConditionTitle = NSLocalizedString("Who do you most often smoke/vape with?", comment: "")
     
-    let BSSVConditionAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.SingleChoice, textChoices: BSSVConditionTextOptions)
+    let BSSVConditionAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.MultipleChoice, textChoices: BSSVConditionTextOptions)
     
     let BSSVConditionStep = ORKQuestionStep(identifier: String(BaselineSurveyIdentifiers.BSSVConditionStep), title: BSSVConditionTitle, answer: BSSVConditionAnswerFormat)
     steps += [BSSVConditionStep]
@@ -977,7 +972,7 @@ var dailyAlcoholSurvey : ORKTask {
     
     let DSAlcoholSituationTitle = NSLocalizedString("Please check the situations you drank in last night.", comment: "")
     
-    let DSAlcoholSituationAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.SingleChoice, textChoices: DSAlcoholSituationTextOptions)
+    let DSAlcoholSituationAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.MultipleChoice, textChoices: DSAlcoholSituationTextOptions)
     
     let DSAlcoholSituationStep = ORKQuestionStep(identifier: String(DailySurveyIdentifiers.DSAlcoholSituationStep), title: DSAlcoholSituationTitle, answer: DSAlcoholSituationAnswerFormat)
     
@@ -1001,7 +996,7 @@ var dailyAlcoholSurvey : ORKTask {
     
     let DSAlcoholConditionTitle = NSLocalizedString("Who did you drink with?", comment: "")
     
-    let DSAlcoholConditionAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.SingleChoice, textChoices: DSAlcoholConditionTextOptions)
+    let DSAlcoholConditionAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.MultipleChoice, textChoices: DSAlcoholConditionTextOptions)
     
     let DSAlcoholConditionStep = ORKQuestionStep(identifier: String(DailySurveyIdentifiers.DSAlcoholConditionStep), title: DSAlcoholConditionTitle, answer: DSAlcoholConditionAnswerFormat)
     steps += [DSAlcoholConditionStep]
@@ -1161,7 +1156,7 @@ var dailySVSurvey: ORKTask {
     
     let DSSVSituationTitle = NSLocalizedString("Please check the situations you smoked/vaped in yesterday.", comment: "")
     
-    let DSSVSituationAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.SingleChoice, textChoices: DSSVSituationTextOptions)
+    let DSSVSituationAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.MultipleChoice, textChoices: DSSVSituationTextOptions)
     
     let DSSVSituationStep = ORKQuestionStep(identifier: String(DailySurveyIdentifiers.DSSVSituationStep), title: DSSVSituationTitle, answer: DSSVSituationAnswerFormat)
     steps += [DSSVSituationStep]
@@ -1184,7 +1179,7 @@ var dailySVSurvey: ORKTask {
     
     let DSSVConditionTitle = NSLocalizedString("Who did you smoked/vaped with?", comment: "")
     
-    let DSSVConditionAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.SingleChoice, textChoices: DSSVConditionTextOptions)
+    let DSSVConditionAnswerFormat = ORKAnswerFormat.choiceAnswerFormatWithStyle(.MultipleChoice, textChoices: DSSVConditionTextOptions)
     
     let DSSVConditionStep = ORKQuestionStep(identifier: String(DailySurveyIdentifiers.DSSVConditionStep), title: DSSVConditionTitle, answer: DSSVConditionAnswerFormat)
     
@@ -1338,7 +1333,7 @@ var eventAlcoholTask : ORKTask {
 }
 
 var eventSVTask : ORKTask {
-    
+    //// Event question 1
     let SVEventOptionOne = NSLocalizedString("0 - 15 minutes", comment: "")
     let SVEventOptionTwo = NSLocalizedString("16 - 30 minutes", comment: "")
     let SVEventOptionThree = NSLocalizedString("30 - 60 minutes", comment: "")
@@ -1361,7 +1356,12 @@ var eventSVTask : ORKTask {
     
     let SVEventStep = ORKQuestionStep(identifier: String(BaselineSurveyIdentifiers.BSAlcoholSymptomStep), title: SVEventTitle, answer: SVEventAnswerFormat)
     
-    return ORKOrderedTask(identifier: String(EventIdentifiers.SVEventSurvey), steps: [SVEventStep])
+    /// Event question 2
+    let SVEventIntoxicationAnswerFormat = ORKAnswerFormat.scaleAnswerFormatWithMaximumValue(8, minimumValue: 0, defaultValue: NSIntegerMax, step: 1, vertical: true, maximumValueDescription: "Highest level I can remember", minimumValueDescription: "Not at all high")
+    let SVEventIntoxicationTitle = NSLocalizedString("How high do you feel right now?", comment: "")
+    let SVEventIntoxicationStep = ORKQuestionStep(identifier: String(EventIdentifiers.SVEventIntoxicationStep), title: SVEventIntoxicationTitle, answer: SVEventIntoxicationAnswerFormat)
+
+    return ORKOrderedTask(identifier: String(EventIdentifiers.SVEventSurvey), steps: [SVEventStep, SVEventIntoxicationStep])
 }
 
 var thoughtTask : ORKTask {
@@ -1374,19 +1374,6 @@ var thoughtTask : ORKTask {
 }
 
 var loginTask : ORKTask {
-//    class LoginViewController : ORKLoginStepViewController {
-//        //The resetPassword Controller pops out
-//        override func forgotPasswordButtonTapped() {
-//            let resetPassword = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("resetYourPassword")
-//            var navigationController = UINavigationController(rootViewController: resetPassword)
-//            self.presentViewController(navigationController, animated: true, completion: nil)
-//        }
-//    }
-//    // Create a tack for login process
-//    let loginTitle = NSLocalizedString("Login", comment: "")
-//    let loginText = "Please enter your email address and password when you registered with this app."
-//    let loginStep = ORKLoginStep(identifier: String(OtherTasksIdentifiers.LogInStep), title: loginTitle, text: loginText, loginViewControllerClass: LoginViewController.self)
-    
     let loginAnswerFormat = ORKAnswerFormat.textAnswerFormat()
     loginAnswerFormat.multipleLines = false
     loginAnswerFormat.secureTextEntry = true
@@ -1410,20 +1397,3 @@ var loginTask : ORKTask {
     
     return ORKOrderedTask(identifier: String(OtherTasksIdentifiers.LogIn), steps: [loginStep, waitStep])
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

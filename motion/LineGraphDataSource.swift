@@ -29,9 +29,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 import ResearchKit
+import RealmSwift
 
 class LineGraphDataSource: NSObject, ORKGraphChartViewDataSource {
     // MARK: Properties
+    
+        
     
     var plotPoints =
     [

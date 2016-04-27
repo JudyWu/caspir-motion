@@ -60,7 +60,6 @@ class IntroductionViewController: UIPageViewController, UIPageViewControllerData
         if index - 1 >= 0 {
             return pageViewControllers[index - 1]
         }
-        
         return nil
     }
     

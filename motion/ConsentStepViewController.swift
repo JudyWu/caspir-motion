@@ -9,40 +9,38 @@
 import UIKit
 import ResearchKit
 
-class ConsentStepViewController: ORKInstructionStepViewController {
 
+class ConsentStepViewController: ORKInstructionStepViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let webView = UIWebView(frame: CGRectMake(0, 0,  self.view.frame.size.width, self.view.frame.size.height - 150))
-        let url = "http://apple.com"
-        
+        /// Setting the UIVewbView 
+        let url = "http://judywu.github.io/CAS-consent-form/"
         let requestURL = NSURL(string:url)
         let request = NSURLRequest(URL: requestURL!)
+        let webView = UIWebView(frame: CGRectMake(0, 0,  self.view.frame.size.width, self.view.frame.size.height - 150))
         webView.loadRequest(request)
-        
         self.view.addSubview(webView)
     }
     
     override func hasNextStep() -> Bool {
         return true
     }
-   
+    
 
+    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        for subview in self.view.subviews {
+            if subview is UIWebView {
+                if toInterfaceOrientation == .LandscapeLeft || toInterfaceOrientation == .LandscapeRight {
+                    subview.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)
+                } else {
+                    subview.frame = CGRectMake(0, 0,  self.view.frame.size.width, self.view.frame.size.height - 80)
+                }
+            }
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

@@ -1,5 +1,5 @@
 //
-//  ConsentForm.swift
+//  Onboarding.swift
 //  motion
 //
 //  Created by Zhaoxin Wu on 4/14/16.
@@ -11,13 +11,15 @@ import RealmSwift
 
 class ConsentForm: Object {
     //// Properties 
-    dynamic var ID = ""
-    dynamic var name = ""
-    dynamic var creationDate = NSDate(timeIntervalSince1970: 1)
-//    dynamic var steps = []
+    dynamic var ID = "" // Unique ID
+    dynamic var name = "" // Identifier of the task controller
+    dynamic var drugType = "" //Either alcohol, smoke/vape or both
+    dynamic var heavyDrinkingDay = 0 //from the eligibility form
+    dynamic var smokeDay = 0 // from the eligibility form
+    dynamic var creationDate = NSDate() 
     
     //// Relationship
-    dynamic var owner: Participant?
+    dynamic var owner: Participant!
     
     
  

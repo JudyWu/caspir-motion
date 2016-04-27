@@ -7,6 +7,7 @@
 
 import Foundation
 import ResearchKit
+import RealmSwift
 
 enum DailySurveyIdentifiers {
     //// Event Filter
@@ -110,6 +111,7 @@ enum EventIdentifiers {
     //// Smoke/Vape event
     case SVEventSurvey
     case SVEventLastTimeStep
+    case SVEventIntoxicationStep
     
 }
 
@@ -279,8 +281,6 @@ enum OnboardingIdentifiers  {
     
     case VisualConsentStep
     case RegistrationStep
-//    case RegistrationWaitStep
-//    case VerificationStep
     case WrongCodeStep
     case HealthStep
     case ConsentReviewStep
@@ -289,3 +289,16 @@ enum OnboardingIdentifiers  {
 }
 
 
+/// For generate feedbacks ID
+func randomID() -> NSString {
+    let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    
+    let randomString : NSMutableString = NSMutableString(capacity: 36)
+    
+    for (var i=0; i < 36; i++){
+        let length = UInt32 (letters.length)
+        let rand = arc4random_uniform(length)
+        randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
+    }
+    return randomString
+}

@@ -31,13 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import UIKit
 import ResearchKit
 
-var currentParticipant: Participant?
-var onboarding: ConsentForm?
-var participantID: String?
-var drugType: String?
-var passcode: String?
-var startDate: NSDate?
-
 class ResearchContainerViewController: UIViewController, HealthClientType {
     // MARK: HealthClientType
     
@@ -103,6 +96,12 @@ class ResearchContainerViewController: UIViewController, HealthClientType {
     
     func toWithdrawl() {
         let viewController = WithdrawViewController()
+        let prefs = NSUserDefaults.standardUserDefaults()
+        prefs.removeObjectForKey("participantID")
+        prefs.removeObjectForKey("passcode")
+        prefs.removeObjectForKey("drugType")
+        prefs.removeObjectForKey("startDate")
+        
         viewController.delegate = self
         
         presentViewController(viewController, animated: true, completion: nil)

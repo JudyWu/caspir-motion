@@ -12,9 +12,10 @@ import RealmSwift
 class Feedback: Object {
     dynamic var ID = ""
     dynamic var name = ""
-    dynamic var creationDate = NSDate(timeIntervalSince1970: 1)
-    dynamic var type = ""
-    dynamic var content = ""
+    dynamic var creationDate = NSDate()
+    dynamic var drugType = "" // Alcohol or smoke/vape
+    dynamic var content = "" // the feedback text
+    dynamic var timeType = "" ///Either baseline or 30 days
     
     
     //// Relationship

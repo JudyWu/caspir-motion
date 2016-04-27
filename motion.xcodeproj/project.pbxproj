@@ -27,12 +27,10 @@
 		C20764711C76452900956A3D /* AnimatableChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20764701C76452900956A3D /* AnimatableChart.swift */; };
 		C20764731C76454700956A3D /* HKHealthStore+Queries.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20764721C76454700956A3D /* HKHealthStore+Queries.swift */; };
 		C20865761C860F69000F90C8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C20865751C860F69000F90C8 /* Main.storyboard */; };
-		C20D450B1C87653D002290AA /* ResetPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20D450A1C87653D002290AA /* ResetPasswordController.swift */; };
 		C20F9CEE1C7B75C00045AA48 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26E478E1C25B8E500D6EA47 /* AppDelegate.swift */; };
 		C20F9CF41C7B88CB0045AA48 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20F9CF31C7B88CB0045AA48 /* FeedbackViewController.swift */; };
 		C210B4871C9C800500EB2522 /* CASActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C210B4861C9C800400EB2522 /* CASActivityViewController.swift */; };
 		C217283B1C794597008D2BC3 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C217283A1C794597008D2BC3 /* HealthKit.framework */; };
-		C23836E51CCA75610054A9F2 /* CASLoginStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23836E41CCA75610054A9F2 /* CASLoginStep.swift */; };
 		C23836E91CCAA5B70054A9F2 /* CASFeedbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23836E81CCAA5B70054A9F2 /* CASFeedbacks.swift */; };
 		C2387EF71CA996B300CC7BD1 /* CASConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2387EF61CA996B300CC7BD1 /* CASConstants.swift */; };
 		C25041AB1C8CA94B00DC78FB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C25041AA1C8CA94B00DC78FB /* CoreData.framework */; };
@@ -130,13 +128,11 @@
 		C20764701C76452900956A3D /* AnimatableChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatableChart.swift; sourceTree = "<group>"; };
 		C20764721C76454700956A3D /* HKHealthStore+Queries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HKHealthStore+Queries.swift"; sourceTree = "<group>"; };
 		C20865751C860F69000F90C8 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		C20D450A1C87653D002290AA /* ResetPasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResetPasswordController.swift; path = ../ResetPasswordController.swift; sourceTree = "<group>"; };
 		C20F9CE11C7B61A10045AA48 /* motion-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "motion-Bridging-Header.h"; sourceTree = "<group>"; };
 		C20F9CF31C7B88CB0045AA48 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		C210B4861C9C800400EB2522 /* CASActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CASActivityViewController.swift; sourceTree = "<group>"; };
 		C21728391C794597008D2BC3 /* motion.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = motion.entitlements; sourceTree = "<group>"; };
 		C217283A1C794597008D2BC3 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		C23836E41CCA75610054A9F2 /* CASLoginStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CASLoginStep.swift; sourceTree = "<group>"; };
 		C23836E81CCAA5B70054A9F2 /* CASFeedbacks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CASFeedbacks.swift; sourceTree = "<group>"; };
 		C2387EF61CA996B300CC7BD1 /* CASConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CASConstants.swift; sourceTree = "<group>"; };
 		C24D649B1CB802D400EDC11B /* ResearchKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ResearchKit.xcodeproj; path = ../ResearchKit/ResearchKit.xcodeproj; sourceTree = "<group>"; };
@@ -333,11 +329,9 @@
 			isa = PBXGroup;
 			children = (
 				C2FB38D81CC010000061913F /* ConsentStepViewController.swift */,
-				C20D450A1C87653D002290AA /* ResetPasswordController.swift */,
 				C207644A1C76422200956A3D /* OnboardingViewController.swift */,
 				C2FB38DA1CC0110B0061913F /* ConsentStep.swift */,
 				C207644C1C76424D00956A3D /* IntroductionViewController.swift */,
-				C23836E41CCA75610054A9F2 /* CASLoginStep.swift */,
 				C20F9CE11C7B61A10045AA48 /* motion-Bridging-Header.h */,
 			);
 			name = Onboarding;
@@ -576,7 +570,6 @@
 				C207644B1C76422200956A3D /* OnboardingViewController.swift in Sources */,
 				C207645B1C7643BB00956A3D /* CASSurveys.swift in Sources */,
 				C2FB38DD1CC0792D0061913F /* BaselineTableViewController.swift in Sources */,
-				C20D450B1C87653D002290AA /* ResetPasswordController.swift in Sources */,
 				C20764601C7643E700956A3D /* ProfileHeaderView.swift in Sources */,
 				C20764541C76431100956A3D /* DiscreteGraphDataSource.swift in Sources */,
 				C20764611C7643E700956A3D /* ProfileStaticTableViewCell.swift in Sources */,
@@ -607,7 +600,6 @@
 				C2FB38D11CBFE0230061913F /* Task.swift in Sources */,
 				C2FB38D51CBFE4370061913F /* ConsentForm.swift in Sources */,
 				C20764471C76412600956A3D /* ResearchContrainerSegue.swift in Sources */,
-				C23836E51CCA75610054A9F2 /* CASLoginStep.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

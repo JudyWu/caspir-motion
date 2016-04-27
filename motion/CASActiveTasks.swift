@@ -26,7 +26,7 @@ var baselineGoNoGoTask: ORKTask {
 var baselineBalloonTask: ORKTask {
     let intendedUseDescription = "For accessing your implusivity"
 
-    return ORKOrderedTask.towerOfHanoiTaskWithIdentifier(String(TaskIdentifiers.BaselineBalloonTask), intendedUseDescription: "fjdksfjdskfjs", numberOfDisks: 5, options: [])
+    return ORKOrderedTask.towerOfHanoiTaskWithIdentifier(String(TaskIdentifiers.BaselineBalloonTask), intendedUseDescription: intendedUseDescription, numberOfDisks: 5, options: [])
 }
 
 
@@ -47,6 +47,11 @@ var dailyReactionTask: ORKTask {
     let intendedUseDescription = "For accessing your implusivity"
     return ORKOrderedTask.reactionTimeTaskWithIdentifier(String(TaskIdentifiers.DailyReactionTask), intendedUseDescription: intendedUseDescription, maximumStimulusInterval: 10, minimumStimulusInterval: 4, thresholdAcceleration: 0.5, numberOfAttempts: 3, timeout: 3, successSound: UInt32(kAudioServicesPropertyCompletePlaybackIfAppDies), timeoutSound: 0, failureSound: UInt32(kSystemSoundID_Vibrate), options: [])
 
+}
+
+var dailyBalloonTask: ORKTask {
+    let intendedUseDescription = "For accessing your implusivity"
+    return ORKOrderedTask.towerOfHanoiTaskWithIdentifier(String(TaskIdentifiers.BaselineBalloonTask), intendedUseDescription: intendedUseDescription, numberOfDisks: 5, options: [])
 }
 
 ////// Event
@@ -72,7 +77,7 @@ var eventGoNoGoTask: ORKTask {
 
 var eventBalloonTask: ORKTask {
     let intendedUseDescription = "Finger tapping is a universal way to communicate."
-    return ORKOrderedTask.towerOfHanoiTaskWithIdentifier(String(TaskIdentifiers.EventBalloonTask), intendedUseDescription: "fjdksfjdskfjs", numberOfDisks: 5, options: [])
+    return ORKOrderedTask.towerOfHanoiTaskWithIdentifier(String(TaskIdentifiers.EventBalloonTask), intendedUseDescription: intendedUseDescription, numberOfDisks: 5, options: [])
 
 }
 

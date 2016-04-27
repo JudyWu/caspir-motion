@@ -15,6 +15,7 @@ class ConsentStep: ORKInstructionStep {
         
         title = NSLocalizedString("Consent Here", comment: "")
         text = NSLocalizedString("Please complete the following consent step in the websitejjfksjfklsdjfklsfjksljfsfjkjsdklfjdskfjskdfjjkdhfjsdhfjahsdfjkhasjfhasjkfhjsadhfsjdfhfjlfjsdlfjsldkfjskdfsdkfjsdfkjdkfjkfjaksjfdjfkdjfksajfklsajdfklsjfkjsdfkjsdkfjsdlkfjskfjsfkjsfjsfjskfjsdfjfjdkfjskfjksjksjfkdjfklsjflksfjslkfjlkfjkldfjsklfjsklfjskfljsfsjfkdjflgjjdglkjfksdjfksdjkjsdkjdgkljkgjkljfkjdkjfgjgldjgkjdfgjdfklgjdlgjalkgjdklgjdklfgjdklgjdklfgjdklgjdjgjsgjdkjkfjgdklfgjlkgjlkgjklfjgkfdjgkdgjdkgjkgjdkgjdkgjgjgfkjiufijgjfgkjfdkgjkdjslkdjskljklsjdklfsjfkdsjskdgjdkgjdkgjdfkjgkfjgkjgkdjgkfgjgjdgjgjdfjgdjfdjgflgjlkgsdjflkjgkldfjgdklfgjdljskljgkldjgdlkjgkdlfjgdkljgdkljgdkljgdkjdlgjdlgjkldjgdkljsjslkjfdkjfuewodjlfjksjflsfjslfjsurwerfjskjflksjfsruqrefsjfjsfjsfjsfjkfjskfjsfsfjkdjfjdkfjskfjksjksjfkdjfklsjflksfjslkfjlkfjkldfjsklfjsklfjskfljsfsjfkdjflgjjdglkjfksdjfksdjkjsdkjdgkljkgjk", comment: "")
+        
 
     }
     

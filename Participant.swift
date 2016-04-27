@@ -11,19 +11,15 @@ import RealmSwift
 
 class Participant: Object {
     //// Properties
-    dynamic var ID = ""
-    dynamic var firstName = ""
-    dynamic var lastName = ""
-    dynamic var email = ""
-    dynamic var password = ""
-    dynamic var creationDate = NSDate(timeIntervalSince1970: 1)
-    dynamic var drugType = ""
-    dynamic var consentForm : ConsentForm?
-    
-    
+    dynamic var ID = ""   //User ID for tracing back data
+    dynamic var passcode = "" // Connect the consent form in other database
+    dynamic var startDate = NSDate()  // the date when user completes the baseline measurement
+    dynamic var creationDate = NSDate() // the date when user completes onboarding process
+    dynamic var drugType = "" // either alcohol, smoke/vape or both
+    dynamic var consentForm : ConsentForm!
+
     //// Relationship
     let surveys = List<Survey>()
     let tasks = List<Task>()
-    let feedbacks = List<Feedback>()
-//    let consentForm = List<ConsentForm>()
+    let feedbacks = List<Feedback>() //baseline and 30 days feedback
 }

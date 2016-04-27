@@ -16,7 +16,6 @@ import RealmSwift
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let healthStore = HKHealthStore()
-    
     var window: UIWindow?
     
     var containerViewController: ResearchContainerViewController? {
@@ -25,9 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         let standardDefaults = NSUserDefaults.standardUserDefaults()
-        if standardDefaults.objectForKey("CASMotionFirstRun") == nil {
+        if standardDefaults.objectForKey("CASInsightfulChoices") == nil {
             ORKPasscodeViewController.removePasscodeFromKeychain()
-            standardDefaults.setValue("CASMotionFirstRun", forKey: "CASMotionFirstRun")
+            standardDefaults.setValue("CASInsightfulChoices", forKey: "CASInsightfulChoices")
         }
         
         // Appearance customization
@@ -42,14 +41,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         lockApp()
-//        _ = NSTimer(timeInterval: 10, target: FeedbackViewController.self, selector: Selector(testFunction()), userInfo: nil, repeats: true)
-//        NSRunLoop.currentRunLoop().addTimer(feedbackTimer, forMode: NSRunLoopCommonModes)
         return true
     }
-    
-//    func testFunction() {
-//        print("djkfjsldjflksdjfkslf")
-//    }
     
     func applicationWillResignActive(application: UIApplication) {
         if ORKPasscodeViewController.isPasscodeStoredInKeychain() {
@@ -123,7 +116,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    //////////////
 }
 
 extension AppDelegate: ORKPasscodeDelegate {

@@ -11,67 +11,47 @@ import ResearchKit
 import RealmSwift
 
 class BaselineTableViewController: UITableViewController, ORKTaskViewControllerDelegate {
-    var taskRows : [BaselineTasks] = []
+    /// Properties
+    var taskRows : [BaselineTasks] = [] // the surveys and tasks will be shown for baselines 
+    var results: ORKResult?
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
-//        var drugType = realm.objects(Participant).filter("ID = '19910815'").first!.drugType
-//        print("\(drugType)")
+        let prefs = NSUserDefaults.standardUserDefaults()
+        let drugType = prefs.stringForKey("drugType")
+        
         if drugType == "Smoke/Vape" {
-            taskRows = [BaselineTasks.SVSurvey, BaselineTasks.AudioTask, BaselineTasks.ReactionTask, BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
+            taskRows = [BaselineTasks.SVSurvey, BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
         } else if drugType == "Alcohol" {
-            taskRows = [BaselineTasks.AlcoholSurvey, BaselineTasks.AudioTask, BaselineTasks.ReactionTask, BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
+            taskRows = [BaselineTasks.AlcoholSurvey, BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
         } else if drugType == "Both" {
-            taskRows = [BaselineTasks.AlcoholSurvey, BaselineTasks.SVSurvey, BaselineTasks.AudioTask, BaselineTasks.ReactionTask, BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
+            taskRows = [BaselineTasks.AlcoholSurvey, BaselineTasks.SVSurvey, BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
         }
-    
     }
+//     BaselineTasks.AudioTask, BaselineTasks.ReactionTask,
     
-    func randomFeedbackID() -> NSString {
-        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        
-        let randomString : NSMutableString = NSMutableString(capacity: 36)
-        
-        for (var i=0; i < 36; i++){
-            let length = UInt32 (letters.length)
-            let rand = arc4random_uniform(length)
-            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
-        }
-        
-        return randomString
-    }
-    
+    /// For generate all the feedbacks
     func generateFeedbacks() {
-        for i in 0...Feedbacks.rows.count {
-            var newFeedback = Feedback()
-            newFeedback.name = Feedbacks.rows[i].name
-            newFeedback.content = Feedbacks.rows[i].content
-            newFeedback.ID = randomFeedbackID()
+        let rows = [Feedbacks.BaselineAlcoholFeedback1, Feedbacks.BaselineAlcoholFeedback2, Feedbacks.BaselineAlcoholFeedback3, Feedbacks.BaselineAlcoholFeedback4, Feedbacks.BaselineSVFeedback1, Feedbacks.BaselineSVFeedback2, Feedbacks.BaselineSVFeedback3, Feedbacks.BaselineSVFeedback4,  Feedbacks.ThirtyAlcoholFeedback1, Feedbacks.ThirtyAlcoholFeedback2, Feedbacks.ThirtySVFeedback1, Feedbacks.ThirtySVFeedback2]
+        
+        for i in 0..<rows.count {
+            let newFeedback = Feedback()
+            newFeedback.name = rows[i].name
+            newFeedback.content = rows[i].content
+            newFeedback.ID = randomID() as String
             newFeedback.creationDate = NSDate()
         }
-        
     }
-
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-
-    // MARK: - Table view data source
-
-//    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        // #warning Incomplete implementation, return the number of sections
-//        return 0
-//    }
-
-
+    
+    /// set up the table view and its cells
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return taskRows.count
-        
     }
-
-
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier(BaselineTableViewCell.reuseIdentifier, forIndexPath: indexPath) as? BaselineTableViewCell else {
             fatalError("Unable to dequeue a ProfileStaticTableViewCell")
@@ -83,7 +63,12 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
         
         return cell
     }
-
+    
+    func configureCell(cell: BaselineTableViewCell, withTitleText titleText: String, withDescription descriptionText: String) {
+        // Set the default cell content.
+        cell.taskTitle.text = titleText
+        cell.taskDescription.text = descriptionText
+    }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -100,68 +85,142 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
         presentViewController(taskViewController, animated: true, completion: nil)
     }
     
+    /// Function for updating the table view when survery/task is completed
     func reloadTask(taskRunUUID: NSUUID) {
-        if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineReactionTask.taskRunUUID) {
-            taskRows = taskRows.filter() {$0 != BaselineTasks.ReactionTask}
-            self.tableView.reloadData()
-        } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineAudioTask.taskRunUUID) {
-            taskRows = taskRows.filter() {$0 != BaselineTasks.AudioTask}
-            self.tableView.reloadData()
-        } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineGoNoGoTask.taskRunUUID) {
+//        if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineReactionTask.taskRunUUID) {
+//            taskRows = taskRows.filter() {$0 != BaselineTasks.ReactionTask}
+//            self.tableView.reloadData()
+//        } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineAudioTask.taskRunUUID) {
+//            taskRows = taskRows.filter() {$0 != BaselineTasks.AudioTask}
+//            self.tableView.reloadData()
+        if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineGoNoGoTask.taskRunUUID) {
             taskRows = taskRows.filter() {$0 != BaselineTasks.GoNoGoTask}
             self.tableView.reloadData()
+//            self.tableView.deleteRowsAtIndexPaths(<#T##indexPaths: [NSIndexPath]##[NSIndexPath]#>, withRowAnimation: <#T##UITableViewRowAnimation#>)
         } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineBalloonTask.taskRunUUID) {
             taskRows = taskRows.filter() {$0 != BaselineTasks.BalloonTask}
             self.tableView.reloadData()
         } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineAlcoholSurvey.taskRunUUID) {
             taskRows = taskRows.filter() {$0 != BaselineTasks.AlcoholSurvey}
             self.tableView.reloadData()
-        } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineSVSurvey.taskRunUUID){
+        } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineSVSurvey.taskRunUUID) {
             taskRows = taskRows.filter() {$0 != BaselineTasks.SVSurvey}
             self.tableView.reloadData()
         }
     }
     
-    func configureCell(cell: BaselineTableViewCell, withTitleText titleText: String, withDescription descriptionText: String) {
-        // Set the default cell content.
-        cell.taskTitle.text = titleText
-        cell.taskDescription.text = descriptionText
-    }
-   
+    /// ORKTableViewControllerDelegate function
     func taskViewController(taskViewController: ORKTaskViewController, didFinishWithReason reason: ORKTaskViewControllerFinishReason, error: NSError?) {
         switch reason {
         case .Completed:
-            /// Store the surveys and tasks data into Realm 
-            var newBaselineSurvey = Survey()
-//            newBaselineSurvey.ID
-//            newBaselineSurvey.drugType
-//            newBaselineSurvey.taskRunUUID
-//            newBaselineSurvey.catergoryType
-            newBaselineSurvey.creationDate = NSDate()
-            newBaselineSurvey.name = taskViewController.result.identifier
-    
-            newBaselineSurvey.owner = currentParticipant
-            
-            
-            var newBaselineTask = Task()
-//            newBaselineTask.ID
-//            newBaselineTask.drugType
-//            newBaselineTask.taskRunUUID
-//            newBaselineTask.catergoryType
-//            newBaselineTask.taskType
-
-            newBaselineTask.creationDate = NSDate()
-            newBaselineTask.name = taskViewController.result.identifier
-            
-            newBaselineTask.owner = currentParticipant
+            /// When the participant is done with the last task
             if taskRows.count == 1 {
+                let prefs = NSUserDefaults.standardUserDefaults()
+                if taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineAlcoholSurvey.taskRunUUID) {
+                    /// Set up Realm and NSUserDefault
+                    let realm = try! Realm()
+                    let participantID = prefs.stringForKey("participantID")
+                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first
+                    let newBaselineSurvey = Survey()
+                    
+                    /// Set up properties
+                    newBaselineSurvey.ID = randomID() as String
+                    newBaselineSurvey.catergoryType = "Baseline"
+                    newBaselineSurvey.name = taskViewController.result.identifier
+                    newBaselineSurvey.taskUUID = taskViewController.taskRunUUID.UUIDString
+                    newBaselineSurvey.creationDate = NSDate()
+                    newBaselineSurvey.owner = realm.objects(Participant).filter("ID == '\(participantID)'").first
+                    newBaselineSurvey.drugType = "Alcohol"
+                    newBaselineSurvey.aImportance = taskViewController.result.stepResultForStepIdentifier(String(BaselineSurveyIdentifiers.BSAlcoholImportanceStep))?.resultForIdentifier(String(BaselineSurveyIdentifiers.BSAlcoholImportanceStep))?.valueForKey("answer") as! Int
+                    currentParticipant?.surveys.append(newBaselineSurvey)
+                    
+                    try! realm.write {
+                        realm.add(newBaselineSurvey)
+                        currentParticipant!.passcode = prefs.stringForKey("passcode")!
+                        currentParticipant!.startDate = NSDate()
+                    }
+                }
+                else if taskViewController.taskRunUUID == NSUUID(UUIDString:TaskRunUUID.BaselineSVSurvey.taskRunUUID) {
+                    /// Set up Realm and NSUserDefault
+                    let realm = try! Realm()
+                    let participantID = prefs.stringForKey("participantID")
+                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first
+                    let newBaselineSurvey = Survey()
+                    
+                    /// Set up properties
+                    newBaselineSurvey.ID = randomID() as String
+                    newBaselineSurvey.catergoryType = "Baseline"
+                    newBaselineSurvey.name = taskViewController.result.identifier
+                    newBaselineSurvey.taskUUID = taskViewController.taskRunUUID.UUIDString
+                    newBaselineSurvey.creationDate = NSDate()
+                    newBaselineSurvey.owner = currentParticipant
+                    newBaselineSurvey.drugType = "Smoke/Vape"
+                    newBaselineSurvey.sImportance = taskViewController.result.stepResultForStepIdentifier(String(BaselineSurveyIdentifiers.BSSVImportanceStep))?.resultForIdentifier(String(BaselineSurveyIdentifiers.BSSVImportanceStep))?.valueForKey("answer") as! Int
+                    
+                    currentParticipant?.surveys.append(newBaselineSurvey)
+                    
+                    try! realm.write {
+                        realm.add(newBaselineSurvey)
+                        currentParticipant?.passcode = prefs.stringForKey("passcode")!
+                        currentParticipant?.startDate = NSDate()
+                    }
+                }
+                prefs.setObject(NSDate(), forKey: "startDate")
+                prefs.setBool(true, forKey: "checkBaselineFeedback")
+                
                 performSegueWithIdentifier("unwindToStudy", sender: nil)
-                /// Add the passcode to the participant 
-                currentParticipant?.password = passcode!
+                /// Add the passcode to the participant so that they can use passcode to log in
                 generateFeedbacks()
+                
+            // otherwise the participant goes on
             } else {
+                if taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineAlcoholSurvey.taskRunUUID) {
+                    /// Set up Realm and NSUserDefault
+                    let prefs = NSUserDefaults.standardUserDefaults()
+                    let participantID = prefs.stringForKey("participantID")
+                    let realm = try! Realm()
+                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first
+                    let newBaselineSurvey = Survey()
+                    
+                    /// Set up properties
+                    newBaselineSurvey.ID = randomID() as String
+                    newBaselineSurvey.catergoryType = "Baseline"
+                    newBaselineSurvey.name = taskViewController.result.identifier
+                    newBaselineSurvey.taskUUID = taskViewController.taskRunUUID.UUIDString
+                    newBaselineSurvey.creationDate = NSDate()
+                    newBaselineSurvey.owner = currentParticipant
+                    newBaselineSurvey.drugType = "Alcohol"
+                    newBaselineSurvey.aImportance = taskViewController.result.stepResultForStepIdentifier(String(BaselineSurveyIdentifiers.BSAlcoholImportanceStep))?.resultForIdentifier(String(BaselineSurveyIdentifiers.BSAlcoholImportanceStep))?.valueForKey("answer") as! Int
+                    
+                    try! realm.write {
+                        realm.add(newBaselineSurvey)
+                    }
+                }
+                else if taskViewController.taskRunUUID == NSUUID(UUIDString:TaskRunUUID.BaselineSVSurvey.taskRunUUID) {
+                    /// Set up Realm and NSUserDefault
+                    let prefs = NSUserDefaults.standardUserDefaults()
+                    let participantID = prefs.stringForKey("participantID")
+                    let realm = try! Realm()
+                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first
+                    let newBaselineSurvey = Survey()
+                    
+                    /// Set up properties
+                    newBaselineSurvey.ID = randomID() as String
+                    newBaselineSurvey.catergoryType = "Baseline"
+                    newBaselineSurvey.name = taskViewController.result.identifier
+                    newBaselineSurvey.taskUUID = taskViewController.taskRunUUID.UUIDString
+                    newBaselineSurvey.creationDate = NSDate()
+                    newBaselineSurvey.owner = currentParticipant
+                    newBaselineSurvey.drugType = "Smoke/Vape"
+                    newBaselineSurvey.sImportance = taskViewController.result.stepResultForStepIdentifier(String(BaselineSurveyIdentifiers.BSSVImportanceStep))?.resultForIdentifier(String(BaselineSurveyIdentifiers.BSSVImportanceStep))?.valueForKey("answer") as! Int
+                    try! realm.write {
+                        realm.add(newBaselineSurvey)
+                    }
+                    /// update the rows in the table view
+                }
                 reloadTask(taskViewController.taskRunUUID)
                 dismissViewControllerAnimated(true, completion: nil)
+                
             }
         case .Discarded, .Failed, .Saved:
             dismissViewControllerAnimated(true, completion: nil)

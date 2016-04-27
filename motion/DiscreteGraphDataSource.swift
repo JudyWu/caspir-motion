@@ -29,29 +29,29 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 import ResearchKit
+import RealmSwift
 
 class DiscreteGraphDataSource: NSObject, ORKGraphChartViewDataSource {
     // MARK: Properties
     
-    var plotPoints =
-    [
-        [
-            ORKRangedPoint(minimumValue: 0, maximumValue: 2),
-            ORKRangedPoint(minimumValue: 1, maximumValue: 4),
-            ORKRangedPoint(minimumValue: 2, maximumValue: 6),
-            ORKRangedPoint(minimumValue: 3, maximumValue: 8),
-            ORKRangedPoint(minimumValue: 5, maximumValue: 10),
-            ORKRangedPoint(minimumValue: 8, maximumValue: 13),
-        ],
-        [
-            ORKRangedPoint(value: 1),
-            ORKRangedPoint(minimumValue: 2, maximumValue: 6),
-            ORKRangedPoint(minimumValue: 3, maximumValue: 10),
-            ORKRangedPoint(minimumValue: 5, maximumValue: 11),
-            ORKRangedPoint(minimumValue: 7, maximumValue: 13),
-            ORKRangedPoint(minimumValue: 10, maximumValue: 13),
-        ]
-    ]
+    func updateGraph() -> [ORKRangedPoint] {
+        let realm = try! Realm()
+        let prefs = NSUserDefaults.standardUserDefaults()
+        let participantID = prefs.stringForKey
+        let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first
+        
+        var alcoholDrinkingNumbers = [ORKRangedPoint]()
+//        var alcoholDrinkingDays = [String]()
+        let alcoholSurveys = currentParticipant!.surveys.filter("name = 'DSAlcoholSurvey'")
+        for i in 0..<alcoholSurveys.count {
+            let number = CGFloat(alcoholSurveys[i].totalDrinking)
+//            let date = alcoholSurveys[i].creationDate
+            alcoholDrinkingNumbers.append(ORKRangedPoint(minimumValue: 0, maximumValue: number))
+        }
+        return alcoholDrinkingNumbers
+    }
+    
+    var plotPoints = [updateGraph()]
     
     // MARK: ORKGraphChartViewDataSource
     

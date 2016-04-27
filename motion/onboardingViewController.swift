@@ -32,14 +32,14 @@ import UIKit
 import ResearchKit
 import RealmSwift
 
-let realm = try! Realm()
-
 class OnboardingViewController: UIViewController {
     /// For Storage check
     var taskResultFinishedCompletionHandler: (ORKResult -> Void)?
     
     @IBOutlet weak var joinButton: UIButton!
     
+    
+    /// For already participanting button
     @IBAction func logInButtonTapped(sender: UIButton) {
         let taskViewController = ORKTaskViewController(task: loginTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.LogInTask.taskRunUUID))
         taskViewController.delegate = self
@@ -48,7 +48,6 @@ class OnboardingViewController: UIViewController {
     
     
     // For join button
-    
     @IBAction func joinButtonTapped(sender: UIButton) {
         let taskViewController = ORKTaskViewController(task: onboardingTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.OnboardingTask.taskRunUUID))
         taskViewController.delegate = self
@@ -79,13 +78,13 @@ class OnboardingViewController: UIViewController {
         setUpAppearance()
         
     }
-    
+    /// For Generate User ID (7 digits of integer)
     func randomStringWithLength() -> NSString {
         let letters : NSString = "0123456789"
         
         let randomString : NSMutableString = NSMutableString(capacity: 7)
         
-        for (var i=0; i < 7; i++){
+        for (var i=0; i < 7; i++) {
             let length = UInt32 (letters.length)
             let rand = arc4random_uniform(length)
             randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
@@ -111,41 +110,67 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
         switch reason {
             case .Completed:
                 if taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.LogInTask.taskRunUUID)   {
-                    passcode = taskViewController.result.stepResultForStepIdentifier("SubstanceTypeStep")?.resultForIdentifier("SubstanceTypeStep")?.valueForKey("answer")?.firstObject as? String
+                    ///Get the passcode in the login task and save it in userDefaults
+                    let passcode = taskViewController.result.stepResultForStepIdentifier(String(OtherTasksIdentifiers.LogInStep))?.resultForIdentifier(String(OtherTasksIdentifiers.LogInItem))?.valueForKey("answer") as? String
+                    
+                    let prefs = NSUserDefaults.standardUserDefaults()
+                    prefs.setValue(passcode, forKey: "passcode")
                     
                     performSegueWithIdentifier("unwindToStudy", sender: nil)
 
                 } else if taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.OnboardingTask.taskRunUUID) {
-                    if taskViewController.result.stepResultForStepIdentifier(String(OnboardingIdentifiers.WrongCodeStep)) != nil || taskViewController.result.stepResultForStepIdentifier(String(OnboardingIdentifiers.IneligibleStep)) != nil {
+                    if taskViewController.result.stepResultForStepIdentifier(String(OnboardingIdentifiers.IneligibleStep)) != nil {
                         dismissViewControllerAnimated(true, completion: nil)
                     } else {
-                        performSegueWithIdentifier("unwindToBaseline", sender: nil)
                         taskResultFinishedCompletionHandler?(taskViewController.result)
-                        
                         //// Get the passcode and drugType properties from onboarding task
-                        passcode = taskViewController.result.stepResultForStepIdentifier("SubstanceTypeStep")?.resultForIdentifier("SubstanceTypeStep")?.valueForKey("answer")?.firstObject as? String
-                        drugType = taskViewController.result.stepResultForStepIdentifier("SubstanceTypeStep")?.resultForIdentifier("SubstanceTypeStep")?.valueForKey("answer")?.firstObject as? String
-                        
-                        onboarding = ConsentForm()
-                        
+                        let realm = try! Realm()
+                        let drugType = taskViewController.result.stepResultForStepIdentifier("SubstanceTypeStep")?.resultForIdentifier("SubstanceTypeStep")?.valueForKey("answer")?.firstObject as? String
+                        let passcode = taskViewController.result.stepResultForStepIdentifier(String(OtherTasksIdentifiers.LogInStep))?.resultForIdentifier(String(OtherTasksIdentifiers.LogInItem))?.valueForKey("answer") as? String
+
                         //// Create the participant
-                        
-                        participantID = randomStringWithLength() as? String
-                        startDate = NSDate() as? NSDate
+                        let participantID = randomStringWithLength() as String
                         
                         /// Create participant when participant completes
-                        currentParticipant = Participant()
-                        currentParticipant!.ID = participantID!
-                        currentParticipant!.drugType = drugType!
-                        currentParticipant!.creationDate = startDate!
+                        let currentParticipant = Participant()
+                        currentParticipant.ID = participantID
+                        currentParticipant.drugType = drugType!
+                        currentParticipant.creationDate = NSDate()
+                        currentParticipant.startDate = NSDate()
+                        currentParticipant.passcode = "qwertyu"
                         
-                        onboarding?.owner = currentParticipant
+                        ///create onboarding for the onboarding information
+                        let onboarding = ConsentForm()
+                        onboarding.name = taskViewController.result.identifier
+                        onboarding.ID = randomID() as String
+                        onboarding.creationDate = NSDate()
+                        onboarding.owner = currentParticipant
+                        onboarding.drugType = drugType!
                         
+                        if drugType == "Smoke/Vape" {
+                            onboarding.smokeDay = (taskViewController.result.stepResultForStepIdentifier(String(OnboardingIdentifiers.EligibilityFormStepTwo))?.resultForIdentifier(String(OnboardingIdentifiers.EligibilityFormQuestion4))?.valueForKey("answer") as? Int)!
+                        } else if drugType == "Alcohol" {
+                            onboarding.heavyDrinkingDay = (taskViewController.result.stepResultForStepIdentifier(String(OnboardingIdentifiers.EligibilityFormStepOne))?.resultForIdentifier(String(OnboardingIdentifiers.EligibilityFormQuestion3))?.valueForKey("answer") as? Int)!
+                        } else {
+                            onboarding.smokeDay = (taskViewController.result.stepResultForStepIdentifier(String(OnboardingIdentifiers.EligibilityFormStepThree))?.resultForIdentifier(String(OnboardingIdentifiers.EligibilityFormQuestion4))?.valueForKey("answer") as? Int)!
+                            onboarding.heavyDrinkingDay = (taskViewController.result.stepResultForStepIdentifier(String(OnboardingIdentifiers.EligibilityFormStepThree))?.resultForIdentifier(String(OnboardingIdentifiers.EligibilityFormQuestion3))?.valueForKey("answer") as? Int)!
+                        }
+        
                         try! realm.write {
-                            realm.add(onboarding!)
-                            realm.add(currentParticipant!)
+                            realm.add(onboarding)
+                            realm.add(currentParticipant)
                         }
                         
+                        let prefs = NSUserDefaults.standardUserDefaults()
+                        prefs.setValue(drugType, forKey: "drugType")
+                        prefs.setValue(passcode, forKey: "passcode")
+                        prefs.setValue(participantID, forKey: "participantID")
+                
+                        
+                        /// Direct to baseline measurements
+                        performSegueWithIdentifier("unwindToBaseline", sender: nil)
+                        /// Get the path to realm database
+                        print(Realm.Configuration.defaultConfiguration.path!)
                     }
                 }
             case .Discarded, .Failed, .Saved:
@@ -159,7 +184,10 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
             delay(3.0, closure: { () -> () in
                 if let stepViewController = stepViewController as? ORKWaitStepViewController {
                     let loginPasscode : String = taskViewController.result.stepResultForStepIdentifier("LogInStep")?.resultForIdentifier("LogInItem")?.valueForKey("answer") as! String
-                    if (realm.objects(Participant).filter("ID = '\(loginPasscode)'").first != nil) {
+                    
+                    let realm = try! Realm()
+                    
+                    if (realm.objects(Participant).filter("passcode = '\(loginPasscode)'").first != nil) {
                         stepViewController.goForward()
                     } else {
                         stepViewController.goBackward()
@@ -170,7 +198,3 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
         }
     }
 }
-
-
-//                        let feedbackTimer = NSTimer(timeInterval: 10, target: FeedbackViewController(), selector: #selector(FeedbackViewController.updateThirtyDayFeedback), userInfo: nil, repeats: true)
-//                        NSRunLoop.currentRunLoop().addTimer(feedbackTimer, forMode: NSRunLoopCommonModes)

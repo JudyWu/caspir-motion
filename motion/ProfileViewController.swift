@@ -71,8 +71,6 @@ enum HelpInfo: Int {
     }
 }
 
-
-
 class ProfileViewController: UITableViewController{
     // MARK: Properties
     @IBOutlet weak var applicationNameLabel: UILabel!

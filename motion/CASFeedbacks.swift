@@ -14,14 +14,12 @@ enum Feedbacks: Int {
     case BaselineAlcoholFeedback2
     case BaselineAlcoholFeedback3
     case BaselineAlcoholFeedback4
-    case BaselineAlcoholFeedback5
     
     /// Baseline smoke/vape
     case BaselineSVFeedback1
     case BaselineSVFeedback2
     case BaselineSVFeedback3
     case BaselineSVFeedback4
-    case BaselineSVFeedback5
     
     /// 30 days alcohol
     case ThirtyAlcoholFeedback1
@@ -31,9 +29,6 @@ enum Feedbacks: Int {
     case ThirtySVFeedback1
     case ThirtySVFeedback2
     
-    static var rows : [Feedbacks] {
-        return [BaselineAlcoholFeedback1, BaselineAlcoholFeedback2, BaselineAlcoholFeedback3, BaselineAlcoholFeedback4, BaselineAlcoholFeedback5, BaselineSVFeedback1, BaselineSVFeedback2, BaselineSVFeedback3, BaselineSVFeedback4, BaselineSVFeedback5, ThirtyAlcoholFeedback1, ThirtyAlcoholFeedback2, ThirtySVFeedback1, ThirtySVFeedback2]
-    }
     
     var name: String {
         switch self {
@@ -45,8 +40,6 @@ enum Feedbacks: Int {
             return ""
         case BaselineAlcoholFeedback4:
             return ""
-        case BaselineAlcoholFeedback5:
-            return ""
             
         /// Baseline smoke/vape
         case BaselineSVFeedback1:
@@ -56,8 +49,6 @@ enum Feedbacks: Int {
         case BaselineSVFeedback3:
             return ""
         case BaselineSVFeedback4:
-            return ""
-        case BaselineSVFeedback5:
             return ""
             
         /// 30 days alcohol
@@ -84,8 +75,6 @@ enum Feedbacks: Int {
             return ""
         case BaselineAlcoholFeedback4:
             return ""
-        case BaselineAlcoholFeedback5:
-            return ""
             
         /// Baseline smoke/vape
         case BaselineSVFeedback1:
@@ -96,8 +85,7 @@ enum Feedbacks: Int {
             return ""
         case BaselineSVFeedback4:
             return ""
-        case BaselineSVFeedback5:
-            return ""
+
             
         /// 30 days alcohol
         case ThirtyAlcoholFeedback1:
@@ -116,39 +104,36 @@ enum Feedbacks: Int {
     var content: String {
         switch self {
         case BaselineAlcoholFeedback1:
-            return ""
+            return "Your heavy drinking day is below 5"
         case BaselineAlcoholFeedback2:
-            return ""
+            return "Your heavy drinking day is above 5 and importance is below 3"
         case BaselineAlcoholFeedback3:
-            return ""
+            return "Your heavy drinking day is above 5 and importance is above 3"
         case BaselineAlcoholFeedback4:
-            return ""
-        case BaselineAlcoholFeedback5:
-            return ""
+            return "Your heavy drinking day is above 15"
+
             
-            /// Baseline smoke/vape
+        /// Baseline smoke/vape
         case BaselineSVFeedback1:
-            return ""
+            return "Your days of smoke is below 8"
         case BaselineSVFeedback2:
-            return ""
+            return "Your days of smoke is above 8 and importance is below 3"
         case BaselineSVFeedback3:
-            return ""
+            return "Your days of smoke is above 8 and importance is above 3"
         case BaselineSVFeedback4:
-            return ""
-        case BaselineSVFeedback5:
-            return ""
+            return "Your days of smoke is above 15"
             
-            /// 30 days alcohol
+        /// 30 days alcohol
         case ThirtyAlcoholFeedback1:
-            return ""
+            return "You have been heavily drinking over 50% of the study period"
         case ThirtyAlcoholFeedback2:
-            return ""
+            return "You have been heavily drinking less than 50% of the study period"
             
-            /// 30 days smoke/vape
+        /// 30 days smoke/vape
         case ThirtySVFeedback1:
-            return ""
+            return "You have been smoking over 50% of the study period"
         case ThirtySVFeedback2:
-            return ""
+            return "You have been smoking less than 50% of the study period"
         }
     }
 }

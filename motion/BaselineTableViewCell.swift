@@ -13,7 +13,6 @@ class BaselineTableViewCell: UITableViewCell {
     static let reuseIdentifier = "BaselineTableViewCell"
 
     @IBOutlet weak var taskTitle: UILabel!
-    
     @IBOutlet weak var taskDescription: UILabel!
     
     override func awakeFromNib() {

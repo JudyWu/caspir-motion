@@ -13,8 +13,12 @@ class Task: Object {
     //// Properties
     dynamic var ID = ""
     dynamic var name = ""
-    dynamic var creationDate = NSDate(timeIntervalSince1970: 1)
-//    dynamic var steps = []
+    dynamic var taskUUID = ""
+    dynamic var drugType = ""
+    dynamic var catergoryType = ""
+    dynamic var taskType = ""
+    dynamic var creationDate = NSDate()
+    dynamic var reactionTime : Float = 0.0
     
     //// Relationship
     dynamic var owner: Participant!
