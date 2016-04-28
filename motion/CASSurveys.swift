@@ -1263,7 +1263,7 @@ var dailySVSurvey: ORKTask {
     
     let DSSVPredicate = ORKResultPredicate.predicateForChoiceQuestionResultWithResultSelector(DSSVResultSelector, expectedAnswerValue: "Yes")
     
-    let DSSVPredicateRule = ORKPredicateStepNavigationRule(resultPredicates: [DSSVPredicate], destinationStepIdentifiers: [String(DailySurveyIdentifiers.DSSVSituationStep)], defaultStepIdentifier:  String(DailySurveyIdentifiers.DSSVNoStep), validateArrays: true)
+    let DSSVPredicateRule = ORKPredicateStepNavigationRule(resultPredicates: [DSSVPredicate], destinationStepIdentifiers: [String(DailySurveyIdentifiers.DSSVIntoxicationStep)], defaultStepIdentifier:  String(DailySurveyIdentifiers.DSSVNoStep), validateArrays: true)
     
     let DSSVTask = ORKNavigableOrderedTask(identifier: String(DailySurveyIdentifiers.DSSVSurvey), steps: steps)
     

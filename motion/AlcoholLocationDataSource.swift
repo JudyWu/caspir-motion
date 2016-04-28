@@ -29,32 +29,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 import ResearchKit
-import RealmSwift
 
-class DiscreteGraphDataSource: NSObject, ORKGraphChartViewDataSource {
+
+class AlcoholLocationDataSource: NSObject, ORKGraphChartViewDataSource {
     // MARK: Properties
-    
-    func updateGraph() -> [ORKRangedPoint] {
-        let realm = try! Realm()
-        let prefs = NSUserDefaults.standardUserDefaults()
-        let participantID = prefs.stringForKey
-        let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first
-        
-        var alcoholDrinkingNumbers = [ORKRangedPoint]()
-//        var alcoholDrinkingDays = [String]()
-        let alcoholSurveys = currentParticipant!.surveys.filter("name = 'DSAlcoholSurvey'")
-        for i in 0..<alcoholSurveys.count {
-            let number = CGFloat(alcoholSurveys[i].totalDrinking)
-//            let date = alcoholSurveys[i].creationDate
-            alcoholDrinkingNumbers.append(ORKRangedPoint(minimumValue: 0, maximumValue: number))
-        }
-        return alcoholDrinkingNumbers
-    }
-    
-    var plotPoints = [updateGraph()]
+    let plotPoints = [getAlcoholLocation()]
     
     // MARK: ORKGraphChartViewDataSource
-    
     func numberOfPlotsInGraphChartView(graphChartView: ORKGraphChartView) -> Int {
         return plotPoints.count
     }
@@ -68,6 +49,7 @@ class DiscreteGraphDataSource: NSObject, ORKGraphChartViewDataSource {
     }
     
     func graphChartView(graphChartView: ORKGraphChartView, titleForXAxisAtPointIndex pointIndex: Int) -> String? {
-        return "\(pointIndex + 1)"
+        let locations = ["Home", "Friend", "Bar", "Work", "Party", "Other"]
+        return locations[pointIndex]
     }
 }

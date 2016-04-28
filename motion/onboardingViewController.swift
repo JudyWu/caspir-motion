@@ -126,18 +126,18 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                         //// Get the passcode and drugType properties from onboarding task
                         let realm = try! Realm()
                         let drugType = taskViewController.result.stepResultForStepIdentifier("SubstanceTypeStep")?.resultForIdentifier("SubstanceTypeStep")?.valueForKey("answer")?.firstObject as? String
-                        let passcode = taskViewController.result.stepResultForStepIdentifier(String(OtherTasksIdentifiers.LogInStep))?.resultForIdentifier(String(OtherTasksIdentifiers.LogInItem))?.valueForKey("answer") as? String
-
+                        let passcode = taskViewController.result.stepResultForStepIdentifier("RegistrationStep")?.resultForIdentifier("LogInItem")?.valueForKey("answer") as? String
+                        print("\(taskViewController.result)")
+                    
                         //// Create the participant
-                        let participantID = randomStringWithLength() as String
+                        let participantID = randomStringWithLength() as String!
                         
                         /// Create participant when participant completes
                         let currentParticipant = Participant()
                         currentParticipant.ID = participantID
                         currentParticipant.drugType = drugType!
                         currentParticipant.creationDate = NSDate()
-                        currentParticipant.startDate = NSDate()
-                        currentParticipant.passcode = "qwertyu"
+                        currentParticipant.passcode = passcode!
                         
                         ///create onboarding for the onboarding information
                         let onboarding = ConsentForm()
@@ -146,6 +146,7 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                         onboarding.creationDate = NSDate()
                         onboarding.owner = currentParticipant
                         onboarding.drugType = drugType!
+                        currentParticipant.consentForm = onboarding
                         
                         if drugType == "Smoke/Vape" {
                             onboarding.smokeDay = (taskViewController.result.stepResultForStepIdentifier(String(OnboardingIdentifiers.EligibilityFormStepTwo))?.resultForIdentifier(String(OnboardingIdentifiers.EligibilityFormQuestion4))?.valueForKey("answer") as? Int)!
@@ -157,14 +158,17 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                         }
         
                         try! realm.write {
-                            realm.add(onboarding)
                             realm.add(currentParticipant)
+                            realm.add(onboarding)
                         }
                         
                         let prefs = NSUserDefaults.standardUserDefaults()
-                        prefs.setValue(drugType, forKey: "drugType")
-                        prefs.setValue(passcode, forKey: "passcode")
-                        prefs.setValue(participantID, forKey: "participantID")
+                        prefs.setObject(drugType, forKey: "drugType")
+                        prefs.setObject(passcode, forKey: "passcode")
+                        prefs.setObject(participantID, forKey: "participantID")
+                    
+                        
+
                 
                         
                         /// Direct to baseline measurements

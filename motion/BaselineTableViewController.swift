@@ -119,8 +119,8 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
                 if taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineAlcoholSurvey.taskRunUUID) {
                     /// Set up Realm and NSUserDefault
                     let realm = try! Realm()
-                    let participantID = prefs.stringForKey("participantID")
-                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first
+                    let participantID = prefs.stringForKey("participantID")!
+                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first!
                     let newBaselineSurvey = Survey()
                     
                     /// Set up properties
@@ -129,22 +129,23 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
                     newBaselineSurvey.name = taskViewController.result.identifier
                     newBaselineSurvey.taskUUID = taskViewController.taskRunUUID.UUIDString
                     newBaselineSurvey.creationDate = NSDate()
-                    newBaselineSurvey.owner = realm.objects(Participant).filter("ID == '\(participantID)'").first
+                    newBaselineSurvey.owner = currentParticipant
                     newBaselineSurvey.drugType = "Alcohol"
                     newBaselineSurvey.aImportance = taskViewController.result.stepResultForStepIdentifier(String(BaselineSurveyIdentifiers.BSAlcoholImportanceStep))?.resultForIdentifier(String(BaselineSurveyIdentifiers.BSAlcoholImportanceStep))?.valueForKey("answer") as! Int
-                    currentParticipant?.surveys.append(newBaselineSurvey)
                     
                     try! realm.write {
+                        currentParticipant.surveys.append(newBaselineSurvey)
+                        currentParticipant.passcode = String(prefs.stringForKey("passcode")!)
+                        print("\(String(prefs.stringForKey("passcode")!))")
+                        currentParticipant.startDate = NSDate()
                         realm.add(newBaselineSurvey)
-                        currentParticipant!.passcode = prefs.stringForKey("passcode")!
-                        currentParticipant!.startDate = NSDate()
                     }
                 }
                 else if taskViewController.taskRunUUID == NSUUID(UUIDString:TaskRunUUID.BaselineSVSurvey.taskRunUUID) {
                     /// Set up Realm and NSUserDefault
                     let realm = try! Realm()
-                    let participantID = prefs.stringForKey("participantID")
-                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first
+                    let participantID = prefs.stringForKey("participantID")!
+                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first!
                     let newBaselineSurvey = Survey()
                     
                     /// Set up properties
@@ -157,12 +158,13 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
                     newBaselineSurvey.drugType = "Smoke/Vape"
                     newBaselineSurvey.sImportance = taskViewController.result.stepResultForStepIdentifier(String(BaselineSurveyIdentifiers.BSSVImportanceStep))?.resultForIdentifier(String(BaselineSurveyIdentifiers.BSSVImportanceStep))?.valueForKey("answer") as! Int
                     
-                    currentParticipant?.surveys.append(newBaselineSurvey)
                     
                     try! realm.write {
+                        currentParticipant.surveys.append(newBaselineSurvey)
+                        currentParticipant.passcode = String(prefs.stringForKey("passcode")!)
+                        print("\(String(prefs.stringForKey("passcode")!))")
+                        currentParticipant.startDate = NSDate()
                         realm.add(newBaselineSurvey)
-                        currentParticipant?.passcode = prefs.stringForKey("passcode")!
-                        currentParticipant?.startDate = NSDate()
                     }
                 }
                 prefs.setObject(NSDate(), forKey: "startDate")
@@ -177,9 +179,9 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
                 if taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineAlcoholSurvey.taskRunUUID) {
                     /// Set up Realm and NSUserDefault
                     let prefs = NSUserDefaults.standardUserDefaults()
-                    let participantID = prefs.stringForKey("participantID")
+                    let participantID = prefs.stringForKey("participantID")!
                     let realm = try! Realm()
-                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first
+                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first!
                     let newBaselineSurvey = Survey()
                     
                     /// Set up properties
@@ -193,15 +195,16 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
                     newBaselineSurvey.aImportance = taskViewController.result.stepResultForStepIdentifier(String(BaselineSurveyIdentifiers.BSAlcoholImportanceStep))?.resultForIdentifier(String(BaselineSurveyIdentifiers.BSAlcoholImportanceStep))?.valueForKey("answer") as! Int
                     
                     try! realm.write {
+                        currentParticipant.surveys.append(newBaselineSurvey)
                         realm.add(newBaselineSurvey)
                     }
                 }
                 else if taskViewController.taskRunUUID == NSUUID(UUIDString:TaskRunUUID.BaselineSVSurvey.taskRunUUID) {
                     /// Set up Realm and NSUserDefault
                     let prefs = NSUserDefaults.standardUserDefaults()
-                    let participantID = prefs.stringForKey("participantID")
+                    let participantID = prefs.stringForKey("participantID")!
                     let realm = try! Realm()
-                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first
+                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first!
                     let newBaselineSurvey = Survey()
                     
                     /// Set up properties
@@ -214,6 +217,7 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
                     newBaselineSurvey.drugType = "Smoke/Vape"
                     newBaselineSurvey.sImportance = taskViewController.result.stepResultForStepIdentifier(String(BaselineSurveyIdentifiers.BSSVImportanceStep))?.resultForIdentifier(String(BaselineSurveyIdentifiers.BSSVImportanceStep))?.valueForKey("answer") as! Int
                     try! realm.write {
+                        currentParticipant.surveys.append(newBaselineSurvey)
                         realm.add(newBaselineSurvey)
                     }
                     /// update the rows in the table view

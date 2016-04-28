@@ -118,7 +118,7 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
     
     @IBAction func eventSurveyButtonTapped(sendere: UIButton) {
         let prefs = NSUserDefaults.standardUserDefaults()
-        let drugType = prefs.stringForKey("drugType")
+        let drugType = prefs.stringForKey("drugType")!
         
         if drugType == "Alcohol" {
             let taskViewController = ORKTaskViewController(task: eventAlcoholTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.EventAlcoholTask.taskRunUUID))
@@ -212,9 +212,9 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
                 if taskViewController.result.identifier == String(DailySurveyIdentifiers.DSSVSurvey) {
                     /// Set up Realm and NSUserDefault
                     let prefs = NSUserDefaults.standardUserDefaults()
-                    let participantID = prefs.stringForKey("participantID")
+                    let participantID = prefs.stringForKey("participantID")!
                     let realm = try! Realm()
-                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first
+                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first!
                     let newDailySurvey = Survey()
                     
                     /// Set up properties
@@ -226,25 +226,28 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
                     newDailySurvey.catergoryType = "Daily"
                     newDailySurvey.owner = currentParticipant
                     
-                    newDailySurvey.didSmokeDay = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSSVFilterStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSSVFilterStep))?.valueForKey("answer") as! String
+                    print("\(taskViewController.result)")
                     
-                    newDailySurvey.sIntoxicationAM = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSSVIntoxicationStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSSVIntoxicationStep))?.valueForKey("scaleAnswer") as! Int
+                    newDailySurvey.didSmokeDay = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSSVFilterStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSSVFilterStep))?.valueForKey("answer")?.firstObject as! String
                     
-                    newDailySurvey.sLocation =  taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSSVSituationStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSSVSituationStep))?.valueForKey("answer") as! Int
+                    newDailySurvey.sIntoxicationAM = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSSVIntoxicationStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSSVIntoxicationStep))?.valueForKey("answer") as! Int
                     
-                    newDailySurvey.sLimitation = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSSVIntentionStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSSVIntentionStep))?.valueForKey("answer") as! String
+                    newDailySurvey.sLocation =  taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSSVSituationStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSSVSituationStep))?.valueForKey("answer")?.firstObject as! Int
                     
-                    currentParticipant?.surveys.append(newDailySurvey)
+                    newDailySurvey.sLimitation = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSSVIntentionStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSSVIntentionStep))?.valueForKey("answer")?.firstObject as! String
+                    
+                    
                     try! realm.write {
+                        currentParticipant.surveys.append(newDailySurvey)
                         realm.add(newDailySurvey)
                     }
 
                 } else if taskViewController.result.identifier == String(DailySurveyIdentifiers.DSAlcoholSurvey) {
                     /// Set up Realm and NSUserDefault
                     let prefs = NSUserDefaults.standardUserDefaults()
-                    let participantID = prefs.stringForKey("participantID")
+                    let participantID = prefs.stringForKey("participantID")!
                     let realm = try! Realm()
-                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first
+                    let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first!
                     let newDailySurvey = Survey()
                     
                     /// Set up properties
@@ -256,6 +259,8 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
                     newDailySurvey.catergoryType = "Daily"
                     newDailySurvey.owner = currentParticipant
                     
+                    print("\(taskViewController.result)")
+                    
                     newDailySurvey.totalDrinking = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSAlcoholDrinkStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSAlcoholDrinkStep))?.valueForKey("answer") as! Int
                     
                     if (newDailySurvey.totalDrinking >= 4) {
@@ -266,9 +271,10 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
                     newDailySurvey.aLocation = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSAlcoholSituationStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSAlcoholSituationStep))?.valueForKey("answer") as! Int
                     
                     newDailySurvey.aLimitation = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSAlcoholIntentionStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSAlcoholIntentionStep))?.valueForKey("answer") as! String
-                    currentParticipant?.surveys.append(newDailySurvey)
+                   
                     
                     try! realm.write {
+                        currentParticipant.surveys.append(newDailySurvey)
                         realm.add(newDailySurvey)
                     }
 
@@ -282,8 +288,8 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
                 let realm = try! Realm()
                 let prefs = NSUserDefaults.standardUserDefaults()
                 let newDailySurvey = Survey()
-                let participantID = prefs.stringForKey("participantID")
-                let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first
+                let participantID = prefs.stringForKey("participantID")!
+                let currentParticipant = realm.objects(Participant).filter("ID == '\(participantID)'").first!
                 
                 newDailySurvey.ID = randomID() as String
                 newDailySurvey.name = taskViewController.result.identifier
@@ -293,19 +299,21 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
                 newDailySurvey.catergoryType = "Daily"
                 newDailySurvey.owner = currentParticipant
                 
-                newDailySurvey.totalDrinking = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSAlcoholDrinkStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSAlcoholDrinkStep))?.valueForKey("answer") as! Int
+                print("\(taskViewController.result)")
+                newDailySurvey.totalDrinking = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSAlcoholDrinkStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSAlcoholDrinkStep))?.valueForKey("answer")?.firstObject as! Int
                 
                 if (newDailySurvey.totalDrinking >= 4) {
                     newDailySurvey.dailyHeavyDrinkingDay = "Yes"
                 } else {
                     newDailySurvey.dailyHeavyDrinkingDay = "No"
                 }
-                newDailySurvey.aLocation = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSAlcoholSituationStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSAlcoholSituationStep))?.valueForKey("answer") as! Int
+                newDailySurvey.aLocation = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSAlcoholSituationStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSAlcoholSituationStep))?.valueForKey("answer")?.firstObject as! Int
                 
-                newDailySurvey.aLimitation = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSAlcoholIntentionStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSAlcoholIntentionStep))?.valueForKey("answer") as! String
-                currentParticipant?.surveys.append(newDailySurvey)
+                newDailySurvey.aLimitation = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSAlcoholIntentionStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSAlcoholIntentionStep))?.valueForKey("answer")?.firstObject as! String
+                
 
                 try! realm.write {
+                    currentParticipant.surveys.append(newDailySurvey)
                     realm.add(newDailySurvey)
                 }
 

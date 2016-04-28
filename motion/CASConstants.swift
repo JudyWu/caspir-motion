@@ -302,3 +302,284 @@ func randomID() -> NSString {
     }
     return randomString
 }
+
+
+func getAlcoholLocation() -> [ORKRangedPoint] {
+    let prefs = NSUserDefaults.standardUserDefaults()
+    let participantID = prefs.stringForKey("participantID")!
+    
+    
+    let realm = try! Realm()
+    let currentParticipantSurveys = realm.objects(Participant).filter("ID == '\(participantID)'").first!.surveys.filter("name = 'DSAlcoholSurvey'")
+    
+    print("\(currentParticipantSurveys)")
+    
+    var aLocation1 = 0
+    var aLocation1Array = [Int]()
+    
+    var aLocation2 = 0
+    var aLocation2Array = [Int]()
+    
+    var aLocation3 = 0
+    var aLocation3Array = [Int]()
+    
+    var aLocation4 = 0
+    var aLocation4Array = [Int]()
+    
+    var aLocation7 = 0
+    var aLocation7Array = [Int]()
+    
+    var aLocation99 = 0
+    var aLocation99Array = [Int]()
+    
+    for i in 0..<currentParticipantSurveys.count {
+        if currentParticipantSurveys[i].aLocation == 1 {
+            aLocation1Array.append(currentParticipantSurveys[i].totalDrinking)
+            aLocation1 += 1
+        } else if currentParticipantSurveys[i].aLocation == 2 {
+            aLocation2Array.append(currentParticipantSurveys[i].totalDrinking)
+            aLocation2 += 1
+        } else if currentParticipantSurveys[i].aLocation == 3 {
+            aLocation3Array.append(currentParticipantSurveys[i].totalDrinking)
+            aLocation3 += 1
+        } else if currentParticipantSurveys[i].aLocation == 4 {
+            aLocation4Array.append(currentParticipantSurveys[i].totalDrinking)
+            aLocation4 += 1
+        } else if currentParticipantSurveys[i].aLocation == 7 {
+            aLocation7Array.append(currentParticipantSurveys[i].totalDrinking)
+            aLocation7 += 1
+        } else if currentParticipantSurveys[i].aLocation == 99 {
+            aLocation99Array.append(currentParticipantSurveys[i].totalDrinking)
+            aLocation99 += 1
+        }
+    }
+    var average1 = 0
+    if aLocation1 != 0 {
+        average1 = aLocation1Array.reduce(0, combine: +)/aLocation1
+    }
+    
+    var average2 = 0
+    if aLocation2 != 0 {
+        average2 = aLocation2Array.reduce(0, combine: +)/aLocation2
+    }
+    
+    var average3 = 0
+    if aLocation3 != 0 {
+        average3 = aLocation3Array.reduce(0, combine: +)/aLocation3
+    }
+    
+    var average4 = 0
+    if aLocation4 != 0 {
+        average4 = aLocation4Array.reduce(0, combine: +)/aLocation4
+    }
+    
+    var average7 = 0
+    if aLocation7 != 0 {
+        average7 = aLocation7Array.reduce(0, combine: +)/aLocation7
+    }
+    var average99 = 0
+    if aLocation99 != 0 {
+        average99 = aLocation99Array.reduce(0, combine: +)/aLocation99
+    }
+    
+    
+    let locationRangedPoints = [
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(average1)),
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(average2)),
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(average3)),
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(average4)),
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(average7)),
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(average99))
+    ]
+    
+    return locationRangedPoints
+}
+
+func getSmokeLocation() -> [ORKRangedPoint] {
+    let prefs = NSUserDefaults.standardUserDefaults()
+    let participantID = prefs.stringForKey("participantID")!
+    
+    let realm = try! Realm()
+    let currentParticipantSurveys = realm.objects(Participant).filter("ID == '\(participantID)'").first!.surveys.filter("name = 'DSSVSurvey'")
+    
+    var aLocation1 = 0
+    var aLocation1Array = [Int]()
+    
+    var aLocation2 = 0
+    var aLocation2Array = [Int]()
+    
+    var aLocation3 = 0
+    var aLocation3Array = [Int]()
+    
+    var aLocation4 = 0
+    var aLocation4Array = [Int]()
+    
+    var aLocation7 = 0
+    var aLocation7Array = [Int]()
+    
+    var aLocation99 = 0
+    var aLocation99Array = [Int]()
+    
+    for i in 0..<currentParticipantSurveys.count {
+        if currentParticipantSurveys[i].sLocation == 1 {
+            aLocation1Array.append(currentParticipantSurveys[i].sIntoxicationAM)
+            aLocation1 += 1
+        } else if currentParticipantSurveys[i].sLocation == 2 {
+            aLocation2Array.append(currentParticipantSurveys[i].sIntoxicationAM)
+            aLocation2 += 1
+        } else if currentParticipantSurveys[i].sLocation == 3 {
+            aLocation3Array.append(currentParticipantSurveys[i].sIntoxicationAM)
+            aLocation3 += 1
+        } else if currentParticipantSurveys[i].sLocation == 4 {
+            aLocation4Array.append(currentParticipantSurveys[i].sIntoxicationAM)
+            aLocation4 += 1
+        } else if currentParticipantSurveys[i].sLocation == 7 {
+            aLocation7Array.append(currentParticipantSurveys[i].sIntoxicationAM)
+            aLocation7 += 1
+        } else if currentParticipantSurveys[i].sLocation == 99 {
+            aLocation99Array.append(currentParticipantSurveys[i].sIntoxicationAM)
+            aLocation99 += 1
+        }
+    }
+    
+    var average1 = 0
+    if aLocation1 != 0 {
+        average1 = aLocation1Array.reduce(0, combine: +)/aLocation1
+    }
+    
+    var average2 = 0
+    if aLocation2 != 0 {
+        average2 = aLocation2Array.reduce(0, combine: +)/aLocation2
+    }
+    
+    var average3 = 0
+    if aLocation3 != 0 {
+        average3 = aLocation3Array.reduce(0, combine: +)/aLocation3
+    }
+    
+    var average4 = 0
+    if aLocation4 != 0 {
+        average4 = aLocation4Array.reduce(0, combine: +)/aLocation4
+    }
+    
+    var average7 = 0
+    if aLocation7 != 0 {
+        average7 = aLocation7Array.reduce(0, combine: +)/aLocation7
+    }
+    var average99 = 0
+    if aLocation99 != 0 {
+        average99 = aLocation99Array.reduce(0, combine: +)/aLocation99
+    }
+    
+    
+    let locationRangedPoints = [
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(average1)),
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(average2)),
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(average3)),
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(average4)),
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(average7)),
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(average99))
+    ]
+    
+    return locationRangedPoints
+}
+
+func getAlcoholLimitation() -> [ORKRangedPoint]{
+    let prefs = NSUserDefaults.standardUserDefaults()
+    let participantID = prefs.stringForKey("participantID")!
+    
+    let realm = try! Realm()
+    let currentParticipantSurveys = realm.objects(Participant).filter("ID == '\(participantID)'").first!.surveys.filter("name = 'DSAlcoholSurvey'")
+    
+    var aLimitationYes = 0
+    var aLimitationYesArray = [Int]()
+    
+    var aLimitationNo = 0
+    var aLimitationNoArray = [Int]()
+    
+    for i in 0..<currentParticipantSurveys.count {
+        if currentParticipantSurveys[i].aLimitation == "Yes" {
+            aLimitationYesArray.append(currentParticipantSurveys[i].totalDrinking)
+            aLimitationYes += 1
+        } else if currentParticipantSurveys[i].aLimitation == "No" {
+            aLimitationNoArray.append(currentParticipantSurveys[i].totalDrinking)
+            aLimitationNo += 1
+        }
+    }
+    var averageYes = 0
+    if aLimitationYes != 0 {
+        averageYes = aLimitationYesArray.reduce(0, combine: +)/aLimitationYes
+    }
+    
+    var averageNo = 0
+    if aLimitationNo != 0 {
+        averageNo = aLimitationNoArray.reduce(0, combine: +)/aLimitationNo
+    }
+    
+    
+    
+    
+    let limitationRangedPoints = [
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(averageYes)),
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(averageNo))
+    ]
+    
+    return limitationRangedPoints
+}
+
+func getSmokeLimitation() -> [ORKRangedPoint]{
+    let prefs = NSUserDefaults.standardUserDefaults()
+    let participantID = prefs.stringForKey("participantID")!
+    
+    let realm = try! Realm()
+    let currentParticipantSurveys = realm.objects(Participant).filter("ID == '\(participantID)'").first!.surveys.filter("name = 'DSSVSurvey'")
+    
+    var aLimitationYes = 0
+    var aLimitationYesArray = [Int]()
+    
+    var aLimitationNo = 0
+    var aLimitationNoArray = [Int]()
+    
+    for i in 0..<currentParticipantSurveys.count {
+        if currentParticipantSurveys[i].sLimitation == "Yes" {
+            aLimitationYesArray.append(currentParticipantSurveys[i].sIntoxicationAM)
+            aLimitationYes += 1
+        } else if currentParticipantSurveys[i].sLimitation == "No" {
+            aLimitationNoArray.append(currentParticipantSurveys[i].sIntoxicationAM)
+            aLimitationNo += 1
+        }
+    }
+    
+    var averageYes = 0
+    if aLimitationYes != 0 {
+        averageYes = aLimitationYesArray.reduce(0, combine: +)/aLimitationYes
+    }
+    
+    var averageNo = 0
+    if aLimitationNo != 0 {
+        averageNo = aLimitationNoArray.reduce(0, combine: +)/aLimitationNo
+    }
+    
+    let limitationRangedPoints = [
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(averageYes)),
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(averageNo))
+    ]
+    
+    return limitationRangedPoints
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

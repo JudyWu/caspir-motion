@@ -29,40 +29,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 import ResearchKit
-import RealmSwift
 
-class LineGraphDataSource: NSObject, ORKGraphChartViewDataSource {
-    // MARK: Properties
-    
-        
-    
-    var plotPoints =
-    [
-        [
-            ORKRangedPoint(value: 10),
-            ORKRangedPoint(value: 20),
-            ORKRangedPoint(value: 25),
-            ORKRangedPoint(),
-            ORKRangedPoint(value: 30),
-            ORKRangedPoint(value: 40),
-        ],
-        [
-            ORKRangedPoint(value: 2),
-            ORKRangedPoint(value: 4),
-            ORKRangedPoint(value: 8),
-            ORKRangedPoint(value: 16),
-            ORKRangedPoint(value: 32),
-            ORKRangedPoint(value: 64),
-        ]
-    ]
-    
-    // MARK: ORKGraphChartViewDataSource
+class SmokeLimicationDataSource: NSObject, ORKGraphChartViewDataSource {
+    // MARK: Types
+   
+    let plotPoints = [getSmokeLimitation()]
     
     func numberOfPlotsInGraphChartView(graphChartView: ORKGraphChartView) -> Int {
         return plotPoints.count
     }
     
     func graphChartView(graphChartView: ORKGraphChartView, pointForPointIndex pointIndex: Int, plotIndex: Int) -> ORKRangedPoint {
+        
         return plotPoints[plotIndex][pointIndex]
     }
     
@@ -70,15 +48,8 @@ class LineGraphDataSource: NSObject, ORKGraphChartViewDataSource {
         return plotPoints[plotIndex].count
     }
     
-    func maximumValueForGraphChartView(graphChartView: ORKGraphChartView) -> CGFloat {
-        return 70
-    }
-    
-    func minimumValueForGraphChartView(graphChartView: ORKGraphChartView) -> CGFloat {
-        return 0
-    }
-    
     func graphChartView(graphChartView: ORKGraphChartView, titleForXAxisAtPointIndex pointIndex: Int) -> String? {
-        return "\(pointIndex + 1)"
+        let limitations = ["Yes", "No"]
+        return limitations[pointIndex]
     }
 }

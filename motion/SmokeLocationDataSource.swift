@@ -30,38 +30,28 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import ResearchKit
 
-class PieChartDataSource: NSObject, ORKPieChartViewDataSource {
-    // MARK: Types
-    
-    struct Segment {
-        let title: String
-        let value: Float
-        let color: UIColor
-    }
-    
+
+class SmokeLocationDataSource: NSObject, ORKGraphChartViewDataSource {
     // MARK: Properties
+
+    let plotPoints = [getSmokeLocation()]
     
-    let segments = [
-        Segment(title: "At home", value: 10.0, color: UIColor(red: 217/225, green: 217/255, blue: 217/225, alpha: 1)),
-        Segment(title: "At the bar", value: 25.0, color: UIColor(red: 142/255, green: 142/255, blue: 147/255, alpha: 1)),
-        Segment(title: "At work", value: 45.0, color: UIColor(red: 244/225, green: 190/255, blue: 74/225, alpha: 1))
-    ]
+    // MARK: ORKGraphChartViewDataSource
     
-    // MARK: ORKPieChartViewDataSource
-    
-    func numberOfSegmentsInPieChartView(pieChartView: ORKPieChartView ) -> Int {
-        return segments.count
+    func numberOfPlotsInGraphChartView(graphChartView: ORKGraphChartView) -> Int {
+        return plotPoints.count
     }
     
-    func pieChartView(pieChartView: ORKPieChartView, valueForSegmentAtIndex index: Int) -> CGFloat {
-        return CGFloat(segments[index].value)
+    func graphChartView(graphChartView: ORKGraphChartView, pointForPointIndex pointIndex: Int, plotIndex: Int) -> ORKRangedPoint {
+        return plotPoints[plotIndex][pointIndex]
     }
     
-    func pieChartView(pieChartView: ORKPieChartView, colorForSegmentAtIndex index: Int) -> UIColor {
-        return segments[index].color
+    func graphChartView(graphChartView: ORKGraphChartView, numberOfPointsForPlotIndex plotIndex: Int) -> Int {
+        return plotPoints[plotIndex].count
     }
     
-    func pieChartView(pieChartView: ORKPieChartView, titleForSegmentAtIndex index: Int) -> String {
-        return segments[index].title
+    func graphChartView(graphChartView: ORKGraphChartView, titleForXAxisAtPointIndex pointIndex: Int) -> String? {
+        let locations = ["Home", "Friend", "Bar", "Work", "Party", "Other"]
+        return locations[pointIndex]
     }
 }

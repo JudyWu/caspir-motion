@@ -19,6 +19,7 @@ class FeedbackViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateBaselineFeedback()
+        self.thirtyDayAlcoholText.alpha = 0
         
     }
     
@@ -30,15 +31,16 @@ class FeedbackViewController: UITableViewController {
     
     func updateBaselineFeedback() {
         let prefs = NSUserDefaults.standardUserDefaults()
-        let drugType = prefs.stringForKey("drugType")
-        let participantID = prefs.stringForKey("participantID")
+        let drugType = prefs.stringForKey("drugType")!
+        let participantID = prefs.stringForKey("participantID")!
         
         let realm = try! Realm()
-        let currentParticipant = realm.objects(Participant).filter("ID =='\(participantID)'").first
-    
+        let currentParticipant = realm.objects(Participant).filter("ID = '\(participantID)'").first!
+        print("\(currentParticipant)")
+
         if drugType == "Alcohol" {
-            let aImportance = currentParticipant!.surveys.filter("name == 'BSAlcoholSurvey'").first!.aImportance
-            let heavyDrinkingDay = currentParticipant!.surveys.filter("name == 'OnboardingTask'").first!.heavyDrinkingDay
+            let aImportance = currentParticipant.surveys.filter("name = 'BSAlcoholSurvey'").first!.aImportance
+            let heavyDrinkingDay = currentParticipant.consentForm.heavyDrinkingDay
             
             if heavyDrinkingDay <= 5 {
                 self.baselineFeedbackText.text = Feedbacks.BaselineAlcoholFeedback1.content
@@ -53,8 +55,8 @@ class FeedbackViewController: UITableViewController {
             }
             self.baselineAlcoholText.alpha = 0
         } else if drugType == "Smoke/Vape" {
-            let sImportance = currentParticipant?.surveys.filter("name == 'BSSVSurvey'").first?.sImportance
-            let smokeDay = currentParticipant?.surveys.filter("name == 'OnboardingTask'").first?.smokeDay
+            let sImportance = currentParticipant.surveys.filter("name = 'BSSVSurvey'").first?.sImportance
+            let smokeDay = currentParticipant.consentForm.smokeDay
             if smokeDay <= 8 {
                 self.baselineFeedbackText.text = Feedbacks.BaselineSVFeedback1.content
             } else if smokeDay > 8 && smokeDay < 15 {
@@ -68,8 +70,8 @@ class FeedbackViewController: UITableViewController {
             }
             self.baselineAlcoholText.alpha = 0
         } else {
-            let aImportance = currentParticipant?.surveys.filter("name == 'BSAlcoholSurvey'").first?.aImportance
-            let heavyDrinkingDay = currentParticipant?.surveys.filter("name == 'OnboardingTask'").first?.heavyDrinkingDay
+            let aImportance = currentParticipant.surveys.filter("name = 'BSAlcoholSurvey'").first?.aImportance
+            let heavyDrinkingDay = currentParticipant.consentForm.heavyDrinkingDay
             
             if heavyDrinkingDay <= 5 {
                 self.baselineFeedbackText.text = Feedbacks.BaselineAlcoholFeedback1.content
@@ -83,8 +85,8 @@ class FeedbackViewController: UITableViewController {
                 self.baselineFeedbackText.text = Feedbacks.BaselineAlcoholFeedback4.content
             }
             
-            let sImportance = currentParticipant?.surveys.filter("name == 'BSSVSurvey'").first?.sImportance
-            let smokeDay = currentParticipant?.surveys.filter("name == 'OnboardingTask'").first?.smokeDay
+            let sImportance = currentParticipant.surveys.filter("name = 'BSSVSurvey'").first?.sImportance
+            let smokeDay = currentParticipant.consentForm.smokeDay
             if smokeDay <= 8 {
                 self.baselineAlcoholText.text = Feedbacks.BaselineSVFeedback1.content
             } else if smokeDay > 8 && smokeDay < 15 {
@@ -100,43 +102,46 @@ class FeedbackViewController: UITableViewController {
     }
     
     func updateThirtyDayFeedback() {
-        leftDays = 30 - (timeInterval! - rounds!*30)
+//        leftDays = 30 - (timeInterval! - rounds!*30)
         let prefs = NSUserDefaults.standardUserDefaults()
         let drugType = prefs.stringForKey("drugType")
-        let participantID = prefs.stringForKey("participantID")
+        let participantID = prefs.stringForKey("participantID")!
         
         let realm = try! Realm()
-        let currentParticipant = realm.objects(Participant).filter("ID =='\(participantID)'").first
+        let currentParticipant = realm.objects(Participant).filter("ID = '\(participantID)'").first
         
         if drugType == "Alcohol" {
-            let alcoholSurveyNumber = currentParticipant?.surveys.filter("name == 'DSAlcoholSurvey'").count
-            let heavyDayNumber = currentParticipant?.surveys.filter("name == 'DSAlcoholSurvey'").filter("dailyHeavyDrinkingDay = 'Yes'").count
+            let alcoholSurveyNumber = currentParticipant?.surveys.filter("name = 'DSAlcoholSurvey'").count
+            let heavyDayNumber = currentParticipant?.surveys.filter("name = 'DSAlcoholSurvey'").filter("dailyHeavyDrinkingDay = 'Yes'").count
             if Double(heavyDayNumber!/alcoholSurveyNumber!) > 0.5 {
                  self.thirtyDaysFeedbackText.text = Feedbacks.ThirtyAlcoholFeedback1.content
             } else {
                 self.thirtyDaysFeedbackText.text = Feedbacks.ThirtyAlcoholFeedback2.content
             }
+           
         } else if drugType == "Smoke/Vape" {
-            let SVSurveyNumber = currentParticipant?.surveys.filter("name == 'DSSVSurvey'").count
-            let smokeDayNumber = currentParticipant?.surveys.filter("name == 'DSSVSurvey'").filter("didSmokeDay = 'Yes'").count
+            let SVSurveyNumber = currentParticipant?.surveys.filter("name = 'DSSVSurvey'").count
+            let smokeDayNumber = currentParticipant?.surveys.filter("name = 'DSSVSurvey'").filter("didSmokeDay = 'Yes'").count
             if Double(smokeDayNumber!/SVSurveyNumber!) > 0.5 {
                 self.thirtyDaysFeedbackText.text = Feedbacks.ThirtySVFeedback1.content
             } else {
                 self.thirtyDaysFeedbackText.text = Feedbacks.ThirtySVFeedback2.content
             }
         } else {
-            let alcoholSurveyNumber = currentParticipant?.surveys.filter("name == 'DSAlcoholSurvey'").count
-            let heavyDayNumber = currentParticipant?.surveys.filter("name == 'DSAlcoholSurvey'").filter("dailyHeavyDrinkingDay = 'Yes'").count
+            let alcoholSurveyNumber = currentParticipant?.surveys.filter("name = 'DSAlcoholSurvey'").count
+            let heavyDayNumber = currentParticipant?.surveys.filter("name = 'DSAlcoholSurvey'").filter("dailyHeavyDrinkingDay = 'Yes'").count
             if Double(heavyDayNumber!/alcoholSurveyNumber!) > 0.5 {
                 self.thirtyDaysFeedbackText.text = Feedbacks.ThirtyAlcoholFeedback1.content
             } else {
                 self.thirtyDaysFeedbackText.text = Feedbacks.ThirtyAlcoholFeedback2.content
             }
-            let SVSurveyNumber = currentParticipant?.surveys.filter("name == 'DSSVSurvey'").count
-            let smokeDayNumber = currentParticipant?.surveys.filter("name == 'DSSVSurvey'").filter("didSmokeDay = 'Yes'").count
+            let SVSurveyNumber = currentParticipant?.surveys.filter("name = 'DSSVSurvey'").count
+            let smokeDayNumber = currentParticipant?.surveys.filter("name = 'DSSVSurvey'").filter("didSmokeDay = 'Yes'").count
             if Double(smokeDayNumber!/SVSurveyNumber!) > 0.5 {
+                self.thirtyDayAlcoholText.alpha = 1
                 self.thirtyDayAlcoholText.text = Feedbacks.ThirtySVFeedback1.content
             } else {
+                self.thirtyDayAlcoholText.alpha = 1
                 self.thirtyDayAlcoholText.text = Feedbacks.ThirtySVFeedback2.content
             }
         }
