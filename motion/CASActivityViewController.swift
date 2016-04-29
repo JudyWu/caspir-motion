@@ -48,14 +48,15 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
         let nowDate = NSDate()
         let prefs = NSUserDefaults.standardUserDefaults()
         let startDate = prefs.objectForKey("startDate") as! NSDate
-        let timeInterval = nowDate.daysFrom(startDate)
-        let rounds = floor(Double(timeInterval/30))
+        let timeInterval = nowDate.minutesFrom(startDate)
+        let rounds = floor(Double(timeInterval/2))
         
         let checkBaselineFeedback = prefs.boolForKey("checkBaselineFeedback")
         let currentRounds = prefs.doubleForKey("studyRounds")
         if rounds >= 1 && Int(rounds) > Int(currentRounds) {
             alertThirtyDaysFeedbacks()
             prefs.setDouble(rounds, forKey: "studyRounds")
+            prefs.setBool(true, forKey: "checkThirtyFeedback")
         } else if checkBaselineFeedback == true {
             alertBaselineFeedback()
             prefs.setDouble(0.0, forKey: "studyRounds")
@@ -232,7 +233,7 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
                     
                     newDailySurvey.sLimitation = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSSVIntentionStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSSVIntentionStep))?.valueForKey("answer")?.firstObject as! String
                     
-                    
+                    print("\(taskViewController.result)")
                     try! realm.write {
                         currentParticipant.surveys.append(newDailySurvey)
                         realm.add(newDailySurvey)

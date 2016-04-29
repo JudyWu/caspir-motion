@@ -43,15 +43,14 @@ class GraphTableViewController: UITableViewController {
         alcoholLimitationTableViewCell.graphView.animateWithDuration(0.5)
         smokeLocationTableViewCell.graphView.animateWithDuration(0.5)
         smokeLimitationTableViewCell.graphView.animateWithDuration(0.5)
-//        tableView.tableFooterView = UIView(frame: CGRectZero)
+        tableView.tableFooterView = UIView(frame: CGRectZero)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
-
-    
+    //// Prepare all the graphs for the table view cell
     func generateGraphs() {
         let alcoholLocationDataSource = AlcoholLocationDataSource()
         let alcoholLimitationDataSource = AlcoholLimitationDataSource()

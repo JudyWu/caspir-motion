@@ -81,6 +81,7 @@ class ProfileViewController: UITableViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.tableFooterView = UIView(frame: CGRectZero)
     }
     
     // MARK: UITableViewDataSource

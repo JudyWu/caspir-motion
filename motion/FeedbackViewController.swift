@@ -15,22 +15,30 @@ class FeedbackViewController: UITableViewController {
     var nowTime : NSDate?
     var leftDays: Int?
     var rounds: Int?
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        updateBaselineFeedback()
+    
+        let prefs = NSUserDefaults.standardUserDefaults()
+        let checkThirtyFeedbackStatus = prefs.boolForKey("checkThirtyFeedback")
+        
+        if checkThirtyFeedbackStatus {
+            updateThirtyDayFeedback()
+        }
+        tableView.tableFooterView = UIView(frame: CGRectZero)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateBaselineFeedback()
-        
     }
+    
 
     @IBOutlet weak var baselineFeedbackText: UITextView!
     @IBOutlet weak var thirtyDaysFeedbackText: UITextView!
     
     @IBAction func feedbackButtonTapped(sender: UIButton) {
         let feedbackAlertController = UIAlertController(title: "Thank you", message: "We will take into your feedback to improve our care.", preferredStyle: .Alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) {(action: UIAlertAction) in
-            print("You cliced on the cancel button")
-        }
-        feedbackAlertController.addAction(cancelAction)
         let OKAction = UIAlertAction(title: "OK", style: .Default) {(action: UIAlertAction) in
             print("You clicked on the OK button")
         }
@@ -113,41 +121,41 @@ class FeedbackViewController: UITableViewController {
     }
     
     func updateThirtyDayFeedback() {
-//        leftDays = 30 - (timeInterval! - rounds!*30)
         let prefs = NSUserDefaults.standardUserDefaults()
         let drugType = prefs.stringForKey("drugType")
         let participantID = prefs.stringForKey("participantID")!
         
         let realm = try! Realm()
-        let currentParticipant = realm.objects(Participant).filter("ID = '\(participantID)'").first
+        let currentParticipant = realm.objects(Participant).filter("ID = '\(participantID)'").first!
         
         if drugType == "Alcohol" {
-            let alcoholSurveyNumber = currentParticipant?.surveys.filter("name = 'DSAlcoholSurvey'").count
-            let heavyDayNumber = currentParticipant?.surveys.filter("name = 'DSAlcoholSurvey'").filter("dailyHeavyDrinkingDay = 'Yes'").count
-            let alcoholPrecentage = round(Double(heavyDayNumber!/alcoholSurveyNumber!)*100)
+            let alcoholSurveyNumber = currentParticipant.surveys.filter("name = 'DSAlcoholSurvey'").count
+            let heavyDayNumber = currentParticipant.surveys.filter("name = 'DSAlcoholSurvey'").filter("dailyHeavyDrinkingDay = 'Yes'").count
+            let alcoholPrecentage = round(Double(heavyDayNumber/alcoholSurveyNumber)*100)
             
             self.thirtyDaysFeedbackText.text = "You completed your survey on \(alcoholSurveyNumber) days. On the days you completed your survey you reported drinking heavily \(alcoholPrecentage)% of the days. Below are some graphs that show how your drinking is affected by other things in your life. We hope it gives you a greater understanding into your patterns and helps you make insightful choices about your use. Remember you can contact if you are interested in obtaining more information."
 
         } else if drugType == "Smoke/Vape" {
-            let SVSurveyNumber = currentParticipant?.surveys.filter("name = 'DSSVSurvey'").count
-            let smokeDayNumber = currentParticipant?.surveys.filter("name = 'DSSVSurvey'").filter("didSmokeDay = 'Yes'").count
+            let SVSurveyNumber = currentParticipant.surveys.filter("name = 'DSSVSurvey'").count
+            let smokeDayNumber = currentParticipant.surveys.filter("name = 'DSSVSurvey'").filter("didSmokeDay = 'Yes'").count
            
             self.thirtyDaysFeedbackText.text = "You completed your survey on \(SVSurveyNumber) days and smoked on \(smokeDayNumber) of those days. Below are some graphs that show how your smoking is affected by other things in your life. We hope it gives you a greater understanding into your patterns and helps you make insightful choices about your use. Remember you can contact if you are interested in obtaining more information."
           
         } else {
-            let alcoholSurveyNumber = currentParticipant?.surveys.filter("name = 'DSAlcoholSurvey'").count
-            let heavyDayNumber = currentParticipant?.surveys.filter("name = 'DSAlcoholSurvey'").filter("dailyHeavyDrinkingDay = 'Yes'").count
-            let alcoholPrecentage = round(Double(heavyDayNumber!/alcoholSurveyNumber!)*100)
+            let alcoholSurveyNumber = currentParticipant.surveys.filter("name = 'DSAlcoholSurvey'").count
+            let heavyDayNumber = currentParticipant.surveys.filter("name = 'DSAlcoholSurvey'").filter("dailyHeavyDrinkingDay = 'Yes'").count
+            let alcoholPrecentage = round(Double(heavyDayNumber/alcoholSurveyNumber)*100)
             
             let alcoholFeedback = "You completed your survey on \(alcoholSurveyNumber) days. On the days you completed your survey you reported drinking heavily \(alcoholPrecentage)% of the days. Below are some graphs that show how your drinking is affected by other things in your life. We hope it gives you a greater understanding into your patterns and helps you make insightful choices about your use. Remember you can contact if you are interested in obtaining more information."
 
-            let SVSurveyNumber = currentParticipant?.surveys.filter("name = 'DSSVSurvey'").count
-            let smokeDayNumber = currentParticipant?.surveys.filter("name = 'DSSVSurvey'").filter("didSmokeDay = 'Yes'").count
+            let SVSurveyNumber = currentParticipant.surveys.filter("name = 'DSSVSurvey'").count
+            let smokeDayNumber = currentParticipant.surveys.filter("name = 'DSSVSurvey'").filter("didSmokeDay = 'Yes'").count
             
             let smokeFeedback = "You completed your survey on \(SVSurveyNumber) days and smoked on \(smokeDayNumber) of those days. Below are some graphs that show how your smoking is affected by other things in your life. We hope it gives you a greater understanding into your patterns and helps you make insightful choices about your use. Remember you can contact if you are interested in obtaining more information."
             
             self.thirtyDaysFeedbackText.text = "Alcohol: " + alcoholFeedback + " Smoke/Vape: " + smokeFeedback
         }
+        prefs.setBool(false, forKey: "checkThirtyFeedback")
     }
 }
 
