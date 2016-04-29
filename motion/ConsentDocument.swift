@@ -82,40 +82,40 @@ class ConsentDocument: ORKConsentDocument {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-extension ORKConsentSectionType: CustomStringConvertible {
-
-    public var description: String {
-        switch self {
-            case .Overview:
-                return "Overview"
-                
-            case .DataGathering:
-                return "DataGathering"
-                
-            case .Privacy:
-                return "Privacy"
-                
-            case .DataUse:
-                return "DataUse"
-                
-            case .TimeCommitment:
-                return "TimeCommitment"
-                
-            case .StudySurvey:
-                return "StudySurvey"
-                
-            case .StudyTasks:
-                return "StudyTasks"
-                
-            case .Withdrawing:
-                return "Withdrawing"
-                
-            case .Custom:
-                return "Custom"
-                
-            case .OnlyInDocument:
-                return "OnlyInDocument"
-        }
-    }
-}
+//
+//extension ORKConsentSectionType: CustomStringConvertible {
+//
+//    public var description: String {
+//        switch self {
+//            case .Overview:
+//                return "Overview"
+//                
+//            case .DataGathering:
+//                return "DataGathering"
+//                
+//            case .Privacy:
+//                return "Privacy"
+//                
+//            case .DataUse:
+//                return "DataUse"
+//                
+//            case .TimeCommitment:
+//                return "TimeCommitment"
+//                
+//            case .StudySurvey:
+//                return "StudySurvey"
+//                
+//            case .StudyTasks:
+//                return "StudyTasks"
+//                
+//            case .Withdrawing:
+//                return "Withdrawing"
+//                
+//            case .Custom:
+//                return "Custom"
+//                
+//            case .OnlyInDocument:
+//                return "OnlyInDocument"
+//        }
+//    }
+//}

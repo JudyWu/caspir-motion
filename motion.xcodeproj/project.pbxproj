@@ -21,7 +21,6 @@
 		C20764651C76441A00956A3D /* WithdrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20764641C76441A00956A3D /* WithdrawViewController.swift */; };
 		C207646A1C76449500956A3D /* HealthDataStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20764681C76449500956A3D /* HealthDataStep.swift */; };
 		C207646B1C76449500956A3D /* HealthDataStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20764691C76449500956A3D /* HealthDataStepViewController.swift */; };
-		C207646D1C76450800956A3D /* ConsentDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = C207646C1C76450800956A3D /* ConsentDocument.swift */; };
 		C207646F1C76451F00956A3D /* HealthClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C207646E1C76451F00956A3D /* HealthClientType.swift */; };
 		C20764711C76452900956A3D /* AnimatableChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20764701C76452900956A3D /* AnimatableChart.swift */; };
 		C20764731C76454700956A3D /* HKHealthStore+Queries.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20764721C76454700956A3D /* HKHealthStore+Queries.swift */; };
@@ -32,6 +31,8 @@
 		C217283B1C794597008D2BC3 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C217283A1C794597008D2BC3 /* HealthKit.framework */; };
 		C23836E91CCAA5B70054A9F2 /* CASFeedbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23836E81CCAA5B70054A9F2 /* CASFeedbacks.swift */; };
 		C2387EF71CA996B300CC7BD1 /* CASConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2387EF61CA996B300CC7BD1 /* CASConstants.swift */; };
+		C249284E1CD24A2900E5E20A /* CASConsentForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = C249284D1CD24A2900E5E20A /* CASConsentForm.swift */; };
+		C24928531CD2F08100E5E20A /* InforDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24928521CD2F08100E5E20A /* InforDetailViewController.swift */; };
 		C25041AB1C8CA94B00DC78FB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C25041AA1C8CA94B00DC78FB /* CoreData.framework */; };
 		C26E47961C25B8E500D6EA47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C26E47951C25B8E500D6EA47 /* Assets.xcassets */; };
 		C26E47A41C25B8E500D6EA47 /* motionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26E47A31C25B8E500D6EA47 /* motionTests.swift */; };
@@ -124,7 +125,6 @@
 		C20764641C76441A00956A3D /* WithdrawViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WithdrawViewController.swift; sourceTree = "<group>"; };
 		C20764681C76449500956A3D /* HealthDataStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataStep.swift; sourceTree = "<group>"; };
 		C20764691C76449500956A3D /* HealthDataStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataStepViewController.swift; sourceTree = "<group>"; };
-		C207646C1C76450800956A3D /* ConsentDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsentDocument.swift; sourceTree = "<group>"; };
 		C207646E1C76451F00956A3D /* HealthClientType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthClientType.swift; sourceTree = "<group>"; };
 		C20764701C76452900956A3D /* AnimatableChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatableChart.swift; sourceTree = "<group>"; };
 		C20764721C76454700956A3D /* HKHealthStore+Queries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HKHealthStore+Queries.swift"; sourceTree = "<group>"; };
@@ -136,6 +136,8 @@
 		C217283A1C794597008D2BC3 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		C23836E81CCAA5B70054A9F2 /* CASFeedbacks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CASFeedbacks.swift; sourceTree = "<group>"; };
 		C2387EF61CA996B300CC7BD1 /* CASConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CASConstants.swift; sourceTree = "<group>"; };
+		C249284D1CD24A2900E5E20A /* CASConsentForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CASConsentForm.swift; sourceTree = "<group>"; };
+		C24928521CD2F08100E5E20A /* InforDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InforDetailViewController.swift; sourceTree = "<group>"; };
 		C24D649B1CB802D400EDC11B /* ResearchKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ResearchKit.xcodeproj; path = ../ResearchKit/ResearchKit.xcodeproj; sourceTree = "<group>"; };
 		C25041AA1C8CA94B00DC78FB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C26E478B1C25B8E500D6EA47 /* motion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = motion.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -216,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				C207645D1C7643E700956A3D /* ProfileHeaderView.swift */,
+				C24928521CD2F08100E5E20A /* InforDetailViewController.swift */,
 				C207645E1C7643E700956A3D /* ProfileStaticTableViewCell.swift */,
 				C207645F1C7643E700956A3D /* ProfileViewController.swift */,
 			);
@@ -235,7 +238,6 @@
 			children = (
 				C20764681C76449500956A3D /* HealthDataStep.swift */,
 				C20764691C76449500956A3D /* HealthDataStepViewController.swift */,
-				C207646C1C76450800956A3D /* ConsentDocument.swift */,
 			);
 			name = Steps;
 			sourceTree = "<group>";
@@ -363,6 +365,7 @@
 				C2387EF61CA996B300CC7BD1 /* CASConstants.swift */,
 				C207645A1C7643BB00956A3D /* CASSurveys.swift */,
 				C23836E81CCAA5B70054A9F2 /* CASFeedbacks.swift */,
+				C249284D1CD24A2900E5E20A /* CASConsentForm.swift */,
 			);
 			name = Variables;
 			sourceTree = "<group>";
@@ -585,13 +588,13 @@
 				C2FAE49F1CD0F9EA00124C1E /* GraphTableViewController.swift in Sources */,
 				C20764431C76404500956A3D /* ResearchContainerViewController.swift in Sources */,
 				C20F9CEE1C7B75C00045AA48 /* AppDelegate.swift in Sources */,
+				C249284E1CD24A2900E5E20A /* CASConsentForm.swift in Sources */,
 				C2FAE4A11CD1162D00124C1E /* AlcoholLimitationDataSource.swift in Sources */,
 				C207646F1C76451F00956A3D /* HealthClientType.swift in Sources */,
 				C2FB38D31CBFE02F0061913F /* Feedback.swift in Sources */,
 				C2FB38CC1CBFD8800061913F /* Participant.swift in Sources */,
 				C2FB38DB1CC0110B0061913F /* ConsentStep.swift in Sources */,
 				C23836E91CCAA5B70054A9F2 /* CASFeedbacks.swift in Sources */,
-				C207646D1C76450800956A3D /* ConsentDocument.swift in Sources */,
 				C20764561C76431900956A3D /* AlcoholLocationDataSource.swift in Sources */,
 				C210B4871C9C800500EB2522 /* CASActivityViewController.swift in Sources */,
 				C207644D1C76424D00956A3D /* IntroductionViewController.swift in Sources */,
@@ -602,6 +605,7 @@
 				C207646A1C76449500956A3D /* HealthDataStep.swift in Sources */,
 				C20F9CF41C7B88CB0045AA48 /* FeedbackViewController.swift in Sources */,
 				C207646B1C76449500956A3D /* HealthDataStepViewController.swift in Sources */,
+				C24928531CD2F08100E5E20A /* InforDetailViewController.swift in Sources */,
 				C2387EF71CA996B300CC7BD1 /* CASConstants.swift in Sources */,
 				C20764521C7642FC00956A3D /* SmokeLimitationDataSource.swift in Sources */,
 				C2FB38DF1CC07C9F0061913F /* BaselineTableViewCell.swift in Sources */,

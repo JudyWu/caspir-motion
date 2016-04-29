@@ -9,34 +9,6 @@ import Foundation
 import ResearchKit
 import RealmSwift
 
-enum DailySurveyIdentifiers {
-    //// Event Filter
-    case DSInstructionStep
-    case DSAlcoholDrinkFilterStep
-    case DSAlcoholNoDrinkStep
-    
-    //// Morning Survey Alcohol
-    case DSAlcoholSurvey
-    case DSAlcoholDrinkStep
-    case DSAlcoholSituationStep
-    case DSAlcoholConditionStep
-    case DSAlcoholReasonStep
-    case DSAlcoholIntentionStep
-    case DSAlcoholSleepStep
-    case DSAlcoholFutureDrinkStep
-    
-    //// Morning Survey Smoke/Vape
-    case DSSVFilterStep
-    case DSSVNoStep
-    case DSSVSurvey
-    case DSSVIntoxicationStep
-    case DSSVSituationStep
-    case DSSVConditionStep
-    case DSSVReasonStep
-    case DSSVIntentionStep
-    case DSSVPlanStep
-}
-
 enum TaskIdentifiers {
     //// Daily
     case DailyAudioTask
@@ -57,6 +29,17 @@ enum TaskIdentifiers {
     case EventBalloonTask 
 }
 
+enum OtherTasksIdentifiers  {
+    case YourThought
+    case ThoughtQuestionStep
+    
+    case LogIn
+    case LogInItem
+    case LogInStep
+    case WaitStep
+}
+
+
 enum BaselineSurveyIdentifiers {
     //// Baseline Drug Type Filter
     case BSInstructionStep
@@ -73,11 +56,11 @@ enum BaselineSurveyIdentifiers {
     case BSAlcoholTypeStep
     case BSAlcoholSymptomStep
     case BSAlcoholExtraInfoStep
+    case BSAlcoholHarmStep
     case BSAlcoholImportanceStep
     case BSAlcoholConfidenceStep
     case BSAlcoholEffortStep
     case BSAlcoholPlanStep
-//    case BSAlcoholCompletionStepOne
     case BSAlcoholCompletionStep
 
     
@@ -93,14 +76,42 @@ enum BaselineSurveyIdentifiers {
     case BSSVTypeStep
     case BSSVSymptomStep
     case BSSVExtraInfoStep
+    case BSSVHarmStep
     case BSSVImportanceStep
     case BSSVConfidenceStep
     case BSSVEffortStep
     case BSSVPlanStep
-    case BSSVCompletionStepOne
-    case BSSVCompletionStepTwo
-    
+    case BSSVCompletionStep
 }
+
+enum DailySurveyIdentifiers {
+    //// Event Filter
+    case DSInstructionStep
+    case DSAlcoholDrinkFilterStep
+    
+    //// Morning Survey Alcohol
+    case DSAlcoholSurvey
+    case DSAlcoholDrinkStep
+    case DSAlcoholSituationStep
+    case DSAlcoholConditionStep
+    case DSAlcoholReasonStep
+    case DSAlcoholIntentionStep
+    case DSAlcoholSleepStep
+    case DSAlcoholFutureDrinkStep
+    case DSAlcoholCompletionStep
+    
+    //// Morning Survey Smoke/Vape
+    case DSSVFilterStep
+    case DSSVSurvey
+    case DSSVIntoxicationStep
+    case DSSVSituationStep
+    case DSSVConditionStep
+    case DSSVReasonStep
+    case DSSVIntentionStep
+    case DSSVPlanStep
+    case DSSVCompletionStep
+}
+
 
 enum EventIdentifiers {
     //// Alcohol Event
@@ -115,14 +126,36 @@ enum EventIdentifiers {
     
 }
 
-enum OtherTasksIdentifiers  {
-    case YourThought
-    case ThoughtQuestionStep
+enum OnboardingIdentifiers  {
+    /////Eligibility
+    case OnboardingTask
+    case SubstanceTypeStep
+    case EligibilityFormStepOne
+    case EligibilityFormStepTwo
+    case EligibilityFormStepThree
     
-    case LogIn
-    case LogInItem
-    case LogInStep
-    case WaitStep
+    case EligibilityFormQuestion1
+    case EligibilityFormQuestion2
+    case EligibilityFormQuestion3
+    case EligibilityFormQuestion4
+    case EligibilityFormQuestion5
+    case EligibilityFormQuestion6
+    case EligibilityFormQuestion7
+    case EligibilityFormQuestion8
+    case EligibilityFormQuestion9
+    
+    case IneligibleStep
+    case EligibleStep
+    
+    case VisualConsentStep
+    case ConsentReviewStep
+    case ConsentQuestionStep
+    case SignatureStep
+    case CodeStep
+    case WrongCodeStep
+    case HealthStep
+    case PasscodeStep
+    case CompletionStep
 }
 
 
@@ -259,35 +292,30 @@ enum TaskRunUUID  {
 }
 
 
-enum OnboardingIdentifiers  {
-    /////Eligibility
-    case OnboardingTask
-    case SubstanceTypeStep
-    case EligibilityFormStepOne
-    case EligibilityFormStepTwo
-    case EligibilityFormStepThree
+enum CustomizedColors {
+    case BlueColor
+    case PinkColor
+    case OrangeColor
+    case GreenThemeColor
+    case GrayColor
+    
+    var colorCode: UIColor {
+        switch self {
+        case .BlueColor:
+            return UIColor(red: 244/255, green: 190/255, blue: 74/255, alpha: 1)
+        case .OrangeColor:
+            return   UIColor(red: 74/255, green: 144/255, blue: 226/255, alpha: 1)
+        case .GrayColor:
+            return UIColor(red: 142/255, green: 142/255, blue: 147/255, alpha: 1)
+        case .PinkColor:
+            return UIColor(red: 217/225, green: 217/255, blue: 217/225, alpha: 1)
+        case .GreenThemeColor:
+            return UIColor(red: 59.0/255.0, green: 147.0/255.0, blue: 144.0/255.0, alpha: 1.0)
 
-    case EligibilityFormQuestion1
-    case EligibilityFormQuestion2
-    case EligibilityFormQuestion3
-    case EligibilityFormQuestion4
-    case EligibilityFormQuestion5
-    case EligibilityFormQuestion6
-    case EligibilityFormQuestion7
-    case EligibilityFormQuestion8
-    
-    case IneligibleStep
-    case EligibleStep
-    
-    case VisualConsentStep
-    case RegistrationStep
-    case WrongCodeStep
-    case HealthStep
-    case ConsentReviewStep
-    case PasscodeStep
-    case CompletionStep
+        }
+        
+    }
 }
-
 
 /// For generate feedbacks ID
 func randomID() -> NSString {
@@ -311,8 +339,6 @@ func getAlcoholLocation() -> [ORKRangedPoint] {
     
     let realm = try! Realm()
     let currentParticipantSurveys = realm.objects(Participant).filter("ID == '\(participantID)'").first!.surveys.filter("name = 'DSAlcoholSurvey'")
-    
-    print("\(currentParticipantSurveys)")
     
     var aLocation1 = 0
     var aLocation1Array = [Int]()
@@ -516,12 +542,11 @@ func getAlcoholLimitation() -> [ORKRangedPoint]{
         averageNo = aLimitationNoArray.reduce(0, combine: +)/aLimitationNo
     }
     
-    
-    
-    
     let limitationRangedPoints = [
+        ORKRangedPoint(minimumValue: 0, maximumValue: 0),
         ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(averageYes)),
-        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(averageNo))
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(averageNo)),
+        ORKRangedPoint(minimumValue: 0, maximumValue: 0)
     ]
     
     return limitationRangedPoints
@@ -561,25 +586,11 @@ func getSmokeLimitation() -> [ORKRangedPoint]{
     }
     
     let limitationRangedPoints = [
+        ORKRangedPoint(minimumValue: 0, maximumValue: 0),
         ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(averageYes)),
-        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(averageNo))
+        ORKRangedPoint(minimumValue: 0, maximumValue: CGFloat(averageNo)),
+        ORKRangedPoint(minimumValue: 0, maximumValue: 0)
     ]
     
     return limitationRangedPoints
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

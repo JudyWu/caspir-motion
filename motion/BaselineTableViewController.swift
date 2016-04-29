@@ -21,28 +21,14 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
         let drugType = prefs.stringForKey("drugType")
         
         if drugType == "Smoke/Vape" {
-            taskRows = [BaselineTasks.SVSurvey, BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
+            taskRows = [BaselineTasks.SVSurvey, BaselineTasks.AudioTask, BaselineTasks.ReactionTask, BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
         } else if drugType == "Alcohol" {
-            taskRows = [BaselineTasks.AlcoholSurvey, BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
+            taskRows = [BaselineTasks.AlcoholSurvey, BaselineTasks.AudioTask, BaselineTasks.ReactionTask,BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
         } else if drugType == "Both" {
-            taskRows = [BaselineTasks.AlcoholSurvey, BaselineTasks.SVSurvey, BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
+            taskRows = [BaselineTasks.AlcoholSurvey, BaselineTasks.AudioTask, BaselineTasks.ReactionTask, BaselineTasks.SVSurvey, BaselineTasks.BalloonTask, BaselineTasks.GoNoGoTask]
         }
     }
-//     BaselineTasks.AudioTask, BaselineTasks.ReactionTask,
     
-    /// For generate all the feedbacks
-    func generateFeedbacks() {
-        let rows = [Feedbacks.BaselineAlcoholFeedback1, Feedbacks.BaselineAlcoholFeedback2, Feedbacks.BaselineAlcoholFeedback3, Feedbacks.BaselineAlcoholFeedback4, Feedbacks.BaselineSVFeedback1, Feedbacks.BaselineSVFeedback2, Feedbacks.BaselineSVFeedback3, Feedbacks.BaselineSVFeedback4,  Feedbacks.ThirtyAlcoholFeedback1, Feedbacks.ThirtyAlcoholFeedback2, Feedbacks.ThirtySVFeedback1, Feedbacks.ThirtySVFeedback2]
-        
-        for i in 0..<rows.count {
-            let newFeedback = Feedback()
-            newFeedback.name = rows[i].name
-            newFeedback.content = rows[i].content
-            newFeedback.ID = randomID() as String
-            newFeedback.creationDate = NSDate()
-        }
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -67,7 +53,6 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
     func configureCell(cell: BaselineTableViewCell, withTitleText titleText: String, withDescription descriptionText: String) {
         // Set the default cell content.
         cell.taskTitle.text = titleText
-        cell.taskDescription.text = descriptionText
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -87,16 +72,15 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
     
     /// Function for updating the table view when survery/task is completed
     func reloadTask(taskRunUUID: NSUUID) {
-//        if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineReactionTask.taskRunUUID) {
-//            taskRows = taskRows.filter() {$0 != BaselineTasks.ReactionTask}
-//            self.tableView.reloadData()
-//        } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineAudioTask.taskRunUUID) {
-//            taskRows = taskRows.filter() {$0 != BaselineTasks.AudioTask}
-//            self.tableView.reloadData()
-        if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineGoNoGoTask.taskRunUUID) {
+        if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineReactionTask.taskRunUUID) {
+            taskRows = taskRows.filter() {$0 != BaselineTasks.ReactionTask}
+            self.tableView.reloadData()
+        } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineAudioTask.taskRunUUID) {
+            taskRows = taskRows.filter() {$0 != BaselineTasks.AudioTask}
+            self.tableView.reloadData()
+        } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineGoNoGoTask.taskRunUUID) {
             taskRows = taskRows.filter() {$0 != BaselineTasks.GoNoGoTask}
             self.tableView.reloadData()
-//            self.tableView.deleteRowsAtIndexPaths(<#T##indexPaths: [NSIndexPath]##[NSIndexPath]#>, withRowAnimation: <#T##UITableViewRowAnimation#>)
         } else if taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineBalloonTask.taskRunUUID) {
             taskRows = taskRows.filter() {$0 != BaselineTasks.BalloonTask}
             self.tableView.reloadData()
@@ -136,7 +120,6 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
                     try! realm.write {
                         currentParticipant.surveys.append(newBaselineSurvey)
                         currentParticipant.passcode = String(prefs.stringForKey("passcode")!)
-                        print("\(String(prefs.stringForKey("passcode")!))")
                         currentParticipant.startDate = NSDate()
                         realm.add(newBaselineSurvey)
                     }
@@ -162,18 +145,15 @@ class BaselineTableViewController: UITableViewController, ORKTaskViewControllerD
                     try! realm.write {
                         currentParticipant.surveys.append(newBaselineSurvey)
                         currentParticipant.passcode = String(prefs.stringForKey("passcode")!)
-                        print("\(String(prefs.stringForKey("passcode")!))")
                         currentParticipant.startDate = NSDate()
                         realm.add(newBaselineSurvey)
                     }
                 }
                 prefs.setObject(NSDate(), forKey: "startDate")
                 prefs.setBool(true, forKey: "checkBaselineFeedback")
-                
+
                 performSegueWithIdentifier("unwindToStudy", sender: nil)
                 /// Add the passcode to the participant so that they can use passcode to log in
-                generateFeedbacks()
-                
             // otherwise the participant goes on
             } else {
                 if taskViewController.taskRunUUID == NSUUID(UUIDString: TaskRunUUID.BaselineAlcoholSurvey.taskRunUUID) {

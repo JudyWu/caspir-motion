@@ -51,7 +51,7 @@ class AlcoholLimitationDataSource: NSObject, ORKGraphChartViewDataSource {
     }
     
     func graphChartView(graphChartView: ORKGraphChartView, titleForXAxisAtPointIndex pointIndex: Int) -> String? {
-        let limitations = ["Yes", "No"]
+        let limitations = ["", "Yes", "No", ""]
         return limitations[pointIndex]
     }
 }

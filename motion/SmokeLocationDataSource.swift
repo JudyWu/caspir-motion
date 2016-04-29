@@ -35,7 +35,6 @@ class SmokeLocationDataSource: NSObject, ORKGraphChartViewDataSource {
     // MARK: Properties
 
     let plotPoints = [getSmokeLocation()]
-    
     // MARK: ORKGraphChartViewDataSource
     
     func numberOfPlotsInGraphChartView(graphChartView: ORKGraphChartView) -> Int {

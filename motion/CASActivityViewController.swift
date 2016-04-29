@@ -55,8 +55,6 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
         let currentRounds = prefs.doubleForKey("studyRounds")
         if rounds >= 1 && Int(rounds) > Int(currentRounds) {
             alertThirtyDaysFeedbacks()
-            print("\(timeInterval)")
-            print("\(rounds)")
             prefs.setDouble(rounds, forKey: "studyRounds")
         } else if checkBaselineFeedback == true {
             alertBaselineFeedback()
@@ -68,12 +66,11 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
         
         let thirtyDayAlertController = UIAlertController(title: "30 days Feedback", message: "Check out your feedback", preferredStyle: .Alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) {(action: UIAlertAction) in
-            print("fjsdklfjsdlfjs")
+            print("You clicked on the cancel button")
         }
         thirtyDayAlertController.addAction(cancelAction)
         let OKAction = UIAlertAction(title: "OK", style: .Default) {(action: UIAlertAction) in
             self.tabBarController!.selectedIndex = 2
-//                print("fjsdklfjsdlfjs")
         }
         thirtyDayAlertController.addAction(OKAction)
         presentViewController(thirtyDayAlertController, animated: true, completion: nil)
@@ -82,12 +79,11 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
     func alertBaselineFeedback() {
         let baselineAlertController = UIAlertController(title: "Baseline Feedback", message: "Check out your feedback", preferredStyle: .Alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) {(action: UIAlertAction) in
-            print("fjsdklfjsdlfjs")
+            print("You clicked on the cancel button")
         }
         baselineAlertController.addAction(cancelAction)
         let OKAction = UIAlertAction(title: "OK", style: .Default) {(action: UIAlertAction) in
             self.tabBarController!.selectedIndex = 2
-            //                 print("fjsdklfjsdlfjs")
             let prefs = NSUserDefaults.standardUserDefaults()
             prefs.setBool(false, forKey: "checkBaselineFeedback")
         }
@@ -154,11 +150,12 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
         } else if randomNumber == 1 {
             let tappingTaskViewController = ORKTaskViewController(task: dailyAudioTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.DailyAudioTask.taskRunUUID))
             tappingTaskViewController.delegate = self
-            
+            tappingTaskViewController.outputDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
             presentViewController(tappingTaskViewController, animated: true, completion: nil)
         } else if randomNumber == 2 {
             let reactionTaskViewController = ORKTaskViewController(task: dailyReactionTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.DailyReactionTask.taskRunUUID))
             reactionTaskViewController.delegate = self
+            reactionTaskViewController.outputDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
             presentViewController(reactionTaskViewController, animated: true, completion: nil)
         } else {
             let balloonTaskViewController = ORKTaskViewController(task: dailyBalloonTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.DailyBalloonTask.taskRunUUID))
@@ -177,11 +174,12 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
         } else if randomNumber == 1 {
             let tappingTaskViewController = ORKTaskViewController(task: eventAudioTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.EventAudioTask.taskRunUUID))
             tappingTaskViewController.delegate = self
-            
+            tappingTaskViewController.outputDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
             presentViewController(tappingTaskViewController, animated: true, completion: nil)
         } else if randomNumber == 2 {
             let reactionTaskViewController = ORKTaskViewController(task: eventReactionTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.EventReactionTask.taskRunUUID))
             reactionTaskViewController.delegate = self
+            reactionTaskViewController.outputDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
             presentViewController(reactionTaskViewController, animated: true, completion: nil)
         } else {
             let balloonTaskViewController = ORKTaskViewController(task: eventBalloonTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.EventBalloonTask.taskRunUUID))
@@ -226,8 +224,6 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
                     newDailySurvey.catergoryType = "Daily"
                     newDailySurvey.owner = currentParticipant
                     
-                    print("\(taskViewController.result)")
-                    
                     newDailySurvey.didSmokeDay = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSSVFilterStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSSVFilterStep))?.valueForKey("answer")?.firstObject as! String
                     
                     newDailySurvey.sIntoxicationAM = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSSVIntoxicationStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSSVIntoxicationStep))?.valueForKey("answer") as! Int
@@ -259,7 +255,6 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
                     newDailySurvey.catergoryType = "Daily"
                     newDailySurvey.owner = currentParticipant
                     
-                    print("\(taskViewController.result)")
                     
                     newDailySurvey.totalDrinking = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSAlcoholDrinkStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSAlcoholDrinkStep))?.valueForKey("answer") as! Int
                     
@@ -299,7 +294,6 @@ class CASActivityViewController: UIViewController, ORKTaskViewControllerDelegate
                 newDailySurvey.catergoryType = "Daily"
                 newDailySurvey.owner = currentParticipant
                 
-                print("\(taskViewController.result)")
                 newDailySurvey.totalDrinking = taskViewController.result.stepResultForStepIdentifier(String(DailySurveyIdentifiers.DSAlcoholDrinkStep))?.resultForIdentifier(String(DailySurveyIdentifiers.DSAlcoholDrinkStep))?.valueForKey("answer")?.firstObject as! Int
                 
                 if (newDailySurvey.totalDrinking >= 4) {

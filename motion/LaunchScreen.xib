@@ -11,7 +11,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="app_logo" translatesAutoresizingMaskIntoConstraints="NO" id="nIA-qF-ULC">
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="caspir_app_icon" translatesAutoresizingMaskIntoConstraints="NO" id="nIA-qF-ULC">
                     <rect key="frame" x="100" y="224" width="120" height="120"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="120" id="2Xw-t3-xpT"/>
@@ -30,6 +30,6 @@
         </view>
     </objects>
     <resources>
-        <image name="app_logo" width="534" height="534"/>
+        <image name="caspir_app_icon" width="160" height="149"/>
     </resources>
 </document>

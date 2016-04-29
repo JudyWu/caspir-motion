@@ -38,11 +38,12 @@ class OnboardingViewController: UIViewController {
     
     @IBOutlet weak var joinButton: UIButton!
     
-    
     /// For already participanting button
     @IBAction func logInButtonTapped(sender: UIButton) {
         let taskViewController = ORKTaskViewController(task: loginTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.LogInTask.taskRunUUID))
+//        let taskViewController = ORKTaskViewController(task: baselineAlcoholSurvey, taskRunUUID: nil)
         taskViewController.delegate = self
+        taskViewController.outputDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
         presentViewController(taskViewController, animated: true, completion: nil)
     }
     
@@ -51,6 +52,7 @@ class OnboardingViewController: UIViewController {
     @IBAction func joinButtonTapped(sender: UIButton) {
         let taskViewController = ORKTaskViewController(task: onboardingTask, taskRunUUID: NSUUID(UUIDString: TaskRunUUID.OnboardingTask.taskRunUUID))
         taskViewController.delegate = self
+        taskViewController.outputDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
         presentViewController(taskViewController, animated: true, completion: nil)
         
     }
@@ -65,7 +67,7 @@ class OnboardingViewController: UIViewController {
     }
     
     func setUpAppearance() {
-        let customizedColor = UIColor(red: 59.0/255.0, green: 147.0/255.0, blue: 144.0/255.0, alpha: 1.0)
+        let customizedColor = CustomizedColors.GreenThemeColor.colorCode
         self.joinButton.backgroundColor = UIColor.clearColor()
         self.joinButton.layer.cornerRadius = 5
         self.joinButton.layer.borderWidth = 1
@@ -126,8 +128,8 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                         //// Get the passcode and drugType properties from onboarding task
                         let realm = try! Realm()
                         let drugType = taskViewController.result.stepResultForStepIdentifier("SubstanceTypeStep")?.resultForIdentifier("SubstanceTypeStep")?.valueForKey("answer")?.firstObject as? String
-                        let passcode = taskViewController.result.stepResultForStepIdentifier("RegistrationStep")?.resultForIdentifier("LogInItem")?.valueForKey("answer") as? String
-                        print("\(taskViewController.result)")
+                        let passcode = taskViewController.result.stepResultForStepIdentifier("CodeStep")?.resultForIdentifier("LogInItem")?.valueForKey("answer") as? String
+                        
                     
                         //// Create the participant
                         let participantID = randomStringWithLength() as String!
@@ -168,15 +170,15 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                         prefs.setObject(participantID, forKey: "participantID")
                     
                         
-
-                
-                        
                         /// Direct to baseline measurements
                         performSegueWithIdentifier("unwindToBaseline", sender: nil)
                         /// Get the path to realm database
                         print(Realm.Configuration.defaultConfiguration.path!)
                     }
-                }
+                }else{
+                    dismissViewControllerAnimated(true, completion: nil)
+            }
+
             case .Discarded, .Failed, .Saved:
                 dismissViewControllerAnimated(true, completion: nil)
         }
@@ -190,8 +192,18 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                     let loginPasscode : String = taskViewController.result.stepResultForStepIdentifier("LogInStep")?.resultForIdentifier("LogInItem")?.valueForKey("answer") as! String
                     
                     let realm = try! Realm()
-                    
-                    if (realm.objects(Participant).filter("passcode = '\(loginPasscode)'").first != nil) {
+                    let potentialParticipant = realm.objects(Participant).filter("passcode = '\(loginPasscode)'")
+                    if (potentialParticipant.first != nil) {
+                        let currentParticipant = potentialParticipant.first!
+                        let participantID = currentParticipant.ID
+                        let drugType = currentParticipant.drugType
+                        let startDate = currentParticipant.startDate
+                        
+                        let prefs = NSUserDefaults.standardUserDefaults()
+                        prefs.setObject(loginPasscode, forKey: "passcode")
+                        prefs.setObject(participantID, forKey: "participantID")
+                        prefs.setObject(drugType, forKey: "drugType")
+                        prefs.setObject(startDate, forKey: "startDate")
                         stepViewController.goForward()
                     } else {
                         stepViewController.goBackward()

@@ -33,62 +33,67 @@ import ResearchKit
 import HealthKit
 
 enum HelpInfo: Int {
-    case InPersonTherapy = 0
-    case SMSModeration
-    case ReadingMaterials
+    case SAMHSA = 0
+    case MarijuanaAnonymous
+    case AlcoholicsAnonymous
+    case SmartRecovery
+    case ModerationManagement
     
     var title: String {
         switch self {
-        case .InPersonTherapy:
-            return "In Person Therapy"
-        case .SMSModeration:
-            return "SMS Feedback"
-        case .ReadingMaterials:
-            return "Reading"
+        case .SAMHSA:
+            return "SAMHSA Treatment finder"
+        case .MarijuanaAnonymous:
+            return "Marijuana Anonymous"
+        case .AlcoholicsAnonymous:
+            return "Alcoholics Anonymous"
+        case .SmartRecovery:
+            return "Smart Recovery"
+        case .ModerationManagement:
+            return "Moderation Management"
         }
     }
     
-    var description: String {
+    var url: String {
         switch self {
-        case .InPersonTherapy:
-            return "flskdfjlkjfdlksjfksldjflskdajflkajdf"
-        case .SMSModeration:
-            return "flskfdsjfkdlsfjlskfjslkfjsdklfjsdfs"
-        case .ReadingMaterials:
-            return "lfflkdjfskfjksfjsdfjsdklfasdfsfsdfda"
-        }
-    }
-    
-    var logoImage: UIImage {
-        switch self {
-        case .InPersonTherapy:
-            return UIImage(named: "telehealth_tag")!
-        case .SMSModeration:
-            return UIImage(named: "red")!
-        case .ReadingMaterials:
-            return UIImage(named: "blue")!
+        case .SAMHSA:
+            return "https://findtreatment.samhsa.gov/"
+        case .MarijuanaAnonymous:
+            return "https://www.marijuana-anonymous.org/"
+        case .AlcoholicsAnonymous:
+            return "http://www.aa.org/"
+        case .SmartRecovery:
+            return "http://www.smartrecovery.org/"
+        case .ModerationManagement:
+            return "http://www.moderation.org/"
         }
     }
 }
-
 class ProfileViewController: UITableViewController{
     // MARK: Properties
     @IBOutlet weak var applicationNameLabel: UILabel!
     @IBOutlet weak var participantNameLabel: UILabel!
     
     var result: ORKResult?
-    let helpInfo = [HelpInfo.InPersonTherapy, HelpInfo.ReadingMaterials, HelpInfo.SMSModeration]
+    let helpInfo = [HelpInfo.SAMHSA, HelpInfo.MarijuanaAnonymous, HelpInfo.AlcoholicsAnonymous, HelpInfo.SmartRecovery, HelpInfo.ModerationManagement]
 
     // MARK: UIViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.tableFooterView = UIView()
-        
     }
     
     // MARK: UITableViewDataSource
     
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Outside Resources"
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40.0
+    }
+   
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return helpInfo.count
     }
@@ -99,18 +104,24 @@ class ProfileViewController: UITableViewController{
         }
     
         let taskRow = helpInfo[indexPath.row]
-        cell.infoTitle.text = taskRow.title
-        cell.infoDescription.text = taskRow.description
-        cell.infoImage.image = taskRow.logoImage
+        cell.extraInfoTitle.text = taskRow.title
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
     }
     
-    // MARK: Cell configuration
-
-    // MARK: Convenience
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "showInfoDetail") {
+            let nextScene = segue.destinationViewController as! InforDetailViewController
+            if let indexPath = self.tableView.indexPathForSelectedRow {
+                let infoURL = helpInfo[indexPath.row].url
+                nextScene.url = infoURL
+            }
+            
+        }
+    }
 }
 

@@ -32,8 +32,9 @@ import ResearchKit
 
 class SmokeLimicationDataSource: NSObject, ORKGraphChartViewDataSource {
     // MARK: Types
-   
+
     let plotPoints = [getSmokeLimitation()]
+    
     
     func numberOfPlotsInGraphChartView(graphChartView: ORKGraphChartView) -> Int {
         return plotPoints.count
@@ -49,7 +50,7 @@ class SmokeLimicationDataSource: NSObject, ORKGraphChartViewDataSource {
     }
     
     func graphChartView(graphChartView: ORKGraphChartView, titleForXAxisAtPointIndex pointIndex: Int) -> String? {
-        let limitations = ["Yes", "No"]
+        let limitations = ["", "Yes", "No", ""]
         return limitations[pointIndex]
     }
 }

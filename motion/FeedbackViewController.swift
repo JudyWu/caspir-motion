@@ -19,15 +19,24 @@ class FeedbackViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateBaselineFeedback()
-        self.thirtyDayAlcoholText.alpha = 0
         
     }
-    
-    
+
     @IBOutlet weak var baselineFeedbackText: UITextView!
-    @IBOutlet weak var baselineAlcoholText: UITextView!
     @IBOutlet weak var thirtyDaysFeedbackText: UITextView!
-    @IBOutlet weak var thirtyDayAlcoholText: UITextView!
+    
+    @IBAction func feedbackButtonTapped(sender: UIButton) {
+        let feedbackAlertController = UIAlertController(title: "Thank you", message: "We will take into your feedback to improve our care.", preferredStyle: .Alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) {(action: UIAlertAction) in
+            print("You cliced on the cancel button")
+        }
+        feedbackAlertController.addAction(cancelAction)
+        let OKAction = UIAlertAction(title: "OK", style: .Default) {(action: UIAlertAction) in
+            print("You clicked on the OK button")
+        }
+        feedbackAlertController.addAction(OKAction)
+        presentViewController(feedbackAlertController, animated: true, completion: nil)
+    }
     
     func updateBaselineFeedback() {
         let prefs = NSUserDefaults.standardUserDefaults()
@@ -36,7 +45,6 @@ class FeedbackViewController: UITableViewController {
         
         let realm = try! Realm()
         let currentParticipant = realm.objects(Participant).filter("ID = '\(participantID)'").first!
-        print("\(currentParticipant)")
 
         if drugType == "Alcohol" {
             let aImportance = currentParticipant.surveys.filter("name = 'BSAlcoholSurvey'").first!.aImportance
@@ -53,7 +61,7 @@ class FeedbackViewController: UITableViewController {
             } else {
                 self.baselineFeedbackText.text = Feedbacks.BaselineAlcoholFeedback4.content
             }
-            self.baselineAlcoholText.alpha = 0
+
         } else if drugType == "Smoke/Vape" {
             let sImportance = currentParticipant.surveys.filter("name = 'BSSVSurvey'").first?.sImportance
             let smokeDay = currentParticipant.consentForm.smokeDay
@@ -68,36 +76,39 @@ class FeedbackViewController: UITableViewController {
             }else {
                 self.baselineFeedbackText.text = Feedbacks.BaselineSVFeedback4.content
             }
-            self.baselineAlcoholText.alpha = 0
         } else {
             let aImportance = currentParticipant.surveys.filter("name = 'BSAlcoholSurvey'").first?.aImportance
             let heavyDrinkingDay = currentParticipant.consentForm.heavyDrinkingDay
             
+            var alcoholFeedback = ""
+            
             if heavyDrinkingDay <= 5 {
-                self.baselineFeedbackText.text = Feedbacks.BaselineAlcoholFeedback1.content
+               alcoholFeedback = Feedbacks.BaselineAlcoholFeedback1.content
             } else if heavyDrinkingDay > 5 && heavyDrinkingDay < 15 {
                 if aImportance < 3 {
-                    self.baselineFeedbackText.text = Feedbacks.BaselineAlcoholFeedback2.content
+                   alcoholFeedback = Feedbacks.BaselineAlcoholFeedback2.content
                 } else {
-                    self.baselineFeedbackText.text = Feedbacks.BaselineAlcoholFeedback3.content
+                   alcoholFeedback = Feedbacks.BaselineAlcoholFeedback3.content
                 }
             } else {
-                self.baselineFeedbackText.text = Feedbacks.BaselineAlcoholFeedback4.content
+                alcoholFeedback = Feedbacks.BaselineAlcoholFeedback4.content
             }
             
+            var smokeFeedback = ""
             let sImportance = currentParticipant.surveys.filter("name = 'BSSVSurvey'").first?.sImportance
             let smokeDay = currentParticipant.consentForm.smokeDay
             if smokeDay <= 8 {
-                self.baselineAlcoholText.text = Feedbacks.BaselineSVFeedback1.content
+               smokeFeedback = Feedbacks.BaselineSVFeedback1.content
             } else if smokeDay > 8 && smokeDay < 15 {
                 if sImportance < 3 {
-                    self.baselineAlcoholText.text = Feedbacks.BaselineSVFeedback2.content
+                    smokeFeedback = Feedbacks.BaselineSVFeedback2.content
                 } else {
-                    self.baselineAlcoholText.text = Feedbacks.BaselineSVFeedback3.content
+                    smokeFeedback = Feedbacks.BaselineSVFeedback3.content
                 }
             }else {
-                self.baselineAlcoholText.text = Feedbacks.BaselineSVFeedback4.content
+                smokeFeedback = Feedbacks.BaselineSVFeedback4.content
             }
+            baselineFeedbackText.text = "Alcohol: " + alcoholFeedback + " Smoke/Vape: " + smokeFeedback
         }
     }
     
@@ -113,37 +124,29 @@ class FeedbackViewController: UITableViewController {
         if drugType == "Alcohol" {
             let alcoholSurveyNumber = currentParticipant?.surveys.filter("name = 'DSAlcoholSurvey'").count
             let heavyDayNumber = currentParticipant?.surveys.filter("name = 'DSAlcoholSurvey'").filter("dailyHeavyDrinkingDay = 'Yes'").count
-            if Double(heavyDayNumber!/alcoholSurveyNumber!) > 0.5 {
-                 self.thirtyDaysFeedbackText.text = Feedbacks.ThirtyAlcoholFeedback1.content
-            } else {
-                self.thirtyDaysFeedbackText.text = Feedbacks.ThirtyAlcoholFeedback2.content
-            }
-           
+            let alcoholPrecentage = round(Double(heavyDayNumber!/alcoholSurveyNumber!)*100)
+            
+            self.thirtyDaysFeedbackText.text = "You completed your survey on \(alcoholSurveyNumber) days. On the days you completed your survey you reported drinking heavily \(alcoholPrecentage)% of the days. Below are some graphs that show how your drinking is affected by other things in your life. We hope it gives you a greater understanding into your patterns and helps you make insightful choices about your use. Remember you can contact if you are interested in obtaining more information."
+
         } else if drugType == "Smoke/Vape" {
             let SVSurveyNumber = currentParticipant?.surveys.filter("name = 'DSSVSurvey'").count
             let smokeDayNumber = currentParticipant?.surveys.filter("name = 'DSSVSurvey'").filter("didSmokeDay = 'Yes'").count
-            if Double(smokeDayNumber!/SVSurveyNumber!) > 0.5 {
-                self.thirtyDaysFeedbackText.text = Feedbacks.ThirtySVFeedback1.content
-            } else {
-                self.thirtyDaysFeedbackText.text = Feedbacks.ThirtySVFeedback2.content
-            }
+           
+            self.thirtyDaysFeedbackText.text = "You completed your survey on \(SVSurveyNumber) days and smoked on \(smokeDayNumber) of those days. Below are some graphs that show how your smoking is affected by other things in your life. We hope it gives you a greater understanding into your patterns and helps you make insightful choices about your use. Remember you can contact if you are interested in obtaining more information."
+          
         } else {
             let alcoholSurveyNumber = currentParticipant?.surveys.filter("name = 'DSAlcoholSurvey'").count
             let heavyDayNumber = currentParticipant?.surveys.filter("name = 'DSAlcoholSurvey'").filter("dailyHeavyDrinkingDay = 'Yes'").count
-            if Double(heavyDayNumber!/alcoholSurveyNumber!) > 0.5 {
-                self.thirtyDaysFeedbackText.text = Feedbacks.ThirtyAlcoholFeedback1.content
-            } else {
-                self.thirtyDaysFeedbackText.text = Feedbacks.ThirtyAlcoholFeedback2.content
-            }
+            let alcoholPrecentage = round(Double(heavyDayNumber!/alcoholSurveyNumber!)*100)
+            
+            let alcoholFeedback = "You completed your survey on \(alcoholSurveyNumber) days. On the days you completed your survey you reported drinking heavily \(alcoholPrecentage)% of the days. Below are some graphs that show how your drinking is affected by other things in your life. We hope it gives you a greater understanding into your patterns and helps you make insightful choices about your use. Remember you can contact if you are interested in obtaining more information."
+
             let SVSurveyNumber = currentParticipant?.surveys.filter("name = 'DSSVSurvey'").count
             let smokeDayNumber = currentParticipant?.surveys.filter("name = 'DSSVSurvey'").filter("didSmokeDay = 'Yes'").count
-            if Double(smokeDayNumber!/SVSurveyNumber!) > 0.5 {
-                self.thirtyDayAlcoholText.alpha = 1
-                self.thirtyDayAlcoholText.text = Feedbacks.ThirtySVFeedback1.content
-            } else {
-                self.thirtyDayAlcoholText.alpha = 1
-                self.thirtyDayAlcoholText.text = Feedbacks.ThirtySVFeedback2.content
-            }
+            
+            let smokeFeedback = "You completed your survey on \(SVSurveyNumber) days and smoked on \(smokeDayNumber) of those days. Below are some graphs that show how your smoking is affected by other things in your life. We hope it gives you a greater understanding into your patterns and helps you make insightful choices about your use. Remember you can contact if you are interested in obtaining more information."
+            
+            self.thirtyDaysFeedbackText.text = "Alcohol: " + alcoholFeedback + " Smoke/Vape: " + smokeFeedback
         }
     }
 }
